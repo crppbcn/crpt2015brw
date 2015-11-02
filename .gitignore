@@ -1,4 +1,5 @@
-env
+# ignore directories
+venv
 staticfiles
 
 # exclude .idea directory
