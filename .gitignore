@@ -1,57 +1,41 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
+env
+staticfiles
 
-# C extensions
-*.so
+# exclude .idea directory
+/.db_utils
 
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
+# ignore .dump files
+*.dump
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+# ignore heroku .env file
+*.env
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+# ignore settings_private.py file
+settings_private.py
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*,cover
+# ignore .pyc files
+*.pyc
+!settings_private.pyc
 
-# Translations
-*.mo
-*.pot
+# exclude .DS_Store
+.DS_Store
 
-# Django stuff:
-*.log
+# exclude .idea directory
+/.idea
 
-# Sphinx documentation
-docs/_build/
+# exclude .RHistory
+.Rhistory
 
-# PyBuilder
-target/
+# exclude db.sqlite3
+db.sqlite3
+
+# ignore log files
+*.log*
+
+# ignore pdf files
+*.pdf
+
+# ignore jpg files
+*.jpg
+
+
