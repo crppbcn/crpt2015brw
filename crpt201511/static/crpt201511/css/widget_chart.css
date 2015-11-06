@@ -1,0 +1,62 @@
+.indicator1{
+	height:100%;
+}
+.fila {
+    float: left;
+    position: relative;
+	width: 100%;
+}
+.chart-wrapper-1 {
+    width: 100%;
+}
+.chart-wrapper-2 {
+    width: 50%;
+}
+.chart-wrapper-3 {
+    width: 33%;
+}
+
+.chart01 {
+    float: left;
+}
+
+#container {
+	height: 500px; 
+	min-width: 310px;
+	/* max-width: 800px; */
+	margin: 0 auto; 
+}
+
+.chart {
+    float: left;
+}
+
+.chart02 {
+    float: left;
+}
+.chart03 {
+    float: left;
+}
+.chart04 {
+    float: left;
+}
+.chart05 {
+    float: left;
+}
+.chart06 {
+    float: left;
+}
+element.style {
+    height: 100% !important;
+}
+.column2 {
+width: 100%;
+float: left;
+padding: 1% 0 0 1%;
+}
+
+.map-wraper-1{
+	position: relative;
+    width: 25%;
+    float: left;
+}

@@ -1,0 +1,18 @@
+Section	Question	Help Text	QTYPE
+Location	Country	Name	CHAR_FIELD
+Location	Capital	Name	CHAR_FIELD
+Location	Region	Name	CHAR_FIELD
+Location	County	Name	CHAR_FIELD
+Location	Time zone	In relation to GMT	CHAR_FIELD
+Location	Coordinates	Geodetic coordinates	CHAR_FIELD
+Location	Altitude	Range of altitudes, in metres	TEXT_FIELD
+Location	Climate type	According to Kopper climate classification	TEXT_FIELD
+Location	Temperature range	Minimum, maximum and average yearly temperature	TEXT_FIELD
+Location	Rainfall range	Minimum, maximum and average monthly rainfall	TEXT_FIELD
+Location	Other climatic relevant information	Months with characteristic phenomena. Ex.: extreme temperatures, rainfall, drought, monsoon, etc.	TEXT_FIELD
+Location	Geographical characteristics	Coastal area, mainland, near or on a mountain, near or on a river, near or on an tectonic fault line, etc.	TEXT_FIELD
+Location	Urban area	Area within the boundaries where your local government has jurisdiction. Ex.: municipality area in km2	TEXT_FIELD
+Location	Metropolitan area	Area of influence in terms of economy and labour market, in km2	TEXT_FIELD
+Location	Sublocal divisions	Relevant administrative subdivisions. Ex.: districts, neighbourhoods, etc.	TEXT_FIELD
+Location	Representative plan or map of your city	Please provide link(s) to a masterplan or map of your city including the boundaries of your local government	TEXT_FIELD
+Location	Representative view of your city	Please provide link(s) to an orthophoto and/or aerial view of your city	TEXT_FIELD

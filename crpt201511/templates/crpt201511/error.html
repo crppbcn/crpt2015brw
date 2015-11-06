@@ -1,0 +1,18 @@
+{% extends "crpt201511/base_bootstrap.html" %}
+
+{% block content %}
+<div class="jumbotron col-lg-10 col-lg-offset-1" >
+  <h1 class="page-header">City Resilience Profiling Tool</h1>
+
+<div class="alert alert-dismissible alert-danger">
+  <p>An unexpected error has occurred. Please do send this screenshot to your CRPP Focal Point.</p>
+  <p><strong>{{ error_description }}</strong></p>
+</div>
+
+
+<a href="{{ crpt_url }}" class="btn btn-danger">Back to the Assessment</a>
+
+
+
+</div>
+{% endblock %}

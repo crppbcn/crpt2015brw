@@ -1,0 +1,63 @@
+Element	Parent	Addition of elements	Name of new elements
+Electricity Supply	Basic Infrastructure		
+Fuel Supply	Basic Infrastructure		
+Gas Supply	Basic Infrastructure		
+Solid Waste	Basic Infrastructure		
+Telecommunication	Basic Infrastructure		
+Emergency and Alert	Telecommunication		
+Internet	Telecommunication		
+Phone	Telecommunication		
+TV/Radio	Telecommunication		
+Wastewater	Basic Infrastructure		
+Water Supply	Basic Infrastructure		
+Built Environment			
+Commercial Buildings	Built Environment		
+Government Buildings	Built Environment		
+Housing	Built Environment		
+Industrial Buildings	Built Environment		
+ Public Infrastructure	Built Environment		
+Economy			
+Market Share	Economy		
+Primary Sector	Economy		
+Secondary Sector	Economy		
+Tertiary Sector	Economy		
+Main Economic Activities	Economy	Yes	Economic Activity
+Environment			
+Air	Environment		
+Blue	Environment	Yes	Water Body
+Green	Environment		
+Governance			
+Local Government	Governance		
+Private Sector	Governance		
+Civil Society	Governance		
+Other Major Institutions	Governance	Yes	Major Institution
+Public Services			
+Education	Public Services		
+Food Provision	Public Services		
+Health	Public Services		
+Safety	Public Services	Yes	Safety Force
+Emergency	Public Services	Yes	Emergency Response Team
+Social Care	Public Services		
+Social			
+Capacity Building	Social		
+Civic Engagement	Social		
+Social Participation	Social		
+Transport			
+Mobility	Transport		
+Land	Transport		
+Roads	Land		
+Infrastructure	Roads		
+Shared Transport	Roads		
+Private Transport	Roads		
+Goods Transport	Roads		
+Non-motorised Transport	Roads		
+Railways	Land		
+Light Rail Transit	Railways		
+Heavy Rail Transit	Railways		
+Water	Transport		
+Light Vessels	Water		
+Heavy Vessels(Port)	Water		
+Air	Transport		
+Airport	Air		
+Other	Transport	Yes	Other Means
+Cable Transportation	Other		

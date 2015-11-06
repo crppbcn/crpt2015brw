@@ -1,0 +1,104 @@
+{% extends "crpt201511/base_site.html" %}
+{% load i18n admin_static %}
+
+
+{% load admin_list %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "crpt201511/css/dashboard.css" %}" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+    <div id="col_right" style="float:left;width:20%;margin-left:5px;">
+        <div class="module unh-docs">
+            <table style="width:100%;">
+            <caption class="title-unh-docs">
+                <div class="section">Actions</div>
+                <div style="float:right;padding-right:18px;"></div>
+            </caption>
+            <tr><td>
+                <a class="addlink" href="#" title="Upload Assessment">Upload Assessment</a>
+            </td></tr>
+            </table>
+
+
+            <table style="width:100%;">
+                <caption class="title-unh-docs">
+                    <div class="section">CRPT Documents</div>
+                    <div style="float:right;padding-right:18px;"></div>
+                </caption>
+                <tr><td><a href="#" target="blank">CRPT version x.x</a></td></tr>
+                <tr><td><a href="#" target="blank">CRPT User Guide vx.x</a></td></tr>
+                <tr><td><a href="#" target="blank">CRPP Terminology</a></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="list" style="float:left;width:78%;margin-left:9px;">
+
+        <div class="module">
+            <table style="width:100%;">
+                <thead>
+                <tr style="width:100%;">
+                    <th style="width:12%;">Assessment</th>
+                    <th style="width:12%;">Date Uploaded</th>
+                    <th style="width:12%;">Assessment Version</th>
+                    <th style="width:12%;">Actions</td>
+                </tr>
+                </thead>
+                {% if assessments_list %}
+                {% for assessment in assessments_list %}
+                <tr class="section-{{ section.object_name|lower }}" style="width:100%;">
+                        <td style="width:12%;">{{ assessment.name }}</td>
+                        <td style="width:12%;">{{ assessment.date_uploaded }}</td>
+                        <td style="width:12%;">{{ assessment.version }}</td>
+                        <td style="width:12%;"><a href="{% url 'graphics' assessment_id=assessment.id %}">Results</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+                {% if assessments_list.paginator %}
+                    <p class="paginator">
+                            {% if assessments_list.has_previous %}
+                            <span class="">
+                                <a href="?page={{ assessments_list.previous_page_number }}"> Previous </a>
+                            </span>
+                            {% endif %}
+
+                            <span class="this-page">
+                                Page {{ assessments_list.number }} of {{ assessments_list.paginator.num_pages }}.
+                            </span>
+
+                            {% if assessments_list.has_next %}
+                            <span class="">
+                                <a href="?page={{ assessments_list.next_page_number }}"> Next </a>
+                            </span>
+                            {% endif %}
+                    </p>
+                {% endif %}
+                {% else %}
+            <table style="width:100%;">
+                <tr class="section-{{ section.object_name|lower }}" style="width:100%;">
+                    <td colspan="6">No related assessments found.</td>
+                </tr>
+            </table>
+                {% endif %}
+
+
+        </div>
+
+        <br>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
