@@ -1,18 +1,18 @@
-Section	Question	Help Text	QTYPE
-Location	Country	Name	CHAR_FIELD
-Location	Capital	Name	CHAR_FIELD
-Location	Region	Name	CHAR_FIELD
-Location	County	Name	CHAR_FIELD
-Location	Time zone	In relation to GMT	CHAR_FIELD
-Location	Coordinates	Geodetic coordinates	CHAR_FIELD
-Location	Altitude	Range of altitudes, in metres	TEXT_FIELD
-Location	Climate type	According to Kopper climate classification	TEXT_FIELD
-Location	Temperature range	Minimum, maximum and average yearly temperature	TEXT_FIELD
-Location	Rainfall range	Minimum, maximum and average monthly rainfall	TEXT_FIELD
-Location	Other climatic relevant information	Months with characteristic phenomena. Ex.: extreme temperatures, rainfall, drought, monsoon, etc.	TEXT_FIELD
-Location	Geographical characteristics	Coastal area, mainland, near or on a mountain, near or on a river, near or on an tectonic fault line, etc.	TEXT_FIELD
-Location	Urban area	Area within the boundaries where your local government has jurisdiction. Ex.: municipality area in km2	TEXT_FIELD
-Location	Metropolitan area	Area of influence in terms of economy and labour market, in km2	TEXT_FIELD
-Location	Sublocal divisions	Relevant administrative subdivisions. Ex.: districts, neighbourhoods, etc.	TEXT_FIELD
-Location	Representative plan or map of your city	Please provide link(s) to a masterplan or map of your city including the boundaries of your local government	TEXT_FIELD
-Location	Representative view of your city	Please provide link(s) to an orthophoto and/or aerial view of your city	TEXT_FIELD
+Section	Question	Help Text	QTYPE	ORDER
+Basic	Country	Name	CHAR_FIELD	10
+Basic	Capital	Name	CHAR_FIELD	20
+Basic	Region	Name	CHAR_FIELD	30
+Basic	County	Name	CHAR_FIELD	40
+Basic	Time zone	In relation to GMT	CHAR_FIELD	50
+Geographic	Coordinates	Geodetic coordinates	CHAR_FIELD	60
+Geographic	Altitude	Range of altitudes, in metres	TEXT_FIELD	70
+Geographic	Climate type	According to Kopper climate classification	TEXT_FIELD	80
+Geographic	Temperature range	Minimum, maximum and average yearly temperature	TEXT_FIELD	90
+Geographic	Rainfall range	Minimum, maximum and average monthly rainfall	TEXT_FIELD	100
+Geographic	Other climatic relevant information	Months with characteristic phenomena. Ex.: extreme temperatures, rainfall, drought, monsoon, etc.	TEXT_FIELD	110
+Geographic	Geographical characteristics	Coastal area, mainland, near or on a mountain, near or on a river, near or on an tectonic fault line, etc.	TEXT_FIELD	120
+Geographic	Urban area	Area within the boundaries where your local government has jurisdiction. Ex.: municipality area in km2	TEXT_FIELD	130
+Geographic	Metropolitan area	Area of influence in terms of economy and labour market, in km2	TEXT_FIELD	140
+Basic	Sublocal divisions	Relevant administrative subdivisions. Ex.: districts, neighbourhoods, etc.	TEXT_FIELD	150
+Other - Location	Representative plan or map of your city	Please provide link(s) to a masterplan or map of your city including the boundaries of your local government	TEXT_FIELD	160
+Other - Location	Representative view of your city	Please provide link(s) to an orthophoto and/or aerial view of your city	TEXT_FIELD	170

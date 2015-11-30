@@ -1,0 +1,32 @@
+{% extends "crpt201511/common/base.html" %}
+{% block header %}
+    <div id="crpt-header">
+        <div class="page-header" style="margin: 18px 0px 18px;" id="banner">
+            <div class="row  header">
+                <div class="col-lg-2 header-city header-height">
+                    {{ person.city.name }}
+                </div>
+
+                <div class="btn-group col-lg-1 col-lg-offset-8 header-height">
+                  <a href="#" class="header-menu dropdown-toggle" data-toggle="dropdown">Resources</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">User Guide</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact</a></li>
+                  </ul>
+                </div>
+
+                <div class="btn-group col-lg-1 header-height">
+                  <a href="#" class="header-menu dropdown-toggle" data-toggle="dropdown">City</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">History</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Change Password</a></li>
+                    <li><a href="#">Logout</a></li>
+                  </ul>
+                </div>
+            </div> <!-- row -->
+        </div><!-- banner -->
+    </div> <!-- crpt-header -->
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "crpt201511/common/header.html" %}
+{% block content %}
+<div class="jumbotron col-lg-12" >
+    <h1 class="page-header">Welcome</h1>
+
+    <div id="welcome">
+        <h2>Welcome text should be placed here.</h2>
+
+        <h3>Maybe quick info should be placed here.</h3>
+
+        <p>Should we put a checkbox to allow user hide this page? (Do not show this page again?).</p>
+    </div>
+    <div class="col-lg-1 col-lg-offset-11" style="padding-left:30px;">
+        <a href="{% url 'steps' assessment_id=assessment.id %}" class="btn btn-danger">Next</a>
+    </div>
+
+</div>
+
+
+{% endblock %}

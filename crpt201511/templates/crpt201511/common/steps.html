@@ -1,0 +1,15 @@
+{% extends "crpt201511/common/header.html" %}
+{% block content %}
+<div class="jumbotron col-lg-12" >
+    <h1 class="page-header">Steps</h1>
+
+    <div class="row col-lg-12" style="position:relative;left:1.5%;">
+        <div class="col-lg-3"><a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn btn-danger col-lg-5" style="height:180px;width:100%;">Step1 - City ID</a></div>
+        <div class="col-lg-3"><a href="#" class="btn btn-danger col-lg-5" style="height:180px;width:100%;">Step2 - Hazards</a></div>
+        <div class="col-lg-3"><a href="#" class="btn btn-danger col-lg-5" style="height:180px;width:100%;">Step2 - Hazards</a></div>
+        <div class="col-lg-3"><a href="#" class="btn btn-danger col-lg-5" style="height:180px;width:100%;">Step2 - Hazards</a></div>
+    </div>
+</div>
+
+
+{% endblock %}

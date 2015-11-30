@@ -1,0 +1,11 @@
+Section	Question	Help Text	QTYPE	ORDER
+Governance & Policies	Local government political structure	Existence of councils and other bodies	TEXT_FIELD	10
+Governance & Policies	Electoral system	Universal election, restricted vote, etc.	TEXT_FIELD	20
+Governance & Policies	Local government political cycle	In months	CHAR_FIELD	30
+Governance & Policies	Last election	Date	CHAR_FIELD	40
+Governance & Policies	Next election	Date	CHAR_FIELD	50
+Governance & Policies	Is the city a major player at regional or national level	Please specify, if any	TEXT_FIELD	60
+Governance & Policies	Department or committee in charge of resilience	Ex.: Disaster Risk Reduction, Climate Change, Sustainability, Environment, etc. If any, please specify and describe departments involved and responsibilities	TEXT_FIELD	70
+Governance & Policies	Relevant resilient-related policies	Ex.: land use, disaster risk reduction, city master plans, environment protection, emergencies, etc. If any, please specify	TEXT_FIELD	80
+Governance & Policies	Affirmative action policies	Ex.: school or job vacancies designated for members of a certain group (disabled, women, etc.). If any, please specify	TEXT_FIELD	90
+Governance & Policies	Other relevant information	Ex.: disaster response systems, early warning systems, climate change strategies, etc. If any, please specify	TEXT_FIELD	100

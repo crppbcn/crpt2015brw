@@ -1,0 +1,18 @@
+Section	Question	Help Text	QTYPE	ORDER
+Population	Urban population - permanent	Permanent residents, specified by gender	CHAR_FIELD	10
+Population	Urban population density	Inhabitants/Km2	CHAR_FIELD	20
+Population	Urban population - floating	Daily commuters, tourists, seasonal workers, etc. Include high seasons if applicable	CHAR_FIELD	30
+Population	Metropolitan population - permanent	Permanent residents, specified by gender	CHAR_FIELD	40
+Population	Metropolitan population - floating	Daily commuters, tourists, seasonal workers, etc. Include high seasons if applicable	CHAR_FIELD	50
+Population	Urban population below 15 years old	Percentage, specified by gender	CHAR_FIELD	60
+Population	Urban population above 65 years old	Percentage, specified by gender	CHAR_FIELD	70
+Population	Life expectancy	Specified by gender	TEXT_FIELD	80
+Population	Average urban population growth	Percentage, yearly average within last 5 to 10 years	CHAR_FIELD	90
+Population	Projection of urban population growth	Percentage, average yearly estimate for the next 5 to 10 years	CHAR_FIELD	100
+Population	Mortality rate	Per 100,000 people, specified by gender and age	TEXT_FIELD	110
+Population	Number of homeless people	Per 100,000 people	CHAR_FIELD	120
+Population	Number of institutionalised people	Per 100,000 people	CHAR_FIELD	130
+Population	Ethnic group(s)	Percentage of population within social, cultural and/or religious groups. Specify if there is a particular geographical distribution, such as a neighbourhood with a majority of a certain group	TEXT_FIELD	140
+Population	Official language(s)	Official language(s) spoken and percentage of speaking population	TEXT_FIELD	150
+Population	Official language(s), unintelligibility	Percentage of population that do not understand any of the language(s) used for official communication	TEXT_FIELD	160
+Population	Other spoken language(s)	Other main languages spoken and percentage of speaking population	TEXT_FIELD	170

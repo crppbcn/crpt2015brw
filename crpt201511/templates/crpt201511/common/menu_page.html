@@ -1,0 +1,193 @@
+{% extends "crpt201511/common/nav_menu.html" %}
+{% block content %}
+<div id="crpt-menu_page" class="row col-lg-12">
+    <div class="row col-lg-12">
+        <div id="crpt-left-menu" class="col-lg-2 padding_right">
+
+            <div class="list-group table-of-contents">
+                {% for elem in left_elements %}
+                    <a class="list-group-item selected" href="#">{{ elem.name }}</a>
+                    {% for item in elem_elements %}
+                        <a class="list-group-item group_item" href="#">&nbsp;&nbsp;{{ item.name }}</a>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div id="crpt-center" class="col-lg-6 padding_right">
+            <div class="bs-component">
+                <div class="well bs-component">
+                    <form class="form-horizontal">
+                        <legend>
+                            {{ selected.name }}
+                            <a href="#" alt="Help" data-toggle="modal" data-target="#myModal"><img src="img/question.png" style="width:15px;height:15px;"/></a>&nbsp;&nbsp;
+                        </legend>
+                        <blockquote>{{ selected.description }}</blockquote>
+                        <fieldset>
+                        {{ formset.management_form }}
+                            {% if formset.errors %}
+                            <!-- TODO: form errors treatement -->
+                            {% endif %}
+                            {% for form in formset %}
+                                {%comment%}
+                                    preparing the form to be printed
+                                    need to print form.id to avoid errors in post request
+                                    rest of hiden fields
+                                {%endcomment%}
+                                {{form.id}}
+                                    <!-- TODO: form fields display as a function of type of question and except MoV section -->
+                                {% for field in form %}
+                                    {% if field.errors %}
+                                        {{field.label_tag}}
+                                        {{field.errors}}
+                                        {{field}}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            <!-- TODO: MoV Section -->
+                            <div class="form-group">
+                                <legend></legend>
+                            </div>
+                            <!--
+                            <div class="form-group">
+                                <label for="inputMoV" class="col-lg-3 control-label padding_right">Means of Verification</label>
+                                <div class="col-lg-9">
+                                    <textarea class="form-control" rows="2" id="inputMoV" placeholder="Means of Verification"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                  <label for="select2" class="col-lg-3 control-label padding_right">MoV Type</label>
+                                  <div class="col-lg-9">
+                                      <select class="form-control" id="select2" multiple="">
+                                          <option>National Statistics</option>
+                                          <option>Regional Statistics</option>
+                                          <option>Local Statistics</option>
+                                          <option>Focal Point Knowledge</option>
+                                          <option>Other</option>
+                                      </select>
+                                  </div>
+                            </div>
+
+                            <div id="divMoVOther" class="form-group">
+                                  <label for="inputMovType" class="col-lg-3 control-label padding_right">Other MoV Type</label>
+                                  <div class="col-lg-9">
+                                    <input class="form-control" id="inputMovType" placeholder="Please specify other types of MoV" type="text">
+                                  </div>
+                            </div>
+
+                            <div class="form-group">
+                                  <label for="select1" class="col-lg-3 control-label padding_right">Latest Update</label>
+                                  <div class="col-lg-9">
+                                      <select class="form-control" id="select1">
+                                          <option selected>-</option>
+                                          <option>Less than 2 years</option>
+                                          <option>Less than 5 years</option>
+                                          <option>Less than 10 years</option>
+                                          <option>Less than 20 years</option>
+                                      </select>
+                                  </div>
+                            </div>
+                            -->
+                            <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-3">
+                                  <button type="reset" class="btn btn-default">Cancel</button>
+                                  <button type="submit" class="btn btn-danger">Submit</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div> <!-- panel default -->
+            </div>
+        </div> <!-- crpt-center -->
+
+        <div id="crpt-right-column" class="col-lg-4">
+
+            <div id="crpt-right-menu" class="right-menu">
+                <a id="a-considerations" class="selected" href="#" onclick="showConsiderations();">Considerations</a>
+                <br>
+                <a id="a-comments" href="#" onclick="showComments();">Comments</a>
+            </div>
+
+
+            <div id="crpt-right-considerations">
+                <div class="panel panel-default">
+                  <div class="panel-heading">Considerations</div>
+                  <div class="panel-body">
+                      {% for cons in considerations%}
+                        <p>cons.description</p>
+                      {% endfor %}
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading">Example(s)</div>
+                  <div class="panel-body">
+                      {% for ex in examples%}
+                        <p>ex.description</p>
+                      {% endfor %}
+                  </div>
+
+                </div>
+            </div>
+
+
+            <div id="crpt-right-comments">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Your comments on this question</div>
+                        <div class="panel-body">
+                            <form>
+                                <fieldset>
+                                <div class="form-group">
+                                    <div class="">
+                                        <textarea class="form-control" rows="3" id="textComments" placeholder="Add any comments or notes"></textarea>
+                                    </div>
+                                </div>
+                                <!-- TODO: show only if there is a previous update -->
+                                <div id="divLatestUpdaste" class="form-group">
+                                    <label for="inputMovType" class="">Latest update: <em>{{ last_comment_update.date }}</em>. User: <em>{{ last_comment_update.user.name }}</em></label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="">
+                                        <button type="reset" class="btn btn-default">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Submit</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Send comments to CRPP Team</div>
+                        <div class="panel-body">
+                            <form>
+                                <fieldset>
+                                    <div class="form-group">
+                                            <a id="a-copy" href="#" onclick="copyComments();">Copy comments</a>
+                                            <textarea class="form-control" rows="3" id="textEmail" placeholder="Send any comments or questions to CRPP Team"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="">
+                                          <button type="reset" class="btn btn-default">Cancel</button>
+                                          <button type="submit" class="btn btn-danger">Send</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- right comments -->
+
+            <div style="clear:both;"></div>
+
+        </div> <!-- right col -->
+
+    </div> <!-- row -->
+
+</div> <!-- crpt-menu-page -->
+
+
+{% endblock %}

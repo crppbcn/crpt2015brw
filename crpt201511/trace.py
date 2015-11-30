@@ -1,12 +1,10 @@
 import sys
-from django.core import serializers
 
 from crpt201511.models import TraceAction
 
 
 def trace_action(action_name, person, description=None):
     try:
-        print("Trace Action. Begin.")
         new_log = TraceAction()
         new_log.action = action_name
         new_log.description = description

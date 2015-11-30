@@ -1,0 +1,4 @@
+Section	Question	Help Text	QTYPE	ORDER
+Communications	Institutional website	URL, if available	CHAR_FIELD	10
+Communications	Interesting fact	Please provide, in few words, one interesting fact or particularity about your city, for us to share with our partners and on our publications	TEXT_FIELD	20
+Communications	Representative photograph of your city	Please provide link(s) to at least one representative photograph of your city. Printable in A3 if possible, with info about the copyright if applicable. Pictures cannot have reserved rights as they are intented for free distribution.	UPLOAD_DOCS	30

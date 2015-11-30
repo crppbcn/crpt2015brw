@@ -9,7 +9,8 @@ admin.site.register(crpt201511.models.Person)
 admin.site.register(crpt201511.models.Dimension)
 admin.site.register(crpt201511.models.HazardCategory)
 admin.site.register(crpt201511.models.Hazard)
-
+admin.site.register(crpt201511.models.MoVType)
+admin.site.register(crpt201511.models.CityIDSection)
 
 class AssessmentVersionAdmin(admin.ModelAdmin):
     list_display = ('version', 'name', 'date_released')
@@ -23,25 +24,13 @@ class ElementAdmin(admin.ModelAdmin):
 admin.site.register(crpt201511.models.Element, ElementAdmin)
 
 
-class CityIDCharFieldAdmin(admin.ModelAdmin):
-    list_display = ('question', 'section', 'version')
+class CityIDStatementAdmin(admin.ModelAdmin):
+    list_display = ('question', 'section')
 
-admin.site.register(crpt201511.models.CityIDCharFieldStatement, CityIDCharFieldAdmin)
-
-
-class CityIDTextFieldAdmin(admin.ModelAdmin):
-    list_display = ('question', 'section', 'version')
-
-admin.site.register(crpt201511.models.CityIDTextFieldStatement, CityIDTextFieldAdmin)
+admin.site.register(crpt201511.models.CityIDStatement, CityIDStatementAdmin)
 
 
-class AssessmentCityIDCharFieldQuestionAdmin(admin.ModelAdmin):
-    list_display = ('statement', 'assessment')
+class AssessmentCityIDResponseAdmin(admin.ModelAdmin):
+    list_display = ('value', 'statement', 'assessment')
 
-admin.site.register(crpt201511.models.AssessmentCityIDCharFieldQuestion, AssessmentCityIDCharFieldQuestionAdmin)
-
-
-class AssessmentCityIDTextFieldQuestionAdmin(admin.ModelAdmin):
-    list_display = ('statement', 'assessment')
-
-admin.site.register(crpt201511.models.AssessmentCityIDTextFieldQuestion, AssessmentCityIDTextFieldQuestionAdmin)
+admin.site.register(crpt201511.models.AssessmentCityIDResponse, AssessmentCityIDResponseAdmin)

@@ -1,0 +1,224 @@
+/*******************
+
+Container
+
+********************/
+
+#crpt .padding_right {
+    padding-right: 10px;
+}
+
+/*******************
+
+Header
+
+********************/
+#crpt-header .header {
+    height: 100px;
+    margin:10px 0 10px 0;
+    background-image: url(../img/header.png);
+    background-repeat: no-repeat;
+}
+
+#crpt-header .header-height {
+    height: 100%;
+}
+
+#crpt-header .header-city {
+    font-size: 80px;
+    color: #EE8A00;
+    text-align: left;
+    padding-left: 10px;
+}
+
+#crpt-header .header-menu {
+    font-size: 15px;
+    color: #EE8A00;
+    text-align:right;
+    position: relative;
+    top: 70%;
+    transform: translateY(-50%);
+    background-color: transparent;
+}
+
+#crpt-header a {
+    text-decoration: none;
+}
+
+#crpt-header .open > a {
+    color: #3D6FB6;
+}
+
+#crpt-header a:hover, a:focus {
+    text-decoration: none;
+    color: #3D6FB6;
+}
+
+#crpt-header .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    text-decoration: none;
+    color: #FFF;
+    background-color: #EE8A00;
+}
+
+/*******************
+
+Horizontal menu
+
+********************/
+
+#crpt-nav-menu a {
+    text-decoration: none;
+    font-size: 15px;
+    color: #EE8A00;
+    background-color: transparent;
+}
+
+#crpt-nav-menu {
+    margin-bottom: 10px;
+}
+
+#crpt-nav-menu .selected {
+    text-decoration: none;
+    color: #3D6FB6;
+}
+
+#menu .menu-horizontal {
+    float: left;
+    position: relative;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#menu .menu-item {
+    text-align: center;
+    width: 100%;
+}
+
+/*******************
+
+Menu Page
+
+********************/
+
+
+/*******************
+
+Left menu
+
+********************/
+
+#crpt-left-menu .selected {
+    text-decoration: none;
+    //color: #3D6FB6; // blue
+    color: #EE8A00; // orange
+    //background-color: #F5F5F5;
+    background-color: #BFDFFE;
+}
+
+#crpt-left-menu .selected2 {
+    text-decoration: none;
+    //color: #3D6FB6; // blue
+    color: #EE8A00; // orange
+    //background-color: #F5F5F5;
+    background-color: #DFEFFF;
+}
+
+#crpt-left-menu .group_item {
+    background-color: #EFFFFF
+}
+
+
+#crpt-left-menu .btn-group {
+    position: relative;
+    display: block;
+    vertical-align: middle;
+}
+
+#crpt-left-menu .open > a {
+    color: #3D6FB6;
+}
+
+#crpt-left-menu a:hover, a:focus {
+    //text-decoration: none;
+    //color: #3D6FB6;
+    text-decoration: none;
+    color: #FFF;
+    background-color: #EE8A00;
+}
+
+#crpt-left-menu .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    text-decoration: none;
+    color: #FFF;
+    background-color: #EE8A00;
+}
+
+
+/*******************
+
+Right menu
+
+********************/
+#crpt-right-menu {
+    position:relative;
+    top: 0px;
+    right: 0px;
+    padding-right: 10px;
+    padding-top: 5px;
+    z-index: 1;
+    text-align: right;
+    font-size: 10px;
+}
+
+#crpt-right-menu .selected {
+    text-decoration: none;
+    color: #3D6FB6;
+    background-color: transparent;
+}
+
+#crpt-right-menu a {
+    text-decoration: none;
+    color: #EE8A00;
+}
+
+#crpt-right-considerations {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#crpt-right-considerations a {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+#crpt-right-comments {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    width:100%;
+}
+
+#crpt-right-comments a {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+#a-comments {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+#a-copy {
+    text-decoration: none;
+    color: #EE8A00;
+    background-color: transparent;
+}
+
+/*******************
+
+Center
+
+********************/
+#crpt-center .well {
+    padding-top: 10px;
+}

@@ -1,0 +1,20 @@
+Section	Question	Help Text	QTYPE	ORDER
+Economy	GDP (city)	In local currency	CHAR_FIELD	10
+Economy	Average income	Per capita and per family, specified by gender	CHAR_FIELD	20
+Economy	GINI coefficient	Please use local data if available	CHAR_FIELD	30
+Economy	Income of the richest 10%	In relation to total GDP	CHAR_FIELD	40
+Economy	People under poverty line	Percentage, consider national or local standard, if any. Please specify	TEXT_FIELD	50
+Economy	Unemployment rate	Percentage of total labour force, specified by gender and age	TEXT_FIELD	60
+Economy	Informal employment	Percentage of total labour force, specified by gender	TEXT_FIELD	70
+Economy	Youth unemployment	Percentage of total labour force, aged 15 to 24, specified by gender	TEXT_FIELD	80
+Economy	Business development	Business development support networks and services. Specify, if any	TEXT_FIELD	90
+Economy	New businesses	Total number of new enterprises opened within the last year	CHAR_FIELD	100
+Economy	Banking groups	Percentage of population covered by formal or informal banking /credit groups	TEXT_FIELD	110
+Economy	Personal savings	Percentage of household gross savings, in relation to total GDP	TEXT_FIELD	120
+Economy	Private property insurance	Percentage of population covered by insurance (crop insurance, weather-based index insurance, etc.)	TEXT_FIELD	130
+Economy	City budget	Total, in local currency	TEXT_FIELD	140
+Economy	City budget, direct income	Ex.: taxes, fees, fines, etc. Percentage of total	TEXT_FIELD	150
+Economy	City budget, supra-local government contributions	From regional or national governments. Percentage of total	TEXT_FIELD	160
+Economy	City budget, external contributions	Ex.: international agencies, banks, investors, aid, etc. Percentage of total	TEXT_FIELD	170
+Economy	Budget allocated for resilience	Ex.: Disaster Risk Reduction, Climate Change, Sustainable Development, contingency allocation, sub-budget from other departments, etc. Percentage of total city budget	TEXT_FIELD	180
+Economy	Alternative Disaster Risk Reduction financial mechanisms	Ex.: insurance, micro-insurance, contingency credits, etc. Specify, if any	TEXT_FIELD	190

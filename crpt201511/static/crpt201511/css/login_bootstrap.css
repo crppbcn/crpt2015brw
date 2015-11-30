@@ -17,3 +17,7 @@ input#id_username, input#id_password {
 a, a:hover, a:focus {
     color: #E08B27;
 }
+
+.label-login {
+    padding-right: 15px;
+}

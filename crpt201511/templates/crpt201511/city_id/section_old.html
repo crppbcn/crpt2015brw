@@ -1,0 +1,47 @@
+{% extends "crpt201511/common/header.html" %}
+{% block content %}
+{% if formset %}
+<form class="form-horizontal"action="" method="post" id="{{person.user.username}}_form">{% csrf_token %}
+{{ formset.management_form }}
+    {% if formset.errors %} <!-- TODO: format bootstrap style -->
+    <div class="">
+    <p class="errornote">
+        <!-- num_errors calculat en view -->
+        {% if num_errors|length == 1 %}Please correct the error below.{% else %}Please correct the errors below.{% endif %}
+        <!-- prints model errors, right style -->
+        {% for dict in formset.errors %}
+            {% for key, value in dict.items %}
+                {% if key == '__all__' %}
+                <li>{{ value }}</li>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </p>
+        </div>
+    {% endif %}
+      <fieldset>
+        <!-- <legend></legend> -->
+        {% for form in formset %}
+            {{form.id}}
+                    <div class="form-group">
+                        <label class="col-lg-2 col-lg-offset-2 control-label"><h4>{{ form.instance.statement.question }}</h4></label>
+                        <div class="col-lg-5">
+                          {{ form.value.errors }}
+                          {{ form.value }}
+                        </div>
+                    </div>
+
+        {% endfor %}
+      </fieldset>
+      <div class="col-lg-5 col-lg-offset-4">
+        <button type="submit" class="btn btn-danger">Log in</button>
+      </div>
+</div>
+</form>
+
+{% else %}
+    <p>Section questions not found.</p>
+{% endif %} <!-- end if formset -->
+
+
+{% endblock %}

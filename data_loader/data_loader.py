@@ -179,10 +179,12 @@ def load_hazards():
     file_path = settings.BASE_DIR + "/files/" + "hazards.tsv"
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
     data_reader.next()  # to skip headers row
-    hazard_category = None
+
     for row in data_reader:
         # check for hazard category
-        if not hazard_category or hazard_category.name != row[1].strip():
+        try:
+            hazard_category = HazardCategory.objects.get(name=row[1].strip())
+        except:
             hazard_category = HazardCategory()
             hazard_category.name = row[1].strip()
             hazard_category.save()
@@ -206,7 +208,7 @@ def load_elements():
     data_reader.next()  # to skip headers row
 
     for row in data_reader:
-        # check for hazard category
+        # check for parent element
         try:
             if row[1].strip() == '':
                 parent_element = None
@@ -230,6 +232,42 @@ def load_elements():
     print("load_elements. End.")
 
 
+def load_recursive_entity(file_name, class_name):
+    print("load_recursive_entity. Start: " + file_name + " - " + str(class_name))
+    file_path = settings.BASE_DIR + "/files/" + file_name
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    for row in data_reader:
+        # check for parent element
+        try:
+            if row[2].strip() == '':
+                parent_element = None
+            else:
+                parent_element = class_name.objects.get(name=row[2].strip())
+        except:
+            parent_element = class_name()
+            parent_element.name = row[0].strip()
+            parent_element.order = row[3].strip()
+            parent_element.save()
+        # load hazard
+        try:
+            element = class_name.objects.get(name=row[0].strip())
+            element.parent = parent_element
+            element.save()
+        except:
+            element = class_name()
+            element.name = row[0].strip()
+            element.long_name = row[1].strip()
+            element.order = row[3].strip()
+            element.parent = parent_element
+            element.save()
+
+
+
+    print("load_recursive_entity. Start: " + file_name + " - " + str(class_name) )
+
+
 def load_city_id_file(file_name):
     print("load_city_id_file. Start: " + file_name)
     file_path = settings.BASE_DIR + "/files/" + file_name
@@ -241,41 +279,45 @@ def load_city_id_file(file_name):
             if row[0].strip() == '':
                 section = None
             else:
-                section = CityIDSection.objects.get(name=row[0].strip())
+                section = CityIDSection.objects.get(long_name=row[0].strip())
         except:
             section = CityIDSection()
             section.name = row[0].strip()
             section.save()
         # question
-        if row[3].strip() == "CHAR_FIELD":
-            question = CityIDCharFieldStatement()
-            question.section = section
-            question.help_text = row[2].strip()
-            question.question = row[1].strip()
-            question.version = AssessmentVersion.objects.order_by('-date_released')[0]
-            question.save()
-        if row[3].strip() == "TEXT_FIELD":
-            question = CityIDTextFieldStatement()
-            question.section = section
-            question.help_text = row[2].strip()
-            question.question = row[1].strip()
-            question.version = AssessmentVersion.objects.order_by('-date_released')[0]
-            question.save()
+        question = CityIDStatement()
+        question.section = section
+        question.help_text = row[2].strip()
+        question.question = row[1].strip()
+        question.value_type = ValueType.objects.get(name=row[3].strip())
+        question.order = row[4].strip()
+        question.version = AssessmentVersion.objects.order_by('-date_released')[0]
+        question.save()
 
     print("load_city_id_file. End: " + file_name)
 
 
 
 if __name__ == "__main__":
+    #load_users_file()
     #load_entity_single_field_name("cities.tsv", City)
     #load_entity_single_field_name("roles.tsv", Role)
-    #load_users_file()
+    #load_entity_single_field_name("mov.tsv", MoVType)
+    #load_entity_single_field_name("value_type.tsv", ValueType)
     #load_people()
     #load_assessments()
     #load_entity_single_field_name("model_dimensions.tsv", Dimension)
-    #load_hazards()
-    #load_elements()
+    #load_recursive_entity("CityID-Sections.tsv", CityIDSection)
+    load_hazards()
+    load_elements()
     load_city_id_file("CityID-Location.tsv")
+    #load_city_id_file("CityID-Population.tsv")
+    #load_city_id_file("CityID-Partnerships.tsv")
+    #load_city_id_file("CityID-OtherRelevantInformation.tsv")
+    #load_city_id_file("CityID-Governance&Policies.tsv")
+    #load_city_id_file("CityID-Economy.tsv")
+    #load_city_id_file("CityID-Communications.tsv")
+    #load_city_id_file("CityID-BuiltEnvironment&CriticalInfrastructure.tsv")
 
 
 

@@ -30,15 +30,19 @@ urlpatterns = [
     url(r'^accounts/change_password/$', 'crpt201511.views.my_change_password', name='my_change_password'),
 
     # base url
-    url(r'^$', 'crpt201511.views.index', name='index'),
-
-    # url to index page
-    url(r'^index/', 'crpt201511.views.index', name='index'),
+    url(r'^$', 'crpt201511.views.welcome', name='welcome'),
 
     # url to my_copyright page
     url(r'^my_copyright/$', 'crpt201511.views.my_copyright', name='my_copyright'),
 
+    # url to welcome page
+    url(r'^welcome/$', 'crpt201511.views.welcome', name='welcome'),
 
+    # url to steps page
+    url(r'^steps/(?P<assessment_id>\d+)/$', 'crpt201511.views.steps', name='steps'),
 
+    # url to city id form page
+    url(r'^city_id/(?P<assessment_id>\d+)/(?P<element_id>\d+)/$', 'crpt201511.views.city_id', name='city_id'),
+    url(r'^city_id/(?P<assessment_id>\d+)/$', 'crpt201511.views.city_id', name='city_id'),
 
 ]

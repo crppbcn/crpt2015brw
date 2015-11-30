@@ -1,3 +1,5 @@
+from __future__ import division
+
 import sys
 import time
 
@@ -12,19 +14,23 @@ from django.shortcuts import redirect, render_to_response
 from django.template.response import TemplateResponse
 from django.http import HttpResponse
 from django.template import RequestContext, loader, Context
-from django.forms.models import modelformset_factory
+from django.forms.models import modelformset_factory, inlineformset_factory
 import datetime
-
-
-
 
 from crpt201511.constants import *
 from crpt201511.user_utils import *
 from crpt201511.env_utils import *
 from crpt201511.trace import *
 from crpt201511.settings import CRPT_URL
+from crpt201511.models import *
+from crpt201511.forms import AssessmentCityIDResponseForm
 
 
+# ###############################################
+#
+# Common views
+#
+################################################
 
 @ensure_csrf_cookie
 def my_login(request):
@@ -52,7 +58,7 @@ def my_login(request):
                         return redirect('/crpt_team/')
                     else:
                         trace_action(TRACE_LOGIN, person,)
-                        return redirect('/index/')
+                        return redirect('/welcome')
                 else:
                     # Return a 'disabled account' error message
                     context = {'form': form}
@@ -60,16 +66,16 @@ def my_login(request):
             else:
                 # Return an 'invalid login' error message.
                 context = {'form': form}
-                return TemplateResponse(request, 'crpt201511/login.html', context)
+                return TemplateResponse(request, TEMPLATE_LOGIN, context)
         else:
             context = {'form': form}
-            return TemplateResponse(request, 'crpt201511/login.html', context)
+            return TemplateResponse(request, TEMPLATE_LOGIN, context)
     else:
         form = AuthenticationForm(request)
         context = {'form': form,
                    'is_login': 'is_login',
             }
-        return TemplateResponse(request, 'crpt201511/login_bootstrap.html', context)
+        return TemplateResponse(request, TEMPLATE_LOGIN, context)
 
 @ensure_csrf_cookie
 def my_logout(request):
@@ -77,7 +83,7 @@ def my_logout(request):
     logout(request)
     t = Thread(target=trace_action, args=(TRACE_LOGOUT, person, person.name + " - " + person.role.name))
     t.start()
-    template = loader.get_template('crpt201511/logout_bootstrap.html')
+    template = loader.get_template(TEMPLATE_LOGOUT)
     context = RequestContext(request, {'is_logout': "logout"})
     return HttpResponse(template.render(context))
 
@@ -112,60 +118,6 @@ def my_change_password(request):
         else:
             return redirect("/index/", context_instance=RequestContext(request))
 
-@ensure_csrf_cookie
-@login_required
-def index(request):
-    """
-    View for the list of sections of the index card
-
-    :param request:
-    :return:
-    """
-    try:
-        assessment_list = None
-        assessments_paginated = None
-        user = None
-        person = None
-
-        # get username from session
-        username = request.session.get('username')
-        person = get_person_by_username(username)
-
-        if not username or not person:
-            return redirect('my_login')
-        try:
-            pass
-
-        except:
-            raise Exception(sys.exc_info())
-
-        # paginator = Paginator(assessment_list, ITEMS_PER_PAGE)  # Limit items per page
-        # page = request.GET.get('page')
-        try:
-            # assessments_paginated = paginator.page(page)
-            pass
-        except:
-            #print("Unexpected error:", sys.exc_info())
-            # assessments_paginated = paginator.page(1)
-            pass
-
-        template = loader.get_template('crpt201511/index.html')
-        context = RequestContext(request, {
-            'assessments_list': assessments_paginated,
-            'username': username,
-            'user': user,
-            'person': person,
-        })
-        return HttpResponse(template.render(context))
-    except:
-        if debug_is_on():
-            raise
-        else:
-            return render_to_response("crpt201511/error.html",
-                                      {"error_description": sys.exc_info(),
-                                       "crpt_url": CRPT_URL},
-                                      context_instance=RequestContext(request))
-
 
 def my_copyright(request):
     """
@@ -175,30 +127,172 @@ def my_copyright(request):
     :return:
     """
     try:
-        raise Exception("TEST EXCEPTION!!!")
-
-
-
         username = request.session.get('username')
         try:
             index_card = None
             #index_card = IndexCard.objects.get(username=username)
         except:
             index_card = None
-        template = loader.get_template('crpt201511/my_copyright.html')
+        template = loader.get_template(TEMPLATE_COPYRIGHT)
         context = RequestContext(request, {
             'username': username,
             'is_copyright': 'is_copyright',
         })
         return HttpResponse(template.render(context))
     except:
-        """
         if debug_is_on():
             raise
         else:
-        """
-        return render_to_response("crpt201511/error.html",
+            return render_to_response(TEMPLATE_ERROR,
                                       {"error_description": sys.exc_info(),
                                        "crpt_url": CRPT_URL},
                                       context_instance=RequestContext(request))
+
+# ###############################################
+#
+# Navigation Views
+#
+################################################
+
+@ensure_csrf_cookie
+@login_required
+def welcome(request):
+    """
+    View for the welcome page
+
+    :param request:
+    :return:
+    """
+    try:
+        person = get_person(request)
+        #try:
+            # get the latest assessment from the city
+        assessment = Assessment.objects.order_by('-date_started')[0]
+        #except:
+            #raise Exception('The City does not have any open assessment')
+        template = loader.get_template(TEMPLATE_WELCOME)
+        context = RequestContext(request, {
+            'person': person,
+            'assessment':assessment,
+        })
+        return HttpResponse(template.render(context))
+    except:
+        if debug_is_on():
+            raise
+        else:
+            return render_to_response(TEMPLATE_ERROR,
+                                      {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
+                                      context_instance=RequestContext(request))
+
+@ensure_csrf_cookie
+@login_required
+def steps(request, assessment_id):
+    """
+    View for the steps page
+
+    :param request:
+    :return:
+    """
+    try:
+        person = get_person(request)
+        assessment = Assessment.objects.get(id=assessment_id)
+        try:
+            # TODO: implement logic to not show again welcome page
+            sections = CityIDSection.objects.filter(parent=None).order_by('order')
+        except:
+            sections = None
+        template = loader.get_template(TEMPLATE_STEPS)
+        context = RequestContext(request, {
+            'person': person,
+            'assessment':assessment,
+            'sections': sections,
+        })
+        return HttpResponse(template.render(context))
+    except:
+        if debug_is_on():
+            raise
+        else:
+            return render_to_response(TEMPLATE_ERROR,
+                                      {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
+                                      context_instance=RequestContext(request))
+
+
+@ensure_csrf_cookie
+@login_required
+def city_id(request, assessment_id, element_id=None):
+    """
+    View for section of City ID form
+
+    :param request:
+    :return:
+    """
+    try:
+        person = None
+        section = None
+        menu_elements = None
+        left_elements = None
+        statement_ids = []
+
+        # get username from session
+        person = get_person(request)
+        # get assessment
+        assessment_id = Assessment.objects.get(id=assessment_id)
+        # get section
+        if element_id:
+            section = CityIDSection.objects.get(id=element_id)
+        else:
+            section =  CityIDSection.objects.all()[:1].get()
+        # formset definition
+        QuestionFormSet = modelformset_factory(AssessmentCityIDResponse, max_num=1, exclude=[],
+                                               form=AssessmentCityIDResponseForm)
+        # elements of menu
+        menu_elements = CityIDSection.objects.filter(parent=None).order_by('order')
+        # elements of left menu
+        if section:
+            left_elements = CityIDSection.objects.filter(parent_id=section.id).order_by('order')
+
+        if request.method == 'POST':
+            formset = QuestionFormSet(request.POST, request.FILES)
+            if formset.is_valid():
+                """
+                for each in form.cleaned_data['files']:
+                    Attachment.objects.create(file=each)
+                """
+                formset.save()
+                return render_to_response(TEMPLATE_MENU_PAGE, {},\
+                                      context_instance=RequestContext(request))
+            else:
+                if format(len(formset.errors) > 0):
+                    num_errors = len(formset.errors[0])
+        else:
+            statements = CityIDStatement.objects.filter(section=section)
+            for statement in statements:
+                statement_ids.append(statement.id)
+
+            query_set = AssessmentCityIDResponse.objects.filter(statement_id__in=statement_ids).\
+                order_by('statement__order')
+
+            formset = QuestionFormSet(queryset=query_set)
+
+        menu_horizontal_elem_width = round(100/len(menu_elements), 2)
+
+
+        template = loader.get_template(TEMPLATE_MENU_PAGE)
+        context = RequestContext(request, {
+            'formset': formset,
+            'person': person,
+            'left_elements': left_elements,
+            'menu_elements': menu_elements,
+            'assessment': assessment_id,
+            'menu_horizontal_elem_width': menu_horizontal_elem_width,
+            'page': "city_id",
+        })
+        return HttpResponse(template.render(context))
+    except:
+        if debug_is_on():
+            raise
+        else:
+            return render_to_response(TEMPLATE_ERROR, {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
+                                      context_instance=RequestContext(request))
+
 

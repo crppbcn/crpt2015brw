@@ -6,16 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="{% static 'crpt201511/css/bootstrap.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'crpt201511/css/crpt.css' %}" media="screen">
     <link rel="stylesheet" href="{% static 'crpt201511/css/login_bootstrap.css' %}" media="screen">
 </head>
 <body>
-    <div class="container">
+    <div id="crpt" class="container">
         {% block header%}{% endblock %}
         {% block main_menu %}{% endblock %}
-        {% block left_menu %}{% endblock %}
         {% block content%}{% endblock %}
     </div>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <script src="{% static 'crpt201511/js/jquery.min.js' %}"></script>
     <script src="{% static 'crpt201511/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'crpt201511/js/custom.js' %}"></script>
+    <script src="{% static 'crpt201511/js/crpt.js' %}"></script>
+
 </body>
 </html>

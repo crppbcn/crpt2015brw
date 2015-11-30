@@ -1,0 +1,19 @@
+Section	Question	Help Text	QTYPE	ORDER
+Built Environment & Critical Infrastructure	Building typology(ies)	Ex.: single house units, condominiuns, townhouses, etc. Please specify all applicable	TEXT_FIELD	10
+Built Environment & Critical Infrastructure	Construction type(s)	Ex.: masonry, stone, timber, stilt houses, etc. Please specify all applicable	TEXT_FIELD	20
+Built Environment & Critical Infrastructure	Public transportation systems	Please check all applicable modes	TEXT_FIELD	30
+Built Environment & Critical Infrastructure	Electricity supply sources	Ex.: hydro, coal or nuclear power plants, solar panels, wind farms, etc. Please specify type and percentage of energy used, and existence of powerplants within a 100 km radius	TEXT_FIELD	40
+Built Environment & Critical Infrastructure	Gas supply network	Please check all applicable, if any	TEXT_FIELD	50
+Built Environment & Critical Infrastructure	24-Hour health care facilities	Number of facilities within urban area, if any	CHAR_FIELD	60
+Built Environment & Critical Infrastructure	Other heatlh care facilities	Number of facilities within urban area, if any	CHAR_FIELD	70
+Built Environment & Critical Infrastructure	Prisons, detention centres	Number of facilities within urban area, if any	CHAR_FIELD	80
+Built Environment & Critical Infrastructure	Sport facilities	Number of facilities within urban area, if any	CHAR_FIELD	90
+Built Environment & Critical Infrastructure	Cultural facilities	Ex.: libraries, concert halls, museums, cultural centres, religious temples, etc. Number of facilities within urban area, if any	CHAR_FIELD	100
+Built Environment & Critical Infrastructure	Schools	Number of facilities within urban area, if any	CHAR_FIELD	110
+Built Environment & Critical Infrastructure	Universities	Number of facilities within urban area, if any	CHAR_FIELD	120
+Built Environment & Critical Infrastructure	Airports	Within influence area, If any. Please specify use (ex.: public, private, military, out of service)	TEXT_FIELD	130
+Built Environment & Critical Infrastructure	Long-distance railway networks	Within influence area, If any. Please specify use (ex.: passenger, cargo; public, private, military, out of service)	TEXT_FIELD	140
+Built Environment & Critical Infrastructure	Harbours/ports	Within influence area, If any. Please specify use (ex.: passenger, cargo; public, private, military, out of service)	TEXT_FIELD	150
+Built Environment & Critical Infrastructure	Industrial areas	Number of industrial complexes/parks/zones within influence area, if any	TEXT_FIELD	160
+Built Environment & Critical Infrastructure	Events with high concentration of people	Relevant events/gatherings associated to tourism, sport, political, cultural or religious matters, if any. Please specify frequency	TEXT_FIELD	170
+Built Environment & Critical Infrastructure	Any other relevant information	Other critical infrastructure in influence area, if any	TEXT_FIELD	180

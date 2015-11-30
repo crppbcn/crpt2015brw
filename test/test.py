@@ -46,22 +46,13 @@ def test_create_new_assessment():
     # new City ID
     cid_sections = CityIDSection.objects.all()
     for section in cid_sections:
-        cid_statements = CityIDCharFieldStatement.objects.filter(section=section)
+        cid_statements = CityIDStatement.objects.filter(section=section)
         for statement in cid_statements:
-            question = AssessmentCityIDCharFieldQuestion()
+            question = AssessmentCityIDResponse()
             question.assessment = assessment
             question.statement = statement
+            question.value_type = statement.value_type
             question.save()
-        cid_statements = CityIDTextFieldStatement.objects.filter(section=section)
-        for statement in cid_statements:
-            question = AssessmentCityIDTextFieldQuestion()
-            question.assessment = assessment
-            question.statement = statement
-            question.save()
-
-
-    # new elements questions
-
 
     print("test_create_new_assessment. End.")
 

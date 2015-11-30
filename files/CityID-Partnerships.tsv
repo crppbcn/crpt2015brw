@@ -1,0 +1,4 @@
+Section	Question	Help Text	QTYPE	ORDER
+Partnerships	Partnerships to develop resilience, international	Cooperation with international agencies or actors, existing or in the process of creation. Ex.: international NGOs, development banks, cooperation/development agencies, etc.	TEXT_FIELD	10
+Partnerships	Partnerships to develop resilience, supra-local	Cooperation with national or regional level government bodies, existing or in the process of creation. Ex.: civil defence, ministries, etc.	TEXT_FIELD	20
+Partnerships	Partnerships to develop resilience, local	Cooperation with private sector or civil society in the local level, existing or in the process of creation. Ex.: public-private partnerships, local NGOs, etc.	TEXT_FIELD	30
