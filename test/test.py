@@ -15,7 +15,8 @@ django.setup()
 
 from crpt201511.trace import trace_action
 from crpt201511.models import *
-from crpt201511.constants import TRACE_LOGIN
+from crpt201511.constants import *
+from crpt201511.utils.assessment_utils import get_remote_folder_name
 
 
 def test_threading():
@@ -35,30 +36,75 @@ def test_version_selected():
 
 def test_create_new_assessment():
     print("test_create_new_assessment. Start.")
-    # new assessment
-    assessment = Assessment()
-    assessment.name = "Test Assessment"
-    assessment.city = City.objects.get(name="Test")
-    assessment.considerations = "Test Assessment"
-    assessment.focal_point_started = Person.objects.get(name="City, Test")
-    assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
-    assessment.save()
-    # new City ID
+    # new assessment - TODO: set generic procedure
+    try:
+        assessment = Assessment.objects.all()[:1].get()
+    except:
+        assessment = Assessment()
+        assessment.name = "Test Assessment"
+        assessment.city = City.objects.get(name="Test")
+        assessment.considerations = "Test Assessment"
+        assessment.focal_point_started = Person.objects.get(name="City, Test")
+        assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
+        assessment.save()
+
+    # new City ID. For each section create AssessmentCityIDStatements and correspondent responses
     cid_sections = CityIDSection.objects.all()
     for section in cid_sections:
-        cid_statements = CityIDStatement.objects.filter(section=section)
-        for statement in cid_statements:
-            question = AssessmentCityIDResponse()
-            question.assessment = assessment
-            question.statement = statement
-            question.value_type = statement.value_type
-            question.save()
-
+        print("CtyID Section Start: " + section.name)
+        # CharField
+        cid_questions = CityIDQuestionCharField.objects.filter(section=section)
+        for cid_question in cid_questions:
+            a_cid_question = AssessmentCityIDQuestionCharField()
+            a_cid_question.question_short = cid_question.question_short
+            a_cid_question.question_long = cid_question.question_long
+            a_cid_question.order = cid_question.order
+            a_cid_question.help_text = cid_question.help_text
+            a_cid_question.version = cid_question.version
+            a_cid_question.section = section
+            a_cid_question.assessment = assessment
+            a_cid_question.save()
+        # TextField
+        cid_questions = CityIDQuestionTextField.objects.filter(section=section)
+        for cid_question in cid_questions:
+            a_cid_question = AssessmentCityIDQuestionTextField()
+            a_cid_question.question_short = cid_question.question_short
+            a_cid_question.question_long = cid_question.question_long
+            a_cid_question.order = cid_question.order
+            a_cid_question.help_text = cid_question.help_text
+            a_cid_question.version = cid_question.version
+            a_cid_question.section = section
+            a_cid_question.assessment = assessment
+            a_cid_question.save()        # UploadField
+        cid_questions = CityIDQuestionUploadField.objects.filter(section=section)
+        for cid_question in cid_questions:
+            a_cid_question = AssessmentCityIDQuestionUploadField()
+            a_cid_question.question_short = cid_question.question_short
+            a_cid_question.question_long = cid_question.question_long
+            a_cid_question.order = cid_question.order
+            a_cid_question.help_text = cid_question.help_text
+            a_cid_question.version = cid_question.version
+            a_cid_question.section = section
+            a_cid_question.assessment = assessment
+            a_cid_question.save()
+        print("CityID Section End: " + section.name)
     print("test_create_new_assessment. End.")
+
+
+def test_get_remote_folder_name():
+    print("test_get_remote_folder_name.Start")
+
+    assessment = Assessment.objects.all()[:1].get()
+    section = CityIDSection.objects.all()[:1].get()
+
+    print("remote folder name: " + get_remote_folder_name(assessment, section))
+
+
+    print("test_get_remote_folder_name.End")
 
 
 if __name__ == "__main__":
     #test_threading()
     #test_version_selected()
+    #test_get_remote_folder_name()
     test_create_new_assessment()
-

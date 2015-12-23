@@ -11,6 +11,12 @@ admin.site.register(crpt201511.models.HazardCategory)
 admin.site.register(crpt201511.models.Hazard)
 admin.site.register(crpt201511.models.MoVType)
 admin.site.register(crpt201511.models.CityIDSection)
+admin.site.register(crpt201511.models.CityIDQuestionCharField)
+admin.site.register(crpt201511.models.CityIDQuestionTextField)
+admin.site.register(crpt201511.models.CityIDQuestionUploadField)
+admin.site.register(crpt201511.models.AssessmentCityIDQuestionCharField)
+admin.site.register(crpt201511.models.AssessmentCityIDQuestionTextField)
+admin.site.register(crpt201511.models.AssessmentCityIDQuestionUploadField)
 
 class AssessmentVersionAdmin(admin.ModelAdmin):
     list_display = ('version', 'name', 'date_released')
@@ -24,13 +30,9 @@ class ElementAdmin(admin.ModelAdmin):
 admin.site.register(crpt201511.models.Element, ElementAdmin)
 
 
-class CityIDStatementAdmin(admin.ModelAdmin):
-    list_display = ('question', 'section')
-
-admin.site.register(crpt201511.models.CityIDStatement, CityIDStatementAdmin)
 
 
-class AssessmentCityIDResponseAdmin(admin.ModelAdmin):
-    list_display = ('value', 'statement', 'assessment')
 
-admin.site.register(crpt201511.models.AssessmentCityIDResponse, AssessmentCityIDResponseAdmin)
+admin.site.register(crpt201511.models.QuestionType1)
+admin.site.register(crpt201511.models.QuestionType2)
+admin.site.register(crpt201511.models.QuestionType3)

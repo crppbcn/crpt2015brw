@@ -1,0 +1,247 @@
+{% extends "crpt201511/common/nav_menu.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div id="crpt-menu_page" class="row col-lg-12">
+    <div class="row col-lg-12">
+        <div id="crpt-left-menu" class="col-lg-2 padding_right">
+
+            <div class="list-group table-of-contents">
+                {% for elem in left_elements %}
+                    <a class="list-group-item {% if subsection.name == elem.name %}selected{% endif %}" href="{% url 'city_id' assessment_id=assessment.id section_id=section.id subsection_id=elem.id %}">{{ elem.name }}</a>
+                    {% for item in elem.elements %}
+                        <a class="list-group-item group_item" href="{% url 'city_id' assessment_id=assessment.id section_id=section.id subsection_id=elem.id %}">&nbsp;&nbsp;{{ item.name }}</a>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div id="crpt-center" class="col-lg-6 padding_right">
+            <div class="bs-component">
+                <div class="well bs-component">
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+                        <legend>
+                            {{ section.name }}
+                            <a href="#" alt="Help" data-toggle="modal" data-target="#myModal"></a>&nbsp;&nbsp;
+                        </legend>
+                        <blockquote>{{ subsection.name }}</blockquote>
+                        <fieldset id="fs">
+                            {% comment %} fs_cf display {% endcomment %}
+                            {{ fs_cf.management_form }}
+                            {% if fs_cf.errors %}
+                            <!-- TODO: form errors treatement -->
+                            {% endif %}
+                            {% for form in fs_cf %}
+                                {%comment%}
+                                    preparing the form to be printed
+                                    need to print form.id to avoid errors in post request
+                                    rest of hidden fields
+                                {%endcomment%}
+                                {{form.id}}
+                                {{form.errors}}
+                                <!-- TODO: form fields display as a function of type of question and except MoV section -->
+                                {% if form.question_short.value %}
+                                <div class="form-group" order="{{ form.order.value }}">
+                                    <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
+                                    <div class="col-lg-9">
+                                        {% render_field form.value class+="form-control" placeholder=form.question_short.value %}
+                                        {% if form.help_text and form.help_text.value != '' %}
+                                            <span class="help-block">{{ form.help_text.value }}</span>
+                                        {% endif %}
+                                        {% comment %}Print hidden fields{% endcomment %}
+                                        {{ form.question_short.as_hidden }}
+                                        {{ form.question_long.as_hidden }}
+                                        {{ form.help_text.as_hidden }}
+                                        {{ form.order.as_hidden }}
+                                        {{ form.placeholder.as_hidden }}
+                                        {{ form.version.as_hidden }}
+                                        {{ form.section.as_hidden }}
+                                        {{ form.assessment.as_hidden }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% comment %} fs_uf display {% endcomment %}
+                            {{ fs_tf.management_form }}
+                            {% if fs_tf.errors %}
+                            <!-- TODO: form errors treatement -->
+                            {% endif %}
+                                {% for form in fs_tf %}
+                                    {%comment%}
+                                        preparing the form to be printed
+                                        need to print form.id to avoid errors in post request
+                                        rest of hidden fields
+                                    {%endcomment%}
+                                    {{form.id}}
+                                    <!-- TODO: form fields display as a function of type of question and except MoV section -->
+                                    {% if form.question_short.value %}
+                                    <div class="form-group" order="{{ form.order.value }}">
+                                        <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
+                                        <div class="col-lg-9">
+                                            {% render_field form.value class+="form-control" placeholder=form.question_short.value rows=3 %}
+                                            {% if form.help_text and form.help_text.value != '' %}
+                                                <span class="help-block">{{ form.help_text.value }}</span>
+                                            {% endif %}
+                                            {% comment %}Print hidden fields{% endcomment %}
+                                            {{ form.question_short.as_hidden }}
+                                            {{ form.question_long.as_hidden }}
+                                            {{ form.help_text.as_hidden }}
+                                            {{ form.order.as_hidden }}
+                                            {{ form.placeholder.as_hidden }}
+                                            {{ form.version.as_hidden }}
+                                            {{ form.section.as_hidden }}
+                                            {{ form.assessment.as_hidden }}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                            {% comment %} fs_uf display {% endcomment %}
+                            {{ fs_uf.management_form }}
+                            {% if fs_uf.errors %}
+                            <!-- TODO: form errors treatement -->
+                            {% endif %}
+                            {% for form in fs_uf %}
+                                {%comment%}
+                                    preparing the form to be printed
+                                    need to print form.id to avoid errors in post request
+                                    rest of hidden fields
+                                {%endcomment%}
+                                {{form.id}}
+                                    <!-- TODO: form fields display as a function of type of question and except MoV section -->
+                                {% if form.question_short.value %}
+                                <div class="form-group" order="{{ form.order.value }}">
+                                    <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
+                                    <div class="col-lg-3">
+                                        {% with form_id=form.id.html_name %}
+                                        <a href="#" class="btn btn-danger" onclick="upload_files_click('{{form_id}}');">Select files</a>
+                                        {% endwith%}
+                                        {% render_field form.files class+="no_visible" %}
+                                    </div>
+                                    <div class="col-lg-6">
+                                        Uploaded files:<br>
+                                        {% if form.response.value %}
+                                            {{ form.response.value|linebreaksbr }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        {% if form.help_text and form.help_text.value != '' %}
+                                            <span class="help-block">{{ form.help_text.value }}</span>
+                                        {% endif %}
+
+                                        {% comment %}Print hidden fields{% endcomment %}
+                                        {{ form.question_short.as_hidden }}
+                                        {{ form.question_long.as_hidden }}
+                                        {{ form.help_text.as_hidden }}
+                                        {{ form.order.as_hidden }}
+                                        {{ form.placeholder.as_hidden }}
+                                        {{ form.version.as_hidden }}
+                                        {{ form.section.as_hidden }}
+                                        {{ form.assessment.as_hidden }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            <div class="form-group" order="9999">
+                                <div class="col-lg-10 col-lg-offset-3">
+                                  <button type="reset" class="btn btn-default">Cancel</button>
+                                  <button type="submit" class="btn btn-danger">Submit</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div> <!-- panel default -->
+            </div>
+        </div> <!-- crpt-center -->
+
+        <div id="crpt-right-column" class="col-lg-4">
+
+            <div id="crpt-right-menu" class="right-menu">
+                <a id="a-considerations" class="selected" href="#" onclick="showConsiderations();">Considerations</a>
+                <br>
+                <a id="a-comments" href="#" onclick="showComments();">Comments</a>
+            </div>
+
+
+            <div id="crpt-right-considerations">
+                <div class="panel panel-default">
+                  <div class="panel-heading">Considerations</div>
+                  <div class="panel-body">
+                      {% for cons in considerations%}
+                        <p>cons.description</p>
+                      {% endfor %}
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading">Example(s)</div>
+                  <div class="panel-body">
+                      {% for ex in examples%}
+                        <p>ex.description</p>
+                      {% endfor %}
+                  </div>
+
+                </div>
+            </div>
+
+
+            <div id="crpt-right-comments">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Your comments on this question</div>
+                        <div class="panel-body">
+                            <form>
+                                <fieldset>
+                                <div class="form-group">
+                                    <div class="">
+                                        <textarea class="form-control" rows="3" id="textComments" placeholder="Add any comments or notes"></textarea>
+                                    </div>
+                                </div>
+                                <!-- TODO: show only if there is a previous update -->
+                                <div id="divLatestUpdaste" class="form-group">
+                                    <label for="inputMovType" class="">Latest update: <em>{{ last_comment_update.date }}</em>. User: <em>{{ last_comment_update.user.name }}</em></label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="">
+                                        <button type="reset" class="btn btn-default">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Submit</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Send comments to CRPP Team</div>
+                        <div class="panel-body">
+                            <form>
+                                <fieldset>
+                                    <div class="form-group">
+                                            <a id="a-copy" href="#" onclick="copyComments();">Copy comments</a>
+                                            <textarea class="form-control" rows="3" id="textEmail" placeholder="Send any comments or questions to CRPP Team"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="">
+                                          <button type="reset" class="btn btn-default">Cancel</button>
+                                          <button type="submit" class="btn btn-danger">Send</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- right comments -->
+
+            <div style="clear:both;"></div>
+
+        </div> <!-- right col -->
+
+    </div> <!-- row -->
+
+</div> <!-- crpt-menu-page -->
+
+
+{% endblock %}

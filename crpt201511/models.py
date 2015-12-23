@@ -1,5 +1,7 @@
 import os
 import django.db.models
+
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.utils import timezone
@@ -129,27 +131,13 @@ class CityIDSection(BasicName):
     """
     order = django.db.models.IntegerField(null=True, blank=True)
     parent = django.db.models.ForeignKey('self', null=True, blank=True)
-    long_name = django.db.models.CharField(max_length=200, null=True, blank=True)
+    long_name = django.db.models.CharField(max_length=250, null=True, blank=True)
+
 
 class ValueType(BasicName):
     """
     Represents a value type for answers of the assessment
     """
-
-
-class Statement(Common):
-    """
-    Represents an statement (not linked to anything)
-    """
-    question = django.db.models.CharField(max_length=250)
-    help_text = django.db.models.CharField(max_length=500, null=True, blank=True)
-    version = django.db.models.ForeignKey(AssessmentVersion)
-    value_type = django.db.models.ForeignKey(ValueType)
-    order = django.db.models.IntegerField(null=True, blank=True)
-
-    class Meta:
-        abstract = True
-
 
 class MoVType(BasicName):
     """
@@ -157,26 +145,55 @@ class MoVType(BasicName):
     """
 
 
-class Response(Common):
+class QuestionSimple(Common):
     """
-    Represents a question corresponding to a statement
+    Represents an statement (not linked to anything)
     """
-    value = django.db.models.CharField(max_length=500, null=True, blank=True)
-    value_type = django.db.models.ForeignKey(ValueType)
-    score = django.db.models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    mov = django.db.models.TextField(null=True, blank=True)
-    mov_type = django.db.models.ForeignKey(MoVType, null=True, blank=True)
-    comments = django.db.models.TextField(null=True, blank=True)
+    question_short = django.db.models.CharField(max_length=150)
+    question_long = django.db.models.CharField(max_length=250)
+    help_text = django.db.models.CharField(max_length=500, null=True, blank=True)
+    placeholder = django.db.models.CharField(max_length=250, null=True, blank=True)
+    version = django.db.models.ForeignKey(AssessmentVersion)
+    order = django.db.models.IntegerField(null=True, blank=True)
 
     class Meta:
         abstract = True
 
 
-class CityIDStatement(Statement):
+#######################################
+#
+# CityID
+#
+#######################################
+
+
+class CityIDQuestion(QuestionSimple):
     """
-    Represents a CharField question for a section of City ID
+    Represents a CityID Question with base parameters
     """
     section = django.db.models.ForeignKey(CityIDSection)
+
+    class Meta:
+        abstract = True
+
+
+class CityIDQuestionCharField(CityIDQuestion):
+    """
+    Represents a CityID question with CharField answer
+    """
+
+
+class CityIDQuestionTextField(CityIDQuestion):
+    """
+    Represents a CityID question with CharField answer
+    """
+
+
+class CityIDQuestionUploadField(CityIDQuestion):
+    """
+    Represents a question with UploadField value
+    """
+
 
 
 #######################################
@@ -194,22 +211,66 @@ class Assessment(BasicName):
     city = django.db.models.ForeignKey(City)
     date_started = django.db.models.DateField(auto_now=True)
     focal_point_started = django.db.models.ForeignKey(Person)
+    #TODO: status (%) of fulfillment
 
 
-class AssessmentCityIDResponse(Response):
-    """
-    Represents a question for CityID in an assessment
-    """
+#######################################
+#
+# Assessment - City ID
+#
+#######################################
+class AssessmentCityIDQuestion(CityIDQuestion):
+
     assessment = django.db.models.ForeignKey(Assessment)
-    statement = django.db.models.ForeignKey(CityIDStatement)
 
+    class Meta:
+        abstract = True
 
-class CityIDResponseAttachment(Common):
+class AssessmentCityIDQuestionCharField(AssessmentCityIDQuestion):
     """
-    Represents a file Uploaded for a response
+    Links a CityIDStatement with an Assessment
     """
-    response = django.db.models.ForeignKey(AssessmentCityIDResponse)
-    file = django.db.models.FileField(upload_to='attachments', null=True, blank=True)
+    response = django.db.models.CharField(max_length=250, null=True, blank=True)
+
+
+class AssessmentCityIDQuestionTextField(AssessmentCityIDQuestion):
+    """
+    Represents a question for CityID in an assessment with value CharField
+    """
+    response = django.db.models.TextField(null=True, blank=True)
 
 
 
+class AssessmentCityIDQuestionUploadField(AssessmentCityIDQuestion):
+    """
+    Represents a question for CityID in an assessment with value TextField
+    """
+    response = django.db.models.TextField(null=True, blank=True)
+
+
+class AssessmentCityIDQuestionFile(BasicName):
+    """
+    Represents a single file uploaded in a question of type file upload
+    """
+    remote_folder = django.db.models.CharField(max_length=250)
+    question = django.db.models.ForeignKey(AssessmentCityIDQuestionUploadField)
+
+
+#######################################
+#
+# TEST
+#
+#######################################
+class QuestionType1(Common):
+    assessment = django.db.models.ForeignKey(Assessment)
+    field1 = django.db.models.TextField()
+
+
+class QuestionType2(Common):
+    assessment = django.db.models.ForeignKey(Assessment)
+    field2 = django.db.models.CharField(max_length=500, null=True, blank=True)
+
+
+class QuestionType3(Common):
+    assessment = django.db.models.ForeignKey(Assessment)
+    field3 = django.db.models.ForeignKey(MoVType, null=True, blank=True)

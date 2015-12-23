@@ -1,9 +1,8 @@
 import sys
-import os
-from django.core.mail import EmailMultiAlternatives
-from crpt201511.settings import EMAIL_HOST_USER, BASE_DIR, SMT_URL
-from crpt201511.env_utils import *
 
+from crpt201511.settings import EMAIL_HOST_USER, BASE_DIR
+from crpt201511.utils.env_utils import *
+from django.core.mail import EmailMultiAlternatives
 
 
 class MyMail():

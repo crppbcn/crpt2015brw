@@ -29,3 +29,31 @@ $(document).ready(function () {
 function copyComments() {
     $('#textEmail').val($('#textComments').val());
 }
+
+
+function orderQuestions() {
+    var $fieldset = $('#fs'),
+        $fieldsetdiv = $fieldset.children('div.form-group');
+
+    $fieldsetdiv.sort(function(a,b){
+        var an = parseInt(a.getAttribute('order')),
+            bn = parseInt(b.getAttribute('order'));
+
+        if(an > bn) {
+            return 1;
+        }
+        if(an < bn) {
+            return -1;
+        }
+        return 0;
+    });
+
+    $fieldsetdiv.detach().appendTo($fieldset);
+}
+
+function upload_files_click(form_id) {
+    var field_name = '#id_' + form_id.substr(0,8) + 'files';
+    alert(field_name);
+    elem = document.getElementById("id_fs_uf-0-files");
+    elem.click()
+}

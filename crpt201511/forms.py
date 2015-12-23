@@ -1,23 +1,66 @@
 from django.forms import ModelForm
-
-from models import *
-from constants import *
 from fields import *
+from django import forms
+
+from crpt201511.models import AssessmentCityIDQuestionUploadField
 
 
-class AssessmentCityIDResponseForm(ModelForm):
+class MultiFileInput(forms.FileInput):
+
+    def render(self, name, value, attrs={}):
+        attrs['multiple'] = 'multiple'
+        return super(MultiFileInput, self).render(name, None, attrs=attrs)
+
+    def value_from_datadict(self, data, files, name):
+        if hasattr(files, 'getlist'):
+            return files.getlist(name)
+        else:
+            return [files.get(name)]
+
+
+class MultiFileField(forms.FileField):
+
+    widget = MultiFileInput
+    default_error_messages = {
+        'min_num': u"Ensure at least %(min_num)s files are uploaded (received %(num_files)s).",
+        'max_num': u"Ensure at most %(max_num)s files are uploaded (received %(num_files)s).",
+        'file_size' : u"File: %(uploaded_file_name)s, exceeded maximum upload size."
+    }
 
     def __init__(self, *args, **kwargs):
-        super(AssessmentCityIDResponseForm, self).__init__(*args, **kwargs)
-        """
-        if self.instance.value_type.name != UPLOAD_DOCS:
-            self.fields['files'].widght = forms.HiddenInput()
+        self.min_num = kwargs.pop('min_num', 0)
+        self.max_num = kwargs.pop('max_num', None)
+        self.maximum_file_size = kwargs.pop('maximum_file_size', None)
+        super(MultiFileField, self).__init__(*args, **kwargs)
 
-        if self.instance.value_type.name == TEXT_FIELD:
-                self.fields['value'].widget = forms.Textarea(attrs={'cols': 21, 'rows': 3})
-        """
-    files = MultiFileField(min_num=1, max_num=3, max_file_size=1024*1024*5)
+    def to_python(self, data):
+        ret = []
+        for item in data:
+            ret.append(super(MultiFileField, self).to_python(item))
+        return ret
+
+    def validate(self, data):
+        super(MultiFileField, self).validate(data)
+        num_files = len(data)
+        if len(data) and not data[0]:
+            num_files = 0
+        if num_files < self.min_num:
+            raise ValidationError(self.error_messages['min_num'] % {'min_num': self.min_num, 'num_files': num_files})
+            return
+        elif self.max_num and  num_files > self.max_num:
+            raise ValidationError(self.error_messages['max_num'] % {'max_num': self.max_num, 'num_files': num_files})
+        for uploaded_file in data:
+            if uploaded_file.size > self.maximum_file_size:
+                raise ValidationError(self.error_messages['file_size'] % {'uploaded_file_name': uploaded_file.name})
+
+
+class AssessmentCityIDQuestionUploadFieldForm(forms.ModelForm):
+
+    files = MultiFileField(max_num=5, min_num=1, maximum_file_size=1024*1024*5)
 
     class Meta:
-        model = AssessmentCityIDResponse
-        exclude = []
+        model = AssessmentCityIDQuestionUploadField
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)

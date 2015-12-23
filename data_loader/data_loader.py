@@ -20,6 +20,8 @@ django.setup()
 
 from django.contrib.auth.models import User, Group
 from crpt201511.models import *
+from crpt201511.constants import *
+
 
 def load_users_file():
     """
@@ -248,6 +250,7 @@ def load_recursive_entity(file_name, class_name):
         except:
             parent_element = class_name()
             parent_element.name = row[0].strip()
+            parent_element.long_name = row[1].strip()
             parent_element.order = row[3].strip()
             parent_element.save()
         # load hazard
@@ -265,7 +268,7 @@ def load_recursive_entity(file_name, class_name):
 
 
 
-    print("load_recursive_entity. Start: " + file_name + " - " + str(class_name) )
+    print("load_recursive_entity. End: " + file_name + " - " + str(class_name) )
 
 
 def load_city_id_file(file_name):
@@ -285,12 +288,20 @@ def load_city_id_file(file_name):
             section.name = row[0].strip()
             section.save()
         # question
-        question = CityIDStatement()
+        question_type = row[5].strip()
+        if question_type == CHAR_FIELD:
+            question = CityIDQuestionCharField()
+        if question_type == TEXT_FIELD:
+            question = CityIDQuestionTextField()
+        if question_type == UPLOAD_DOCS:
+            question = CityIDQuestionUploadField()
         question.section = section
-        question.help_text = row[2].strip()
-        question.question = row[1].strip()
-        question.value_type = ValueType.objects.get(name=row[3].strip())
-        question.order = row[4].strip()
+        question.question_short = row[1].strip()
+        question.question_long = row[2].strip()
+        question.help_text = row[3].strip()
+        question.placeholder= row[4].strip()
+        question.order = row[6].strip()
+        # TODO: creation of new version of assessment procedure!!
         question.version = AssessmentVersion.objects.order_by('-date_released')[0]
         question.save()
 
@@ -299,15 +310,15 @@ def load_city_id_file(file_name):
 
 
 if __name__ == "__main__":
-    #load_users_file()
-    #load_entity_single_field_name("cities.tsv", City)
-    #load_entity_single_field_name("roles.tsv", Role)
-    #load_entity_single_field_name("mov.tsv", MoVType)
-    #load_entity_single_field_name("value_type.tsv", ValueType)
-    #load_people()
-    #load_assessments()
-    #load_entity_single_field_name("model_dimensions.tsv", Dimension)
-    #load_recursive_entity("CityID-Sections.tsv", CityIDSection)
+    load_users_file()
+    load_entity_single_field_name("cities.tsv", City)
+    load_entity_single_field_name("roles.tsv", Role)
+    load_entity_single_field_name("mov.tsv", MoVType)
+    load_entity_single_field_name("value_type.tsv", ValueType)
+    load_people()
+    load_assessments()
+    load_entity_single_field_name("model_dimensions.tsv", Dimension)
+    load_recursive_entity("CityID-Sections.tsv", CityIDSection)
     load_hazards()
     load_elements()
     load_city_id_file("CityID-Location.tsv")

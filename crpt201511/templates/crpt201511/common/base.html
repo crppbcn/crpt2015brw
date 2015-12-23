@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'crpt201511/css/crpt.css' %}" media="screen">
     <link rel="stylesheet" href="{% static 'crpt201511/css/login_bootstrap.css' %}" media="screen">
 </head>
-<body>
+<body onload="orderQuestions();">
     <div id="crpt" class="container">
         {% block header%}{% endblock %}
         {% block main_menu %}{% endblock %}
@@ -20,6 +20,7 @@
     <script src="{% static 'crpt201511/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'crpt201511/js/custom.js' %}"></script>
     <script src="{% static 'crpt201511/js/crpt.js' %}"></script>
+
 
 </body>
 </html>

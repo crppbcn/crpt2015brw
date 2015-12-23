@@ -1,13 +1,13 @@
-Short Name	Long Name (Link with questions)	Parent	ORDER
+Short Name	Long Name (hover)	Parent	ORDER
 Location	Location		10
 Basic	Basic	Location	20
 Geographic	Geographic	Location	30
 Climate	Climate	Location	40
-Other - Location	Other Relevant Information	Location	50
+Other - Location	Other - Location	Location	50
 Population	Population		60
 Governance	Governance & Policies		70
 Economy	Economy		80
-Built Environment	Built Environment & Critical Infrastructure		90
+Built Env.	Built Environment & Critical Infrastructure		90
 Partnerships	Partnerships		100
 Communications	Communications		110
 Other	Other Relevant Information		120

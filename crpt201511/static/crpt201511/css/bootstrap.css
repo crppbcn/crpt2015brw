@@ -6819,7 +6819,7 @@ button.close {
   background-image: -webkit-linear-gradient(#4f5151, #474949 6%, #3f4141);
   background-image: -o-linear-gradient(#4f5151, #474949 6%, #3f4141);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#4f5151), color-stop(6%, #474949), to(#3f4141));
-  background-image: linear-gradient(#4f5151, #474949 6%, #3f4141);
+  background-image: linear-gradient(#73797C, #73797C 6%, #73797C);
   background-repeat: no-repeat;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4f5151', endColorstr='#ff3f4141', GradientType=0);
   -webkit-filter: none;

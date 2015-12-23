@@ -13,4 +13,3 @@ def trace_action(action_name, person, description=None):
     except:
         print("Error tracing action: " + action_name)
         print("Error: " + str(sys.exc_info()))
-

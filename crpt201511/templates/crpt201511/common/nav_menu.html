@@ -5,17 +5,17 @@
     <div class="row col-lg-12">
 
         <div id="navbar" class="bs-component col-lg-2 padding_right">
-            <div style="width:25%;height:20px;text-align:center;background-color:#FFFFFF;float:left;">
-                <a href="#welcome.html" alt="Home" data-toggle="tooltip" data-placement="top" data-original-title="Home"><img src="{% static 'crpt201511/img/home.png' %}" style="vertical-align:top;width:20px;height:20px;"/></a>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="#welcome.html" alt="Home" data-toggle="tooltip" data-placement="top" data-original-title="Home"><img src="{% static 'crpt201511/img/home.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
             </div>
-            <div style="width:25%;height:20px;text-align:center;background-color:#FFFFFF;float:left;">
-                <a href="#steps.html" alt="Steps" data-toggle="tooltip" data-placement="top" data-original-title="Steps"><img src="{% static 'crpt201511/img/steps.png' %}" style="vertical-align:top;width:20px;height:20px;"/></a>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="#steps.html" alt="Steps" data-toggle="tooltip" data-placement="top" data-original-title="Steps"><img src="{% static 'crpt201511/img/steps.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
             </div>
-            <div style="width:25%;height:20px;text-align:center;background-color:#FFFFFF;float:left;">
-                <a href="#" alt="Back" data-toggle="tooltip" data-placement="top" data-original-title="Back"><img src="{% static 'crpt201511/img/back.jpg' %}" style="vertical-align:top;width:20px;height:20px;"/></a>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="#" alt="Back" data-toggle="tooltip" data-placement="top" data-original-title="Back"><img src="{% static 'crpt201511/img/back.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
             </div>
-            <div style="width:25%;height:20px;text-align:center;background-color:#FFFFFF;float:left;">
-                <a href="#" alt="Help" data-toggle="tooltip" data-placement="top" data-original-title="Help"><img src="{% static 'crpt201511/img/question.png' %}" style="vertical-align:top;width:20px;height:20px;"/></a>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="#" alt="Help" data-toggle="tooltip" data-placement="top" data-original-title="Help"><img src="{% static 'crpt201511/img/help.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
             </div>
 
         </div>
@@ -24,7 +24,7 @@
             <div id="menu" class="col-lg-10">
                 {% for elem in menu_elements %}
                     <div class="menu-horizontal" style="width:{{menu_horizontal_elem_width}}%;">
-                        <a href="#" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.description }}">{{ elem.name }}</a>
+                        <a href="#" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.long_name }}" {% if selected_section_name == elem.name %}class="selected"{% endif %}>{{ elem.name }}</a>
                     </div>
                 {% endfor%}
             </div>

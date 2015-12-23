@@ -21,28 +21,31 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     # url to form login
-    url(r'^accounts/login/$', 'crpt201511.views.my_login', name="my_login"),
+    url(r'^accounts/login/$', 'crpt201511.views.views.my_login', name="my_login"),
 
     # url to logout page
-    url(r'^logout/$', 'crpt201511.views.my_logout', name='logout'),
+    url(r'^logout/$', 'crpt201511.views.views.my_logout', name='logout'),
 
     # url to change password
-    url(r'^accounts/change_password/$', 'crpt201511.views.my_change_password', name='my_change_password'),
+    url(r'^accounts/change_password/$', 'crpt201511.views.views.my_change_password', name='my_change_password'),
 
     # base url
-    url(r'^$', 'crpt201511.views.welcome', name='welcome'),
+    url(r'^$', 'crpt201511.views.views.welcome', name='welcome'),
 
     # url to my_copyright page
-    url(r'^my_copyright/$', 'crpt201511.views.my_copyright', name='my_copyright'),
+    url(r'^my_copyright/$', 'crpt201511.views.views.my_copyright', name='my_copyright'),
 
     # url to welcome page
-    url(r'^welcome/$', 'crpt201511.views.welcome', name='welcome'),
+    url(r'^welcome/$', 'crpt201511.views.views.welcome', name='welcome'),
 
     # url to steps page
-    url(r'^steps/(?P<assessment_id>\d+)/$', 'crpt201511.views.steps', name='steps'),
+    url(r'^steps/(?P<assessment_id>\d+)/$', 'crpt201511.views.views.steps', name='steps'),
 
     # url to city id form page
-    url(r'^city_id/(?P<assessment_id>\d+)/(?P<element_id>\d+)/$', 'crpt201511.views.city_id', name='city_id'),
-    url(r'^city_id/(?P<assessment_id>\d+)/$', 'crpt201511.views.city_id', name='city_id'),
+    url(r'^city_id/(?P<assessment_id>\d+)/(?P<section_id>\d+)/$', 'crpt201511.views.views.city_id', name='city_id'),
+    url(r'^city_id/(?P<assessment_id>\d+)/(?P<section_id>\d+)/(?P<subsection_id>\d+)/$', 'crpt201511.views.views.city_id', name='city_id'),
+    url(r'^city_id/(?P<assessment_id>\d+)/$', 'crpt201511.views.views.city_id', name='city_id'),
 
+    # url to test page
+    url(r'^test/$', 'crpt201511.views.views.test', name='test'),
 ]

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% load admin_static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST TEMPLATE</title>
+
+    <script src="{% static 'crpt201511/js/jquery.min.js' %}"></script>
+
+</head>
+<body>
+{{ formset.management_form }}
+<form>
+<br>FORMSET1<br>
+{% for form in fset_qtype1 %}
+    {% for field in form %}
+        {{field.name}}-{{field.value}}<br>
+    {% endfor %}
+{% endfor %}
+
+<br>FORMSET2<br>
+{% for form in fset_qtype2 %}
+    {% for field in form %}
+        {{field.name}}-{{field.value}}<br>
+    {% endfor %}
+{% endfor %}
+
+<br>FORMSET3<br>
+{% for form in fset_qtype3 %}
+    {% for field in form %}
+        {{field.name}}-{{field.value}}<br>
+    {% endfor %}
+{% endfor %}
+
+
+<ul class="js-people">
+	<li data-name="John Doe">Mr. John Doe</li>
+	<li data-name="Trent Richardson">Mr. Trent Richardson</li>
+	<li data-name="Cindy Smith">Ms. Cindy Smith</li>
+	<li data-name="Bill Williams">Mr. Bill Williams</li>
+	<li data-name="Jane Doe">Mrs. Jane Doe</li>
+</ul>
+
+</form>
+
+<script type="text/javascript">
+var $people = $('ul.js-people'),
+	$peopleli = $people.children('li');
+
+$peopleli.sort(function(a,b){
+	var an = a.getAttribute('data-name'),
+		bn = b.getAttribute('data-name');
+
+	if(an > bn) {
+		return 1;
+	}
+	if(an < bn) {
+		return -1;
+	}
+	return 0;
+});
+
+$peopleli.detach().appendTo($people);
+</script>
+</body>
+</html>
