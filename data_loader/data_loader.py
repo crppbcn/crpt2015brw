@@ -251,9 +251,10 @@ def load_recursive_entity(file_name, class_name):
             parent_element = class_name()
             parent_element.name = row[0].strip()
             parent_element.long_name = row[1].strip()
-            parent_element.order = row[3].strip()
+            parent_element.order = row[4].strip()
+            parent_element.comments = row[5].strip()
             parent_element.save()
-        # load hazard
+        # load element
         try:
             element = class_name.objects.get(name=row[0].strip())
             element.parent = parent_element
@@ -262,14 +263,49 @@ def load_recursive_entity(file_name, class_name):
             element = class_name()
             element.name = row[0].strip()
             element.long_name = row[1].strip()
-            element.order = row[3].strip()
+            element.order = row[4].strip()
             element.parent = parent_element
             element.save()
+    print("load_recursive_entity. End: " + file_name + " - " + str(class_name))
 
 
+def set_next_element(file_name, class_name):
+    print("set_next_element. Start: " + file_name + " - " + str(class_name))
+    file_path = settings.BASE_DIR + "/files/" + file_name
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
 
-    print("load_recursive_entity. End: " + file_name + " - " + str(class_name) )
+    for row in data_reader:
+        element_name = row[0].strip()
+        next_element_name = row[3].strip()
+        try:
+            if next_element_name != "":
+                element = class_name.objects.get(name=element_name)
+                next_one = class_name.objects.get(name=next_element_name)
+                element.next_one = next_one
+                element.save()
+        except:
+            print("Error in set_next_element: " + str(sys.exc_traceback))
 
+    print("set_next_element. End: " + file_name + " - " + str(class_name))
+
+
+def load_comments_file(file_name, class_name, class_name_comment):
+    print("load_comments_file. Start: " + file_name + " - " + str(class_name))
+    file_path = settings.BASE_DIR + "/files/" + file_name
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+    for row in data_reader:
+        try:
+            element = class_name.objects.get(name=row[0].strip())
+            comment = class_name_comment()
+            comment.comment = row[1].strip()
+            comment.element = element
+            comment.save()
+        except:
+            print("Error setting comment " + row[0].strip() + "-" + row[1].strip())
+
+    print("load_comments_file. End: " + file_name + " - " + str(class_name))
 
 def load_city_id_file(file_name):
     print("load_city_id_file. Start: " + file_name)
@@ -295,6 +331,15 @@ def load_city_id_file(file_name):
             question = CityIDQuestionTextField()
         if question_type == UPLOAD_DOCS:
             question = CityIDQuestionUploadField()
+        if question_type == SELECT_SINGLE:
+            question = CityIDQuestionSelectField()
+            question.choices = row[8].strip()
+            question.multi = False
+        if question_type == SELECT_MULTI:
+            question = CityIDQuestionSelectField()
+            question.choices = row[8].strip()
+            question.multi = True
+
         question.section = section
         question.question_short = row[1].strip()
         question.question_long = row[2].strip()
@@ -308,7 +353,6 @@ def load_city_id_file(file_name):
     print("load_city_id_file. End: " + file_name)
 
 
-
 if __name__ == "__main__":
     load_users_file()
     load_entity_single_field_name("cities.tsv", City)
@@ -319,9 +363,11 @@ if __name__ == "__main__":
     load_assessments()
     load_entity_single_field_name("model_dimensions.tsv", Dimension)
     load_recursive_entity("CityID-Sections.tsv", CityIDSection)
+    set_next_element("CityID-Sections.tsv", CityIDSection)
     load_hazards()
     load_elements()
     load_city_id_file("CityID-Location.tsv")
+    load_comments_file("CityID-SectionComments.tsv", CityIDSection, CityIDSectionConsideration)
     #load_city_id_file("CityID-Population.tsv")
     #load_city_id_file("CityID-Partnerships.tsv")
     #load_city_id_file("CityID-OtherRelevantInformation.tsv")

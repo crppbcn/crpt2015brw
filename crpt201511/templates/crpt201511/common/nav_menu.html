@@ -24,7 +24,7 @@
             <div id="menu" class="col-lg-10">
                 {% for elem in menu_elements %}
                     <div class="menu-horizontal" style="width:{{menu_horizontal_elem_width}}%;">
-                        <a href="#" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.long_name }}" {% if selected_section_name == elem.name %}class="selected"{% endif %}>{{ elem.name }}</a>
+                        <a href="/city_id/{{assessment.id}}/{{elem.id}}/" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.long_name }}" {% if selected_section_name == elem.name %}class="selected"{% endif %}>{{ elem.name }}</a>
                     </div>
                 {% endfor%}
             </div>

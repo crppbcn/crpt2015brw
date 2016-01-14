@@ -53,7 +53,7 @@ function orderQuestions() {
 
 function upload_files_click(form_id) {
     var field_name = '#id_' + form_id.substr(0,8) + 'files';
-    alert(field_name);
+    //alert(field_name);
     elem = document.getElementById("id_fs_uf-0-files");
     elem.click()
 }

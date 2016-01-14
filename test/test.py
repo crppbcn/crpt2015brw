@@ -75,7 +75,23 @@ def test_create_new_assessment():
             a_cid_question.version = cid_question.version
             a_cid_question.section = section
             a_cid_question.assessment = assessment
-            a_cid_question.save()        # UploadField
+            a_cid_question.save()
+        # SelectField
+        cid_questions = CityIDQuestionSelectField.objects.filter(section=section)
+        for cid_question in cid_questions:
+            a_cid_question = AssessmentCityIDQuestionSelectField()
+            a_cid_question.question_short = cid_question.question_short
+            a_cid_question.question_long = cid_question.question_long
+            a_cid_question.order = cid_question.order
+            a_cid_question.help_text = cid_question.help_text
+            a_cid_question.version = cid_question.version
+            a_cid_question.section = section
+            a_cid_question.assessment = assessment
+            a_cid_question.choices = cid_question.choices
+            a_cid_question.multi = cid_question.multi
+            a_cid_question.save()
+
+        # UploadField
         cid_questions = CityIDQuestionUploadField.objects.filter(section=section)
         for cid_question in cid_questions:
             a_cid_question = AssessmentCityIDQuestionUploadField()

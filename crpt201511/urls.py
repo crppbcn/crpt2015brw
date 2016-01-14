@@ -21,13 +21,13 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     # url to form login
-    url(r'^accounts/login/$', 'crpt201511.views.views.my_login', name="my_login"),
+    url(r'^accounts/login/$', 'crpt201511.views.user_views.my_login', name="my_login"),
 
     # url to logout page
-    url(r'^logout/$', 'crpt201511.views.views.my_logout', name='logout'),
+    url(r'^logout/$', 'crpt201511.views.user_views.my_logout', name='logout'),
 
     # url to change password
-    url(r'^accounts/change_password/$', 'crpt201511.views.views.my_change_password', name='my_change_password'),
+    url(r'^accounts/change_password/$', 'crpt201511.views.user_views.my_change_password', name='my_change_password'),
 
     # base url
     url(r'^$', 'crpt201511.views.views.welcome', name='welcome'),
@@ -42,9 +42,13 @@ urlpatterns = [
     url(r'^steps/(?P<assessment_id>\d+)/$', 'crpt201511.views.views.steps', name='steps'),
 
     # url to city id form page
-    url(r'^city_id/(?P<assessment_id>\d+)/(?P<section_id>\d+)/$', 'crpt201511.views.views.city_id', name='city_id'),
-    url(r'^city_id/(?P<assessment_id>\d+)/(?P<section_id>\d+)/(?P<subsection_id>\d+)/$', 'crpt201511.views.views.city_id', name='city_id'),
-    url(r'^city_id/(?P<assessment_id>\d+)/$', 'crpt201511.views.views.city_id', name='city_id'),
+    url(r'^city_id/(?P<assessment_id>\d+)/(?P<section_id>\d+)/$', 'crpt201511.views.city_id_views.city_id', name='city_id'),
+    url(r'^city_id/(?P<assessment_id>\d+)/(?P<section_id>\d+)/(?P<subsection_id>\d+)/$', 'crpt201511.views.city_id_views.city_id', name='city_id'),
+    url(r'^city_id/(?P<assessment_id>\d+)/$', 'crpt201511.views.city_id_views.city_id', name='city_id'),
+
+    # url to add comment to a section
+    url(r'^add_section_comment/$', 'crpt201511.views.city_id_views.add_section_comment', name='add_section_comment'),
+
 
     # url to test page
     url(r'^test/$', 'crpt201511.views.views.test', name='test'),

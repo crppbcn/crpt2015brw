@@ -130,8 +130,17 @@ class CityIDSection(BasicName):
     Represents a section of CityID
     """
     order = django.db.models.IntegerField(null=True, blank=True)
-    parent = django.db.models.ForeignKey('self', null=True, blank=True)
+    parent = django.db.models.ForeignKey('self', null=True, blank=True, related_name="parent_section")
+    next_one = django.db.models.ForeignKey('self', null=True, blank=True, related_name="next_section")
     long_name = django.db.models.CharField(max_length=250, null=True, blank=True)
+
+
+class CityIDSectionConsideration(Common):
+    """
+    Represents comments for a CityID Section
+    """
+    element = django.db.models.ForeignKey(CityIDSection)
+    comment = django.db.models.CharField(max_length=500)
 
 
 class ValueType(BasicName):
@@ -183,6 +192,14 @@ class CityIDQuestionCharField(CityIDQuestion):
     """
 
 
+class CityIDQuestionSelectField(CityIDQuestion):
+    """
+    Represents a CityID question with CharField answer
+    """
+    choices = django.db.models.CharField(max_length=50)
+    multi = django.db.models.BooleanField(default=False)
+
+
 class CityIDQuestionTextField(CityIDQuestion):
     """
     Represents a CityID question with CharField answer
@@ -226,11 +243,21 @@ class AssessmentCityIDQuestion(CityIDQuestion):
     class Meta:
         abstract = True
 
+
 class AssessmentCityIDQuestionCharField(AssessmentCityIDQuestion):
     """
     Links a CityIDStatement with an Assessment
     """
     response = django.db.models.CharField(max_length=250, null=True, blank=True)
+
+
+class AssessmentCityIDQuestionSelectField(AssessmentCityIDQuestion):
+    """
+    Links a CityIDStatement with an Assessment
+    """
+    response = django.db.models.CharField(max_length=250, null=True, blank=True)
+    choices = django.db.models.CharField(max_length=50, null=True, blank=True)
+    multi = django.db.models.BooleanField(default=False)
 
 
 class AssessmentCityIDQuestionTextField(AssessmentCityIDQuestion):
@@ -248,12 +275,24 @@ class AssessmentCityIDQuestionUploadField(AssessmentCityIDQuestion):
     response = django.db.models.TextField(null=True, blank=True)
 
 
-class AssessmentCityIDQuestionFile(BasicName):
+class AssessmentCityIDQuestionFile(Common):
     """
     Represents a single file uploaded in a question of type file upload
     """
+    name = django.db.models.CharField(max_length=250, null=False, blank=False, unique=False)
     remote_folder = django.db.models.CharField(max_length=250)
     question = django.db.models.ForeignKey(AssessmentCityIDQuestionUploadField)
+
+
+class AssessmentCityIDSectionComment(Common):
+    """
+    Represents comments for a CityID Section
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+    element = django.db.models.ForeignKey(CityIDSection)
+    comment = django.db.models.CharField(max_length=500)
+    person = django.db.models.ForeignKey(Person)
+    date_created = django.db.models.DateTimeField(auto_now=True)
 
 
 #######################################

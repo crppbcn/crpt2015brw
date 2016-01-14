@@ -1,13 +1,13 @@
-Short Name	Long Name (hover)	Parent	ORDER
-Location	Location		10
-Basic	Basic	Location	20
-Geographic	Geographic	Location	30
-Climate	Climate	Location	40
-Other - Location	Other - Location	Location	50
-Population	Population		60
-Governance	Governance & Policies		70
-Economy	Economy		80
-Built Env.	Built Environment & Critical Infrastructure		90
-Partnerships	Partnerships		100
-Communications	Communications		110
-Other	Other Relevant Information		120
+Short Name	Long Name (hover)	Parent	Next	ORDER	Comments
+Location	Location		Population	10	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Basic	Basic	Location	Geographic	20	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Geographic	Geographic	Location	Climate	30	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Climate	Climate	Location	Other - Location	40	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Other - Location	Other - Location	Location		50	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Population	Population		Population	60	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Governance	Governance & Policies		Economy	70	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Economy	Economy		Built Env.	80	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Built Env.	Built Environment & Critical Infrastructure		Partnerships	90	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Partnerships	Partnerships		Communications	100	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Communications	Communications		Other	110	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Other	Other Relevant Information			120	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
