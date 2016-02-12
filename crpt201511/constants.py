@@ -29,6 +29,7 @@ ROLE_CRPT_TEAM_ITEM = "ROLE_CRPT_TEAM"
 TRACE_LOGIN = "USER LOGIN"
 TRACE_LOGOUT = "USER LOGOUT"
 TRACE_MAIL_COMMENT = "NEW COMMENT EMAIL"
+TRACE_COMMENT = "NEW COMMENT"
 
 
 ################################################
@@ -68,7 +69,7 @@ TEXT_FIELD = "TEXT_FIELD"
 SELECT_SINGLE = "SELECT_SINGLE"
 SELECT_MULTI = "SELECT_MULTI"
 DATE_FIELD = "DATE_FIELD"
-UPLOAD_DOCS = "UPLOAD_DOCS"
+UPLOAD_FIELD = "UPLOAD_FIELD"
 
 
 ################################################
@@ -83,6 +84,11 @@ NO = 0
 YES_NO = "YES_NO"
 CITY_ROLE = "CITY_ROLE"
 GAS_SUPPLY = "GAS_SUPPLY"
+ROAD_TX = "ROAD_TX"
+RAIL_TX = "RAIL_TX"
+WATER_TX = "WATER_TX"
+AIR_TX = "AIR_TX"
+OTHER_TX = "OTHER_TX"
 
 YES_NO_CHOICES = (
     (YES, 'Yes'),
@@ -113,8 +119,62 @@ GAS_SUPPLY_CHOICES = (
     (HOUSING, 'Housing'),
 )
 
+SHARED_TX = "1"
+PRIVATE_TX = "2"
+GOODS_TX = "3"
+NON_MOTOR_TX = "4"
 
-CHOICES = [YES_NO_CHOICES, CITY_ROLE_CHOICES, GAS_SUPPLY_CHOICES]
+
+ROAD_TX_CHOICES = (
+    (N_A, 'Not applicable'),
+    (SHARED_TX, 'Shared Transport'),
+    (PRIVATE_TX, 'Private Transport'),
+    (GOODS_TX, 'Goods Transport'),
+    (NON_MOTOR_TX, 'Non-motorised Transport'),
+)
+
+
+LIGHT_RAIL = "1"
+HEAVY_RAIL = "2"
+
+RAIL_TX_CHOICES = (
+    (N_A, 'Not applicable'),
+    (LIGHT_RAIL, 'Light Rail'),
+    (HEAVY_RAIL, 'Heavy Rail'),
+)
+
+
+LIGHT_WATER = "1"
+HEAVY_WATER = "2"
+
+WATER_TX_CHOICES = (
+    (N_A, 'Not applicable'),
+    (LIGHT_WATER, 'Light Rail'),
+    (HEAVY_WATER, 'Heavy Rail'),
+)
+
+
+CABLE_TX = "1"
+ANY_OTHER_TX = "2"
+
+OTHER_TX_CHOICES = (
+    (N_A, 'Not applicable'),
+    (CABLE_TX, 'Cable Transport'),
+    (ANY_OTHER_TX, 'Any other, please specify'),
+)
+
+
+AIRPORT_TX = "1"
+
+AIR_TX_CHOICES = (
+    (N_A, 'Not applicable'),
+    (AIRPORT_TX, 'Airport'),
+
+)
+
+CHOICES = {YES_NO: YES_NO_CHOICES, CITY_ROLE: CITY_ROLE_CHOICES, GAS_SUPPLY: GAS_SUPPLY_CHOICES,
+           ROAD_TX: ROAD_TX_CHOICES, RAIL_TX: RAIL_TX_CHOICES, WATER_TX: WATER_TX_CHOICES,
+           AIR_TX: AIR_TX_CHOICES, OTHER_TX: OTHER_TX_CHOICES,}
 
 ################################################
 #
@@ -142,4 +202,13 @@ ORANGE = "#EE8A00"
 ################################################
 MAX_FILES = 3
 MAX_FILE_MEGABYTES = 1024*1024*2
-FILE_EXTENSIONS = ['pdf', 'PDF']
+FILE_EXTENSIONS = ['pdf', 'PDF', 'jpg', 'JPG', 'png', 'PNG']
+
+
+################################################
+#
+# Text Literals
+#
+################################################
+YES_STR = "YES"
+NO_STR = "NO"

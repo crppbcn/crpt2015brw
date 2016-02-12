@@ -60,6 +60,8 @@ def test_create_new_assessment():
             a_cid_question.question_long = cid_question.question_long
             a_cid_question.order = cid_question.order
             a_cid_question.help_text = cid_question.help_text
+            a_cid_question.placeholder = cid_question.placeholder
+            a_cid_question.not_applicable = cid_question.not_applicable
             a_cid_question.version = cid_question.version
             a_cid_question.section = section
             a_cid_question.assessment = assessment
@@ -72,6 +74,8 @@ def test_create_new_assessment():
             a_cid_question.question_long = cid_question.question_long
             a_cid_question.order = cid_question.order
             a_cid_question.help_text = cid_question.help_text
+            a_cid_question.placeholder = cid_question.placeholder
+            a_cid_question.not_applicable = cid_question.not_applicable
             a_cid_question.version = cid_question.version
             a_cid_question.section = section
             a_cid_question.assessment = assessment
@@ -84,6 +88,8 @@ def test_create_new_assessment():
             a_cid_question.question_long = cid_question.question_long
             a_cid_question.order = cid_question.order
             a_cid_question.help_text = cid_question.help_text
+            a_cid_question.placeholder = cid_question.placeholder
+            a_cid_question.not_applicable = cid_question.not_applicable
             a_cid_question.version = cid_question.version
             a_cid_question.section = section
             a_cid_question.assessment = assessment
@@ -99,6 +105,8 @@ def test_create_new_assessment():
             a_cid_question.question_long = cid_question.question_long
             a_cid_question.order = cid_question.order
             a_cid_question.help_text = cid_question.help_text
+            a_cid_question.placeholder = cid_question.placeholder
+            a_cid_question.not_applicable = cid_question.not_applicable
             a_cid_question.version = cid_question.version
             a_cid_question.section = section
             a_cid_question.assessment = assessment

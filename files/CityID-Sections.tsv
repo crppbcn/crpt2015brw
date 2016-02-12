@@ -1,13 +1,28 @@
-Short Name	Long Name (hover)	Parent	Next	ORDER	Comments
-Location	Location		Population	10	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Basic	Basic	Location	Geographic	20	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Geographic	Geographic	Location	Climate	30	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Climate	Climate	Location	Other - Location	40	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Other - Location	Other - Location	Location		50	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Population	Population		Population	60	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Governance	Governance & Policies		Economy	70	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Economy	Economy		Built Env.	80	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Built Env.	Built Environment & Critical Infrastructure		Partnerships	90	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Partnerships	Partnerships		Communications	100	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Communications	Communications		Other	110	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
-Other	Other Relevant Information			120	Maximum size of files to upload is 2MB. Maximum number of files to upload is 3 for each question. Allowed formats are: pdf
+Short Name	Long Name (hover)	Parent	Next	ORDER
+Location	Location		Population	10
+Geographic	Geographical Information	Location	Climate	20
+Climate	Climate	Location	Local	30
+Local	Local Information	Location	Population	40
+Population	Population		Governance	60
+General	General Information	Population	Detailed	70
+Detailed	Detailed Information	Population	Statistics	80
+Statistics	Statistics	Population	Languages	90
+Languages	Languages	Population	Gov. & Policies	100
+Gov. & Policies	Governance & Policies		Economy	110
+Governance	Governance	Gov. & Policies	Policies	120
+Policies	Policies	Gov. & Policies	Economy	130
+Economy	Economy		Built Environment	140
+General	General Economic Information	Economy	Opportunities	150
+Opportunities	Opportunities and Workforce	Economy	Local Budget	160
+Local Budget	Local Budget	Economy	Other Econ.	170
+Other Econ.	Other Economic Information	Economy	Built Environment	180
+Built Env.	Built Environment & Infrastructure		Partnerships	190
+Basic Infrastructure	Basic Infrastructure	Built Env.	Transport	210
+Transport	Transport	Built Env.	Critical Infrastructure	220
+Critical Infrastructure	Critical Infrastructure	Built Env.	Partnerships	230
+Partnerships	Partnerships		Public Relations	240
+Cooperation	Cooperation	Partnerships	Public Relations	250
+Public Relations	Public Relations		Other	260
+Communications	Communications	Public Relations	Other	270
+Other	Other Relevant Information			280
+Other(s)	Other Relevant Information	Other		290

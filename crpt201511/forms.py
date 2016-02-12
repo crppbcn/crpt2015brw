@@ -1,4 +1,7 @@
 from django.forms import ModelForm
+
+import sys
+
 from fields import *
 from django import forms
 
@@ -55,7 +58,7 @@ class MultiFileField(forms.FileField):
             return data
         for uploaded_file in data:
             if uploaded_file:
-                if uploaded_file.name[len(uploaded_file.name)-3:] not in ['pdf',]:
+                if uploaded_file.name[len(uploaded_file.name)-3:] not in FILE_EXTENSIONS:
                     raise ValidationError(self.error_messages['file_extension'] % {'uploaded_file_name': uploaded_file.name})
                     return data
                 if uploaded_file.size > self.maximum_file_size:
@@ -65,7 +68,7 @@ class MultiFileField(forms.FileField):
 
 class AssessmentCityIDQuestionUploadFieldForm(forms.ModelForm):
 
-    files = MultiFileField(max_num=MAX_FILES, min_num=0, maximum_file_size=MAX_FILE_MEGABYTES)
+    files = MultiFileField(required=False, max_num=MAX_FILES, min_num=0, maximum_file_size=MAX_FILE_MEGABYTES)
 
     def __init__(self, *args, **kwargs):
         super(AssessmentCityIDQuestionUploadFieldForm, self).__init__(*args, **kwargs)
@@ -75,6 +78,12 @@ class AssessmentCityIDQuestionUploadFieldForm(forms.ModelForm):
         for item in file_list:
             self.fields['file_' + str(i)] = forms.CharField(initial=item.name)
             i += 1
+
+        # add checkbox field for not applicable option
+        if self.instance:
+            if self.instance.not_applicable:
+                self.fields['n_a'] = forms.BooleanField(required=False, initial=False,
+                                                        widget=forms.CheckboxInput(attrs={}))
 
     class Meta:
         model = AssessmentCityIDQuestionUploadField
@@ -88,16 +97,37 @@ class AssessmentCityIDQuestionSelectFieldForm(forms.ModelForm):
 
         # set multi and choices
         if self.instance:
-            if self.instance.choices == GAS_SUPPLY:
+
+            if self.instance.choices and self.instance.choices.strip() <> "":
                 if self.instance.multi:
-                    self.fields['response'].widget = forms.SelectMultiple(choices=GAS_SUPPLY_CHOICES)
+                    self.fields['response'].widget = forms.SelectMultiple(choices=CHOICES[self.instance.choices])
                 else:
-                    self.fields['response'].widget = forms.Select(choices=GAS_SUPPLY_CHOICES)
+                    self.fields['response'].widget = forms.Select(CHOICES[self.instance.choices])
+
+            # add checkbox field for not applicable option
+            if self.instance.not_applicable:
+                self.fields['n_a'] = forms.BooleanField(required=False, initial=False,
+                                                        widget=forms.CheckboxInput(attrs={}))
 
 
+class AssessmentCityIDQuestionCharFieldForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AssessmentCityIDQuestionCharFieldForm, self).__init__(*args, **kwargs)
+
+        # add checkbox field for not applicable option
         if self.instance:
-            if self.instance.choices == CITY_ROLE:
-                if self.instance.multi:
-                    self.fields['response'].widget = forms.SelectMultiple(choices=CITY_ROLE_CHOICES)
-                else:
-                    self.fields['response'].widget = forms.Select(choices=CITY_ROLE_CHOICES)
+            if self.instance.not_applicable:
+                self.fields['n_a'] = forms.BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={}))
+
+
+class AssessmentCityIDQuestionTextFieldForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AssessmentCityIDQuestionTextFieldForm, self).__init__(*args, **kwargs)
+
+        # add checkbox field for not applicable option
+        if self.instance:
+            if self.instance.not_applicable:
+                self.fields['n_a'] = forms.BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={}))
+

@@ -1,18 +1,22 @@
-Section	Question	Help Text	QTYPE	ORDER
-Population	Urban population - permanent	Permanent residents, specified by gender	CHAR_FIELD	10
-Population	Urban population density	Inhabitants/Km2	CHAR_FIELD	20
-Population	Urban population - floating	Daily commuters, tourists, seasonal workers, etc. Include high seasons if applicable	CHAR_FIELD	30
-Population	Metropolitan population - permanent	Permanent residents, specified by gender	CHAR_FIELD	40
-Population	Metropolitan population - floating	Daily commuters, tourists, seasonal workers, etc. Include high seasons if applicable	CHAR_FIELD	50
-Population	Urban population below 15 years old	Percentage, specified by gender	CHAR_FIELD	60
-Population	Urban population above 65 years old	Percentage, specified by gender	CHAR_FIELD	70
-Population	Life expectancy	Specified by gender	TEXT_FIELD	80
-Population	Average urban population growth	Percentage, yearly average within last 5 to 10 years	CHAR_FIELD	90
-Population	Projection of urban population growth	Percentage, average yearly estimate for the next 5 to 10 years	CHAR_FIELD	100
-Population	Mortality rate	Per 100,000 people, specified by gender and age	TEXT_FIELD	110
-Population	Number of homeless people	Per 100,000 people	CHAR_FIELD	120
-Population	Number of institutionalised people	Per 100,000 people	CHAR_FIELD	130
-Population	Ethnic group(s)	Percentage of population within social, cultural and/or religious groups. Specify if there is a particular geographical distribution, such as a neighbourhood with a majority of a certain group	TEXT_FIELD	140
-Population	Official language(s)	Official language(s) spoken and percentage of speaking population	TEXT_FIELD	150
-Population	Official language(s), unintelligibility	Percentage of population that do not understand any of the language(s) used for official communication	TEXT_FIELD	160
-Population	Other spoken language(s)	Other main languages spoken and percentage of speaking population	TEXT_FIELD	170
+Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
+General	Urban Pop. - Permanent	Urban population - permanent		Permanent residents, specified by gender.	CHAR_FIELD	10		
+General	Urban Pop. - Floating	Urban population - floating		Daily commuters, tourists, seasonal workers, etc. Include high seasons, if applicable.	CHAR_FIELD	20		
+General	Population density	Urban population density		Inhabitants/Km2	CHAR_FIELD	30		
+General	Metr. Pop. - Permanent	Metropolitan population - permanent		Permanent residents of the area of influence, specified by gender.	CHAR_FIELD	40		
+General	Metr. Pop. - Floating	Metropolitan population - floating		Daily commuters, tourists, seasonal workers, etc. of the area of influence. Include high seasons, if applicable.	CHAR_FIELD	50		
+General	Urban Pop. growth	Average urban population growth		Percentage, yearly average within last 5 to 10 years.	CHAR_FIELD	60		
+General	Projection of Pop. growth	Projection of urban population growth		Specified by gender.	CHAR_FIELD	70		
+Detailed	Pop. below 15 years old	Urban population below 15 years old		In absolute number or percentage, specified by gender.	CHAR_FIELD	80		
+Detailed	Pop. above 65 years old	Urban population above 65 years old		In absolute number or percentage, specified by gender.	CHAR_FIELD	90		
+Detailed	Pop. in social housing	Urban population living in social housing		In absolute number or percentage. Specified by gender.	CHAR_FIELD	100	Yes	
+Detailed	Pop. in informal settlements	Urban population living in informal settlements		In absolute number or percentage. Specified by gender.	CHAR_FIELD	110	Yes	
+Detailed	Homeless people	Number of homeless people		In absolute number or per 100,000 people.	CHAR_FIELD	120	Yes	
+Detailed	Institutionalised people	Number of institutionalised people		In absolute number or per 100,000 people.	CHAR_FIELD	130	Yes	
+Detailed	Ethnic group(s)	Ethnic group(s)		Percentage of population within social, cultural and/or religious groups. Specify if there is a particular geographical distribution, such as a neighbourhood with a majority of a certain group.	TEXT_FIELD	140	Yes	
+Statistics	Life expectancy	Life expectancy		Specified by gender.	CHAR_FIELD	150		
+Statistics	Mortality rate	Mortality rate		In absolute number or per 100,000 people, specified by gender and age.	CHAR_FIELD	160		
+Statistics	Violent crime rate	Violent crime rate	Violent crimes should include murder and non-negligent manslaughter, rape, robbery and aggravated assault.	In absolute number or per 100,000 people.	CHAR_FIELD	170		
+Statistics	Property crime rate	Property crime rate	Crime against property should include: burglary; larceny-theft; motor vehicle theft; and, arson.	In absolute number or per 100,000 people.	CHAR_FIELD	180		
+Languages	Official language(s)	Official language(s)		Official language(s) spoken and percentage of speaking population.	CHAR_FIELD	190		
+Languages	Unintelligibility	Official language(s), unintelligibility		Percentage of population that does not understand any of the language(s) used for official communication.	CHAR_FIELD	200		
+Languages	Other language(s)	Other spoken language(s)		Other main languages spoken and percentage of speaking population.	CHAR_FIELD	210		

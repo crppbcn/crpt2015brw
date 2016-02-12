@@ -44,7 +44,8 @@
                                 <div class="form-group" order="{{ form.order.value }}">
                                     <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
                                     <div class="col-lg-9">
-                                        {% render_field form.response class+="form-control" placeholder=form.question_short.value %}
+                                        {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
+                                        {% render_field form.response class+="form-control" placeholder=form.placeholder.value %}
                                         {% if form.help_text and form.help_text.value != '' %}
                                             <span class="help-block">{{ form.help_text.value }}</span>
                                         {% endif %}
@@ -57,6 +58,7 @@
                                         {{ form.version.as_hidden }}
                                         {{ form.section.as_hidden }}
                                         {{ form.assessment.as_hidden }}
+                                        {{ form.not_applicable.as_hidden }}
                                     </div>
                                 </div>
                                 {% endif %}
@@ -79,6 +81,7 @@
                                     <div class="form-group" order="{{ form.order.value }}">
                                         <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
                                         <div class="col-lg-9">
+                                            {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
                                             {% if form.help_text and form.help_text.value != '' %}
                                                 <span class="help-block">{{ form.help_text.value }}</span>
@@ -92,6 +95,7 @@
                                             {{ form.version.as_hidden }}
                                             {{ form.section.as_hidden }}
                                             {{ form.assessment.as_hidden }}
+                                            {{ form.not_applicable.as_hidden }}
                                         </div>
                                     </div>
                                     {% endif %}
@@ -114,6 +118,7 @@
                                     <div class="form-group" order="{{ form.order.value }}">
                                         <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
                                         <div class="col-lg-9">
+                                            {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
                                             {% if form.help_text and form.help_text.value != '' %}
                                                 <span class="help-block">{{ form.help_text.value }}</span>
@@ -129,6 +134,7 @@
                                             {{ form.assessment.as_hidden }}
                                             {{ form.multi.as_hidden }}
                                             {{ form.choices.as_hidden }}
+                                            {{ form.not_applicable.as_hidden }}
                                         </div>
                                     </div>
                                     {% endif %}
@@ -183,6 +189,7 @@
                                         {% endif %}
 
                                         {% comment %}Print hidden fields{% endcomment %}
+                                        {{ form.not_applicable.as_hidden }}
                                         {{ form.question_short.as_hidden }}
                                         {{ form.question_long.as_hidden }}
                                         {{ form.help_text.as_hidden }}
@@ -191,6 +198,7 @@
                                         {{ form.version.as_hidden }}
                                         {{ form.section.as_hidden }}
                                         {{ form.assessment.as_hidden }}
+                                        {{ form.not_applicable.as_hidden }}
                                     </div>
                                 </div>
                                 {% endif %}
@@ -278,6 +286,7 @@
                         </form>
                     </div>
                 </div>
+                {% comment %} <!-- Commented not to have 2 forms in comments -->
                 <div class="panel panel-default">
                     <div class="panel-heading">Send comments to CRPP Team</div>
                         <div class="panel-body">
@@ -298,7 +307,7 @@
                         </div>
                     </div>
                 </div>
-
+                {% endcomment %} <!-- Commented not to have 2 forms in comments -->
             </div> <!-- right comments -->
 
             <div style="clear:both;"></div>

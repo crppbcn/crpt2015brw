@@ -1,0 +1,4 @@
+Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
+Communications	Public Relations	Institutional website		URL, if available	CHAR_FIELD	10	Yes	
+Communications	Interesting fact	Interesting fact		Please provide, in few words, one interesting fact or particularity about your city, for us to share with our partners and on our publications	TEXT_FIELD	20		
+Communications	Representative Photo	Representative photograph of your city		Pleas upload photo	UPLOAD_FIELD	30		

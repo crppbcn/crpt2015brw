@@ -290,7 +290,7 @@ def set_next_element(file_name, class_name):
     print("set_next_element. End: " + file_name + " - " + str(class_name))
 
 
-def load_comments_file(file_name, class_name, class_name_comment):
+def load_considerations_file(file_name, class_name, class_name_comment):
     print("load_comments_file. Start: " + file_name + " - " + str(class_name))
     file_path = settings.BASE_DIR + "/files/" + file_name
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
@@ -307,6 +307,7 @@ def load_comments_file(file_name, class_name, class_name_comment):
 
     print("load_comments_file. End: " + file_name + " - " + str(class_name))
 
+
 def load_city_id_file(file_name):
     print("load_city_id_file. Start: " + file_name)
     file_path = settings.BASE_DIR + "/files/" + file_name
@@ -318,8 +319,11 @@ def load_city_id_file(file_name):
             if row[0].strip() == '':
                 section = None
             else:
-                section = CityIDSection.objects.get(long_name=row[0].strip())
+                print("Looking for section: " + row[0].strip())
+                section = CityIDSection.objects.get(name=row[0].strip())
         except:
+            print("ERROR: " + str(sys.exc_info()))
+            print("ERROR: " + str(sys.exc_traceback))
             section = CityIDSection()
             section.name = row[0].strip()
             section.save()
@@ -329,7 +333,7 @@ def load_city_id_file(file_name):
             question = CityIDQuestionCharField()
         if question_type == TEXT_FIELD:
             question = CityIDQuestionTextField()
-        if question_type == UPLOAD_DOCS:
+        if question_type == UPLOAD_FIELD:
             question = CityIDQuestionUploadField()
         if question_type == SELECT_SINGLE:
             question = CityIDQuestionSelectField()
@@ -346,6 +350,8 @@ def load_city_id_file(file_name):
         question.help_text = row[3].strip()
         question.placeholder= row[4].strip()
         question.order = row[6].strip()
+        question.not_applicable = row[7].strip().upper() == YES_STR
+
         # TODO: creation of new version of assessment procedure!!
         question.version = AssessmentVersion.objects.order_by('-date_released')[0]
         question.save()
@@ -366,15 +372,19 @@ if __name__ == "__main__":
     set_next_element("CityID-Sections.tsv", CityIDSection)
     load_hazards()
     load_elements()
+    load_considerations_file("CityID-SectionComments.tsv", CityIDSection, CityIDSectionConsideration)
     load_city_id_file("CityID-Location.tsv")
-    load_comments_file("CityID-SectionComments.tsv", CityIDSection, CityIDSectionConsideration)
-    #load_city_id_file("CityID-Population.tsv")
-    #load_city_id_file("CityID-Partnerships.tsv")
-    #load_city_id_file("CityID-OtherRelevantInformation.tsv")
-    #load_city_id_file("CityID-Governance&Policies.tsv")
-    #load_city_id_file("CityID-Economy.tsv")
-    #load_city_id_file("CityID-Communications.tsv")
-    #load_city_id_file("CityID-BuiltEnvironment&CriticalInfrastructure.tsv")
+    load_city_id_file("CityID-Population.tsv")
+    load_city_id_file("CityID-Gov&Policies.tsv")
+    load_city_id_file("CityID-Economy.tsv")
+    load_city_id_file("CityID-BuiltEnvironment.tsv")
+    load_city_id_file("CityID-Partnerships.tsv")
+    load_city_id_file("CityID-PublicRelations.tsv")
+    load_city_id_file("CityID-Other.tsv")
+
+
+
+
 
 
 

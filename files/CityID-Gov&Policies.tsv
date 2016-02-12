@@ -1,0 +1,12 @@
+Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
+Governance	Political structure	Local government political structure		Existence of councils and other bodies within local government.	TEXT_FIELD	10		
+Governance	Electoral system	Electoral system		Universal election, restricted vote, etc.	CHAR_FIELD	20	Yes	
+Governance	Political cycle	Local government political cycle		Local government political cycle in months.	CHAR_FIELD	30	Yes	
+Governance	Last election	Last election		Date - DD/MM/YYYY	CHAR_FIELD	40	Yes	
+Governance	Next election	Next election		Date - DD/MM/YYYY	CHAR_FIELD	50	Yes	
+Governance	City role	Is the city a major player at regional or national level		Please select all applicable, if any.	SELECT_MULTI	60	Yes	CITY_ROLE
+Policies	Dept. in charge of resilience	Department or committee in charge of resilience	Ex.: Disaster Risk Reduction, Climate Change, Sustainability, Environment, etc.	If any, please specify and describe departments involved and responsibilities.	TEXT_FIELD	70	Yes	
+Policies	Emergency Resp. coordination	Emergency response coordination	Ex.: Disaster Risk Reduction, Climate Change, Sustainability, Environment, etc.	If any, please specify and describe departments involved roles and responsibilities.	TEXT_FIELD	80	Yes	
+Policies	Relevant resilient-related policies	Relevant resilient-related policies	Ex.: Land use, disaster risk reduction, city master plans, environment protection, emergencies, etc.	If any, please specify.	TEXT_FIELD	90	Yes	
+Policies	Affirmative action policies	Affirmative action policies	Ex.: School or job vacancies designated for members of a certain group (disabled, women, etc.).	Affirmative action policies include all measures that aim empowering members of vulnerable social groups by promoting equality of opportunities, diversity and inclusion. If any, please specify.	TEXT_FIELD	100	Yes	
+Policies	Other relevant information	Other relevant information	Ex.: Disaster response systems, early warning systems, climate change strategies, etc.	If any, please specify.	TEXT_FIELD	110	Yes	

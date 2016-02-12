@@ -2,6 +2,8 @@ from __future__ import division
 
 from threading import Thread
 
+import math
+
 from django.contrib.auth.decorators import login_required
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse
@@ -57,7 +59,7 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
         # elements of menu
         menu_elements = CityIDSection.objects.filter(parent=None).order_by('order')
         # adjustment of horizontal menu
-        menu_horizontal_elem_width = round(100/len(menu_elements), 2)
+        menu_horizontal_elem_width = math.floor(100/len(menu_elements))
 
         # get subsection
         if subsection_id:
@@ -72,11 +74,12 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
         if section:
             left_elements = CityIDSection.objects.filter(parent_id=section.id).order_by('order')
 
-        # considerations
+        # considerations at section and subsection level
+        considerations = CityIDSectionConsideration.objects.filter(element=section).order_by('id')
         if subsection:
-            considerations = CityIDSectionConsideration.objects.filter(element=subsection).order_by('id')
-        else:
-            considerations = CityIDSectionConsideration.objects.filter(element=section).order_by('id')
+            # concatenate querysets same type
+            considerations = considerations | CityIDSectionConsideration.objects.filter(element=subsection).\
+                order_by('id')
 
         # comments
         if subsection:
@@ -87,13 +90,15 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
                 order_by('date_created')
 
         # formset definition
-        fs_char_field = modelformset_factory(AssessmentCityIDQuestionCharField, max_num=1, exclude=[])
-        fs_text_field = modelformset_factory(AssessmentCityIDQuestionTextField, max_num=1, exclude=[])
+        fs_char_field = modelformset_factory(AssessmentCityIDQuestionCharField, max_num=1, exclude=[],
+                                             form=AssessmentCityIDQuestionCharFieldForm)
+        fs_text_field = modelformset_factory(AssessmentCityIDQuestionTextField, max_num=1, exclude=[],
+                                             form=AssessmentCityIDQuestionTextFieldForm)
+        fs_select_field = modelformset_factory(AssessmentCityIDQuestionSelectField, max_num=1, exclude=[],
+                                               form=AssessmentCityIDQuestionSelectFieldForm)
         fs_upload_field = modelformset_factory(AssessmentCityIDQuestionUploadField,
                                                 max_num=1, exclude=[],
                                                form=AssessmentCityIDQuestionUploadFieldForm)
-        fs_select_field = modelformset_factory(AssessmentCityIDQuestionSelectField, max_num=1, exclude=[],
-                                               form=AssessmentCityIDQuestionSelectFieldForm)
 
         if request.method == 'POST':
             fs_cf = fs_char_field(request.POST, request.FILES, prefix='fs_cf')
@@ -101,51 +106,67 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
             fs_uf = fs_upload_field(request.POST, request.FILES, prefix='fs_uf')
             fs_sf = fs_select_field(request.POST, request.FILES, prefix='fs_sf')
 
-            if fs_cf and fs_cf.is_valid():
-                fs_cf.save()
-            else:
-                print("fs_cf not informed or not valid!")
-                sys.stdout.flush()
-
-            if fs_tf and fs_tf.is_valid():
-                fs_tf.save()
-            else:
-                print("fs_tf not informed or not valid!")
-                sys.stdout.flush()
-
-            if fs_sf and fs_sf.is_valid():
-                fs_sf.save()
-            else:
-                print("fs_sf not informed or not valid!")
-                sys.stdout.flush()
-
-            if fs_uf and fs_uf.is_valid():
-                fs_uf.save()
-
-                # file upload processing
-                file_list = []
-                remote_folder_name = get_remote_folder_name(assessment, section)
-
-                # process all forms in formset to save file upload information
-                for i in range(len(fs_uf)):
-                    q_u_f = AssessmentCityIDQuestionUploadField.objects.get(pk=request.POST['fs_uf-' + str(i) + '-id'])
-                    file_list_temp = request.FILES.getlist('fs_uf-' + str(i) + '-files')
-                    for one_file in file_list_temp:
-                        file_list.append(one_file)
-                        acid_uf = AssessmentCityIDQuestionFile()
-                        acid_uf.name = str(one_file)
-                        acid_uf.remote_folder = remote_folder_name
-                        acid_uf.question = q_u_f
-                        acid_uf.save()
-                # save files to FTP
-                my_ftp = MyFTP()
-                for one_file in file_list:
-                    my_ftp.upload_memory_file(one_file, remote_folder_name, str(one_file))
-            else:
-                print("fs_uf not informed or not valid!")
-                sys.stdout.flush()
-
             if fs_cf and fs_cf.is_valid() and fs_tf and fs_tf.is_valid() and fs_sf and fs_sf.is_valid():
+
+                if fs_cf and fs_cf.is_valid():
+                    not_applicable_responses_treatment(fs_cf)
+
+                    for form in fs_cf:
+                        for field_name in  form.changed_data:
+                            print("CHANGED: " + field_name + ". Value: " + form.cleaned_data[field_name])
+                            sys.stdout.flush()
+
+
+                    fs_cf.save()
+                else:
+                    print("fs_cf not informed or not valid!")
+                    print(str(fs_cf.errors))
+                    sys.stdout.flush()
+
+                if fs_tf and fs_tf.is_valid():
+                    not_applicable_responses_treatment(fs_tf)
+                    fs_tf.save()
+                else:
+                    print("fs_tf not informed or not valid!")
+                    print(str(fs_tf.errors))
+                    print(str(fs_tf.errors))
+                    sys.stdout.flush()
+
+                if fs_sf and fs_sf.is_valid():
+                    not_applicable_responses_treatment(fs_sf)
+                    fs_sf.save()
+                else:
+                    print("fs_sf not informed or not valid!")
+                    print(str(fs_sf.errors))
+                    sys.stdout.flush()
+
+                if fs_uf and fs_uf.is_valid():
+                    fs_uf.save()
+
+                    # file upload processing
+                    file_list = []
+                    remote_folder_name = get_remote_folder_name(assessment, section)
+
+                    # process all forms in formset to save file upload information
+                    for i in range(len(fs_uf)):
+                        q_u_f = AssessmentCityIDQuestionUploadField.objects.get(pk=request.POST['fs_uf-' + str(i) + '-id'])
+                        file_list_temp = request.FILES.getlist('fs_uf-' + str(i) + '-files')
+                        for one_file in file_list_temp:
+                            file_list.append(one_file)
+                            acid_uf = AssessmentCityIDQuestionFile()
+                            acid_uf.name = str(one_file)
+                            acid_uf.remote_folder = remote_folder_name
+                            acid_uf.question = q_u_f
+                            acid_uf.save()
+                    # save files to FTP
+                    my_ftp = MyFTP()
+                    for one_file in file_list:
+                        my_ftp.upload_memory_file(one_file, remote_folder_name, str(one_file))
+                else:
+                    print("fs_uf not informed or not valid!")
+                    print(str(fs_uf.errors))
+                    sys.stdout.flush()
+
                 # navigate to next section
                 url_to_redirect = "/city_id/" + assessment_id + "/"
                 if subsection:
@@ -164,25 +185,32 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
                     print("4.section: " + section.next_one.name)
                     url_to_redirect += str(section.next_one.id) + "/"
 
-                #print("url_to_redirect: " + url_to_redirect)
+                # print("url_to_redirect: " + url_to_redirect)
                 return redirect(url_to_redirect, context_instance=RequestContext(request))
+            else:
+                # additional treatment of errors if needed
+                if fs_cf:
+                    print("fs_cf errors: " + str(fs_cf.errors))
+                if fs_tf:
+                    print("fs_tf errors: " + str(fs_tf.errors))
+                if fs_sf:
+                    print("fs_sf errors: " + str(fs_sf.errors))
+                if fs_uf:
+                    print("fs_uf errors: " + str(fs_uf.errors))
+                sys.stdout.flush()
         else:
             # formsets
             query_set = AssessmentCityIDQuestionCharField.objects.filter(section=subsection).order_by('order')
             fs_cf = fs_char_field(queryset=query_set, prefix='fs_cf')
-            set_form_hidden_fields(fs_cf, ['question_long', 'version', 'section', 'assessment'])
 
             query_set = AssessmentCityIDQuestionTextField.objects.filter(section=subsection).order_by('order')
             fs_tf = fs_text_field(queryset=query_set, prefix='fs_tf')
-            set_form_hidden_fields(fs_tf, ['question_long', 'version', 'section', 'assessment'])
-
-            query_set = AssessmentCityIDQuestionUploadField.objects.filter(section=subsection).order_by('order')
-            fs_uf = fs_upload_field(queryset=query_set, prefix='fs_uf')
-            set_form_hidden_fields(fs_uf, ['question_long', 'version', 'section', 'assessment'])
 
             query_set = AssessmentCityIDQuestionSelectField.objects.filter(section=subsection).order_by('order')
             fs_sf = fs_select_field(queryset=query_set, prefix='fs_sf')
-            set_form_hidden_fields(fs_uf, ['question_long', 'version', 'section', 'assessment', 'multi', 'choices'])
+
+            query_set = AssessmentCityIDQuestionUploadField.objects.filter(section=subsection).order_by('order')
+            fs_uf = fs_upload_field(queryset=query_set, prefix='fs_uf')
 
         # return page
         template = loader.get_template(TEMPLATE_CITY_ID_PAGE)
@@ -239,13 +267,16 @@ def add_section_comment(request):
             my_comment.comment = comment
             my_comment.person = person
             my_comment.save()
+
+            # trace action
+            trace_action(TRACE_COMMENT, person, "User added comment in section: " + section.name)
+
             # send mail
             try:
                 send_mail = request.POST['send_mail']
                 t = Thread(target=send_comments_email, args=(my_comment.comment, section, person))
                 t.start()
-
-                #send_comments_email(my_comment.comment, section, person)
+                # send_comments_email(my_comment.comment, section, person)
             except:
                 # checkbox not set
                 pass

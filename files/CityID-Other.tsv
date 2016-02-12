@@ -1,0 +1,4 @@
+Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
+Other(s)	Actions in resilience	Actions in resilience	Ex.: assessment with international organisations, self-designed plans/actions, early warning systems, construction of protective structures such as levees, sea walls, snow rakes, etc.	Actions in disaster risk reduction, sustainable development, climate change, etc. in the last 15 years.	TEXT_FIELD	10	Yes	
+Other(s)	Other relevant information	Other relevant text information		Please list and upload and/or provide links	TEXT_FIELD	20	Yes	
+Other(s)	Other relevant images	Other relevant maps, pictures or images about resilience		Please list and upload and/or provide links	UPLOAD_FIELD	30	Yes	

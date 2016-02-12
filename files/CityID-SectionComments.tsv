@@ -2,6 +2,6 @@ Short Name	Comments
 Location	Maximum size of files to upload is 2MB.
 Location	Maximum number of files to upload is 3 for each question.
 Location	Allowed formats are: pdf
-Basic	Maximum size of files to upload is 2MB.
-Basic	Maximum number of files to upload is 3 for each question.
-Basic	Allowed formats are: pdf
+Geographic	Maximum size of files to upload is 2MB.
+Geographic	Maximum number of files to upload is 3 for each question.
+Geographic	Allowed formats are: pdf

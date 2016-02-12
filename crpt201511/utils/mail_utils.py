@@ -24,6 +24,7 @@ def send_comments_email(text, section, person):
     except:
         print("Error sending comment email. Person:" + person.name)
         print("Error: " + str(sys.exc_info()))
+        sys.stdout.flush()
         pass  # silent remove
     finally:
         pass

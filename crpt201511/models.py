@@ -181,6 +181,7 @@ class CityIDQuestion(QuestionSimple):
     Represents a CityID Question with base parameters
     """
     section = django.db.models.ForeignKey(CityIDSection)
+    not_applicable = django.db.models.BooleanField(default=False)
 
     class Meta:
         abstract = True

@@ -1,0 +1,24 @@
+Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
+Built Env.	Building typology(ies)	Building typology(ies)	Ex.: single house units, condominiums, townhouses, etc.	Please specify all applicable.	CHAR_FIELD	10		
+Built Env.	Construction type(s)	Construction type(s)	Ex.: masonry, stone, timber, stilt houses, etc.	Please specify all applicable.	CHAR_FIELD	20		
+Basic Infrastructure	Electricity supply sources	Electricity supply sources	Ex.: hydro, coal or nuclear power plants, solar panels, wind farms, etc.	Please specify type and percentage of energy used, and existence of powerplants within a 100 km radius.	CHAR_FIELD	30		
+Basic Infrastructure	Gas supply network	Gas supply network		Please select all applicable, if any.	SELECT_MULTI	40	Yes	GAS_SUPPLY
+Basic Infrastructure	Water supply sources	Water supply sources	Ex.: lake, river, drinking water treatment plants, desalination treatment plants, wastewater treatment plants (chemical and/or natural means), etc.	Please specify type of water sources and existence of treatment plants within a 100 km radius.	TEXT_FIELD	50		
+Transport	Road	Public transportation systems - Road		Please select all applicable modes.	SELECT_MULTI	60	Yes	ROAD_TX
+Transport	Rail	Public transportation systems - Rail		Please select all applicable modes.	SELECT_MULTI	70	Yes	RAIL_TX
+Transport	Water	Public transportation systems - Water		Please select all applicable modes.	SELECT_MULTI	80	Yes	WATER_TX
+Transport	Air	Public transportation systems - Air		Please select all applicable modes.	SELECT_MULTI	90	Yes	AIR_TX
+Transport	Other	Public transportation systems - Other		Please select all applicable modes.	SELECT_MULTI	100	Yes	OTHER_TX
+Transport	Airports	Airports		Within influence area, if any. Please specify use (ex.: public, private, military, out of service).	TEXT_FIELD	110	Yes	
+Transport	Long-distance railway	Long-distance railway networks		Within influence area, if any. Please specify use (ex.: passenger, goods; public, private, military, out of service).	CHAR_FIELD	120	Yes	
+Transport	Harbours/ports	Harbours/ports		Within influence area, if any. Please specify use (ex.: passenger, goods; public, private, military, out of service).	CHAR_FIELD	130	Yes	
+Critical Infrastructure	24-Hour health care facilities	24-Hour health care facilities		Number of facilities within urban area, if any.	CHAR_FIELD	140		
+Critical Infrastructure	Other health care facilities	Other health care facilities	Ex.: day clinics, medical centres.	Number of facilities within urban area, if any.	CHAR_FIELD	150		
+Critical Infrastructure	Prisons, detention centres	Prisons, detention centres		Number of facilities within urban area, if any.	CHAR_FIELD	160		
+Critical Infrastructure	Sport facilities	Sport facilities		Number of facilities within urban area, if any.	CHAR_FIELD	170		
+Critical Infrastructure	Cultural facilities	Cultural facilities	Ex.: libraries, concert halls, museums, cultural centres, religious temples, etc.	Number of facilities within urban area, if any.	CHAR_FIELD	180		
+Critical Infrastructure	Schools	Schools		Number of facilities within urban area, if any.	CHAR_FIELD	190		
+Critical Infrastructure	Universities	Universities		Number of facilities within urban area, if any.	CHAR_FIELD	200		
+Critical Infrastructure	Industrial areas	Industrial areas		Number of industrial complexes/parks/zones within influence area, if any.	CHAR_FIELD	210		
+Critical Infrastructure	Events	Events with high concentration of people		Relevant events/gatherings associated to tourism, sport, political, cultural or religious matters, if any. Please specify frequency.	TEXT_FIELD	220		
+Critical Infrastructure	Other relevant infrastructure	Other relevant infrastructure		List other critical infrastructure in influence area, if any.	TEXT_FIELD	230		

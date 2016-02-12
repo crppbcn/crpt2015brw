@@ -1,18 +1,18 @@
 Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
-Basic	Country	Country		Country	CHAR_FIELD	10		
-Basic	Capital	Capital		Capital	CHAR_FIELD	20		
-Basic	Region	Region		Region	CHAR_FIELD	30		
-Basic	County	County		County	CHAR_FIELD	40		
-Basic	Time zone	Time zone	In relation to GMT	Time zone	CHAR_FIELD	50		
-Geographic	Coordinates	Coordinates	Geodetic coordinates	Coordinates	CHAR_FIELD	60		
-Geographic	Altitude	Altitude	Range of altitudes, in metres	Altitude	TEXT_FIELD	70		
-Geographic	Climate type	Climate type	According to Kopper climate classification	Climate type	TEXT_FIELD	80		
-Geographic	Temp. range	Temperature range	Minimum, maximum and average yearly temperature	Temperature range	TEXT_FIELD	90		
-Geographic	Rainfall range	Rainfall range	Minimum, maximum and average monthly rainfall	Rainfall range	TEXT_FIELD	100		
-Geographic	Other info.	Other climatic relevant information	Months with characteristic phenomena. Ex.: extreme temperatures, rainfall, drought, monsoon, etc.	Other climatic relevant information	TEXT_FIELD	110		
-Geographic	Geo. charact.	Geographical characteristics	Coastal area, mainland, near or on a mountain, near or on a river, near or on an tectonic fault line, etc.	Geographical characteristics	TEXT_FIELD	120		
-Geographic	Urban area	Urban area	Area within the boundaries where your local government has jurisdiction. Ex.: municipality area in km2	Urban area	DATE	130	YES	
-Geographic	Metropolitan area	Metropolitan area	Area of influence in terms of economy and labour market, in km2	Metropolitan area	TEXT_FIELD	140		
-Basic	Sublocal div.	Sublocal divisions	Relevant administrative subdivisions. Ex.: districts, neighbourhoods, etc.	Sublocal divisions	SELECT_SINGLE	150	YES	CITY_ROLE
-Other - Location	Plan or map	Representative plan or map of your city	Please provide link(s) to a masterplan or map of your city including the boundaries of your local government	Plan or map	UPLOAD_DOCS	160		
-Other - Location	Repr. View	Representative view of your city	Please provide link(s) to an orthophoto and/or aerial view of your city	Representative view	SELECT_MULTI	170	YES	GAS_SUPPLY
+Geographic	Country	Country		Name	CHAR_FIELD	10		
+Geographic	Capital	Capital		Name	CHAR_FIELD	20		
+Geographic	Supra-Local	Main Supra-Local Divisions	Ex.: Region, State	Major administrative supra-local divisions	TEXT_FIELD	30	YES	
+Geographic	Other-Supra-Local	Other Supra-Local Divisions	Ex.: County, Province, etc.	Other relevant supra-local administrative divisions	TEXT_FIELD	40	YES	
+Geographic	Time zone	Time zone	In relation to UTC (Coordinated Universal Time).	#ERROR!	CHAR_FIELD	50		
+Geographic	Coordinates	Coordinates	Ex: 41°24'45.1"N 2°10'29.9"E	Geodetic coordinates	CHAR_FIELD	60		
+Geographic	Altitude	Altitude	Ex: From 35 to 367m	Range of altitudes, in meters	CHAR_FIELD	70		
+Geographic	Characteristics	Geographical characteristics	Ex: Coastal area, mainland, near or on a mountain, near or on a river, near or on a tectonic fault line, etc.	Main geographical characteristics	TEXT_FIELD	80		
+Climate	Climate type	Climate type	Ex: Tropical monsoon climate	According to Köppen climate classification.	CHAR_FIELD	90		
+Climate	Temperature range	Temperature range	Ex: min. -5 C; max. +27 C; avg. 15 C	Minimum, maximum and average yearly temperature.	CHAR_FIELD	100		
+Climate	Rainfall range	Rainfall range	Ex: min. 35 mm; max. 180mm; avg. 91mm	Minimum, maximum and average monthly rainfall. If relevant, please indicate the same data for snowfall.	CHAR_FIELD	110		
+Climate	Other	Other climatic relevant information	Ex.: Extreme temperatures, rainfall, drought, monsoon, etc.	Months with characteristic phenomena.	TEXT_FIELD	120		
+Local	Urban area	Urban area	Ex: Municipality area in km2	Area within the boundaries where your local government has jurisdiction.	CHAR_FIELD	130		
+Local	Metropolitan area	Metropolitan area		Area of influence in terms of economy and labour market, in km2.	CHAR_FIELD	140		
+Local	Sub-local divisions	Sub-local divisions	Ex.: Districts, wards, neighbourhoods, etc.	Relevant administrative subdivisions.	CHAR_FIELD	150		
+Local	Map of the city	Representative plan or map of your city		Please upload or provide link(s) to a masterplan or map of your city including the boundaries of your local government.	UPLOAD_FIELD	160		
+Local	View of the city	Representative view of your city		Please upload or provide link(s) to an orthophoto and/or aerial view of your city.	UPLOAD_FIELD	170		
