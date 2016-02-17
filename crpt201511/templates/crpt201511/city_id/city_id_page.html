@@ -42,7 +42,7 @@
                                 <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
+                                    <label class="col-lg-3 control-label padding_right" data-toggle="tooltip" data-placement="top" data-original-title="{{ form.question_long.value }}">{{ form.question_short.value }}</label>
                                     <div class="col-lg-9">
                                         {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                         {% render_field form.response class+="form-control" placeholder=form.placeholder.value %}
@@ -79,7 +79,7 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
-                                        <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
+                                        <label class="col-lg-3 control-label padding_right" data-toggle="tooltip" data-placement="top" data-original-title="{{ form.question_long.value }}">{{ form.question_short.value }}</label>
                                         <div class="col-lg-9">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
@@ -116,7 +116,7 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
-                                        <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
+                                        <label class="col-lg-3 control-label padding_right" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.question_long.value }}">{{ form.question_short.value }}</label>
                                         <div class="col-lg-9">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
@@ -156,7 +156,7 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
+                                    <label class="col-lg-3 control-label padding_right" data-toggle="tooltip" data-placement="left" data-original-title="{{ form.question_long.value }}">{{ form.question_short.value }}</label>
                                     <div class="col-lg-2">
                                         {% with form_id=form.id.html_name %}
                                         <a href="#" class="btn btn-danger" {% if not form.file_2 %}onclick="upload_files_click('{{form_id}}');"{% endif %}>Select files</a>
@@ -222,7 +222,7 @@
             <div id="crpt-right-menu" class="right-menu">
                 <a id="a-considerations" class="selected" href="#" onclick="showConsiderations();">Considerations</a>
                 <br>
-                <a id="a-comments" href="#" onclick="showComments();">Comments</a>
+                <a id="a-comments" href="#" onclick="showComments();">{%if comments|length > 0 %} ({{comments|length}}) {%endif%}Comments</a>
             </div>
 
 

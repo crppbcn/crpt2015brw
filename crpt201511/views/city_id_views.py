@@ -133,7 +133,6 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
                     sys.stdout.flush()
 
                 if fs_sf and fs_sf.is_valid():
-                    not_applicable_responses_treatment(fs_sf)
                     fs_sf.save()
                 else:
                     print("fs_sf not informed or not valid!")

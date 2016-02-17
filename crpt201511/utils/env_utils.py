@@ -39,6 +39,18 @@ def ftp_is_off():
     return ftp_is_in_state(OFF)
 
 
+def trace_is_in_state(state):
+    return FTP == state
+
+
+def trace_is_on():
+    return ftp_is_in_state(ON)
+
+
+def trace_is_off():
+    return ftp_is_in_state(OFF)
+
+
 def debug_is_in_state(state):
     return MY_DEBUG == state
 
