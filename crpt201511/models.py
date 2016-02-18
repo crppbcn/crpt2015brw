@@ -261,12 +261,18 @@ class AssessmentCityIDQuestionSelectField(AssessmentCityIDQuestion):
     multi = django.db.models.BooleanField(default=False)
 
 
+class AssessmentCityIDChoicesOtherTx(BasicName):
+    """
+    Represents Other Means of Tx added by city in an assessment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+
+
 class AssessmentCityIDQuestionTextField(AssessmentCityIDQuestion):
     """
     Represents a question for CityID in an assessment with value CharField
     """
     response = django.db.models.TextField(null=True, blank=True)
-
 
 
 class AssessmentCityIDQuestionUploadField(AssessmentCityIDQuestion):
@@ -295,6 +301,46 @@ class AssessmentCityIDSectionComment(Common):
     person = django.db.models.ForeignKey(Person)
     date_created = django.db.models.DateTimeField(auto_now=True)
 
+
+#######################################
+#
+# CityID Options for select questions
+#
+#######################################
+class ChoicesCityRole(BasicName):
+    """
+    Represents City Roles
+    """
+
+
+class ChoicesGasSupply(BasicName):
+    """
+    Represents Gas Supply destinations
+    """
+
+
+class ChoicesRoadTx(BasicName):
+    """
+    Represents Road Transport types
+    """
+
+
+class ChoicesRailTx(BasicName):
+    """
+    Represents Rail Transport types
+    """
+
+
+class ChoicesWaterTx(BasicName):
+    """
+    Represents Water Transport types
+    """
+
+
+class ChoicesOtherTx(BasicName):
+    """
+    Represents Other Transport types
+    """
 
 #######################################
 #

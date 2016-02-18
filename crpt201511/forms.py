@@ -2,11 +2,14 @@ from django.forms import ModelForm
 
 import sys
 
+from ast import literal_eval
 from fields import *
 from django import forms
+from django.utils.encoding import *
 
 from crpt201511.models import AssessmentCityIDQuestionUploadField, AssessmentCityIDQuestionFile, \
-    AssessmentCityIDQuestionSelectField, MoVType
+    AssessmentCityIDQuestionSelectField, MoVType, ChoicesGasSupply, ChoicesCityRole, ChoicesRoadTx, ChoicesRailTx, \
+    ChoicesWaterTx, ChoicesOtherTx, AssessmentCityIDChoicesOtherTx
 from crpt201511.constants import *
 
 
@@ -98,11 +101,62 @@ class AssessmentCityIDQuestionSelectFieldForm(forms.ModelForm):
         # set multi and choices
         if self.instance:
 
-            if self.instance.choices and self.instance.choices.strip() <> "":
-                if self.instance.multi:
-                    self.fields['response'].widget = forms.SelectMultiple(choices=CHOICES[self.instance.choices])
-                else:
-                    self.fields['response'].widget = forms.Select(CHOICES[self.instance.choices])
+            if self.instance.choices and self.instance.choices.strip() != "":
+                if self.instance.choices == GAS_SUPPLY:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.SelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesGasSupply.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesGasSupply.objects.all().order_by('id')))
+
+                if self.instance.choices == CITY_ROLE:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.SelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesCityRole.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesCityRole.objects.all().order_by('id')))
+
+                if self.instance.choices == ROAD_TX:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.SelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesRoadTx.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesRoadTx.objects.all().order_by('id')))
+
+                if self.instance.choices == RAIL_TX:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.SelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesRailTx.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesRailTx.objects.all().order_by('id')))
+
+                if self.instance.choices == OTHER_TX:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.SelectMultiple(choices=tuple([str(a.id), a.name]for a in
+                            AssessmentCityIDChoicesOtherTx.objects.filter(assessment=self.instance.assessment).order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(choices=tuple([str(a.id), a.name] for a in
+                            AssessmentCityIDChoicesOtherTx.objects.filter(assessment=self.instance.assessment).order_by('id')))
+                    # setting initial value with some processing of stored string of selected values
+                    selected = literal_eval(self.instance.response)
+                    self.initial['response'] = selected
+
+                    # add field to input new option
+                    self.fields['other'] = forms.CharField( label='Add new', max_length=250, required=False)
 
             # add checkbox field for not applicable option
             if self.instance.not_applicable:

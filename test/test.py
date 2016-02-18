@@ -95,6 +95,13 @@ def test_create_new_assessment():
             a_cid_question.assessment = assessment
             a_cid_question.choices = cid_question.choices
             a_cid_question.multi = cid_question.multi
+            # creation of other tx choices for this assessment
+            if cid_question.choices == OTHER_TX:
+                for other_tx in ChoicesOtherTx.objects.all():
+                    a_cid_other_tx = AssessmentCityIDChoicesOtherTx()
+                    a_cid_other_tx.name = other_tx
+                    a_cid_other_tx.assessment = assessment
+                    a_cid_other_tx.save()
             a_cid_question.save()
 
         # UploadField
@@ -127,8 +134,17 @@ def test_get_remote_folder_name():
     print("test_get_remote_folder_name.End")
 
 
+
+
+
+
+
+
 if __name__ == "__main__":
     #test_threading()
     #test_version_selected()
     #test_get_remote_folder_name()
     test_create_new_assessment()
+
+
+

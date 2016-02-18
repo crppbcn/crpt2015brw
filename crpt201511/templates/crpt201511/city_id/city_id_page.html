@@ -42,7 +42,7 @@
                                 <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-lg-3 control-label padding_right" data-toggle="tooltip" data-placement="top" data-original-title="{{ form.question_long.value }}">{{ form.question_short.value }}</label>
+                                    <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
                                     <div class="col-lg-9">
                                         {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                         {% render_field form.response class+="form-control" placeholder=form.placeholder.value %}
@@ -79,7 +79,7 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
-                                        <label class="col-lg-3 control-label padding_right" data-toggle="tooltip" data-placement="top" data-original-title="{{ form.question_long.value }}">{{ form.question_short.value }}</label>
+                                        <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
                                         <div class="col-lg-9">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
@@ -116,10 +116,11 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
-                                        <label class="col-lg-3 control-label padding_right" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.question_long.value }}">{{ form.question_short.value }}</label>
+                                        <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
                                         <div class="col-lg-9">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
+                                            {% render_field form.other class+="form-control" %}
                                             {% if form.help_text and form.help_text.value != '' %}
                                                 <span class="help-block">{{ form.help_text.value }}</span>
                                             {% endif %}
@@ -156,7 +157,7 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-lg-3 control-label padding_right" data-toggle="tooltip" data-placement="left" data-original-title="{{ form.question_long.value }}">{{ form.question_short.value }}</label>
+                                    <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
                                     <div class="col-lg-2">
                                         {% with form_id=form.id.html_name %}
                                         <a href="#" class="btn btn-danger" {% if not form.file_2 %}onclick="upload_files_click('{{form_id}}');"{% endif %}>Select files</a>
@@ -206,8 +207,10 @@
 
                             <div class="form-group" order="9999">
                                 <div class="col-lg-10 col-lg-offset-3">
+                                  {% comment %}
                                   <button type="reset" class="btn btn-default">Cancel</button>
-                                  <button type="submit" class="btn btn-danger">Submit</button>
+                                  {% endcomment %}
+                                  <button type="submit" class="btn btn-danger">Save</button>
                                 </div>
                             </div>
                         </fieldset>
@@ -279,7 +282,7 @@
                             <div class="form-group">
                                 <div class="">
                                     <button type="reset" class="btn btn-default">Cancel</button>
-                                    <button type="submit" class="btn btn-danger">Submit</button>
+                                    <button type="submit" class="btn btn-danger">Save</button>
                                 </div>
                             </div>
                         </fieldset>

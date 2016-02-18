@@ -110,13 +110,7 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
 
                 if fs_cf and fs_cf.is_valid():
                     not_applicable_responses_treatment(fs_cf)
-
-                    for form in fs_cf:
-                        for field_name in  form.changed_data:
-                            print("CHANGED: " + field_name + ". Value: " + form.cleaned_data[field_name])
-                            sys.stdout.flush()
-
-
+                    trace_updated_fields(fs_cf, person, assessment)
                     fs_cf.save()
                 else:
                     print("fs_cf not informed or not valid!")
@@ -125,6 +119,7 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
 
                 if fs_tf and fs_tf.is_valid():
                     not_applicable_responses_treatment(fs_tf)
+                    trace_updated_fields(fs_tf, person, assessment)
                     fs_tf.save()
                 else:
                     print("fs_tf not informed or not valid!")
@@ -133,13 +128,41 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
                     sys.stdout.flush()
 
                 if fs_sf and fs_sf.is_valid():
-                    fs_sf.save()
+                    trace_updated_fields(fs_sf, person, assessment)
+                    # treatment for user added choices ("please specify")
+                    for f in fs_sf:
+                        data = f.cleaned_data
+                        try:
+                            # add new choice to the list
+                            other_choice = data['other']
+                            if other_choice != "":
+                                print("other_choice: " + other_choice)
+                                a_cid_other_tx = AssessmentCityIDChoicesOtherTx()
+                                a_cid_other_tx.assessment = assessment
+                                a_cid_other_tx.name = other_choice
+                                a_cid_other_tx.save()
+                                # add new selected choice
+                                question = f.save(commit=False)
+                                response = data['response']
+                                response = response[:len(response)-1]
+                                new_str = ", u'" + str(a_cid_other_tx.id) + "']"
+                                response += new_str
+                                question.response = response
+                                question.save()
+                            else:
+                                f.save()
+                        except KeyError:
+                            # n_a field not found
+                            pass
+                    # Not needed. Each form is saved individually
+                    #fs_sf.save()
                 else:
                     print("fs_sf not informed or not valid!")
                     print(str(fs_sf.errors))
                     sys.stdout.flush()
 
                 if fs_uf and fs_uf.is_valid():
+                    trace_updated_fields(fs_cf, person, assessment)
                     fs_uf.save()
 
                     # file upload processing

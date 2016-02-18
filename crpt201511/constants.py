@@ -30,6 +30,7 @@ TRACE_LOGIN = "USER LOGIN"
 TRACE_LOGOUT = "USER LOGOUT"
 TRACE_MAIL_COMMENT = "NEW COMMENT EMAIL"
 TRACE_COMMENT = "NEW COMMENT"
+TRACE_UPDATED_FIELDS = "UPDATED FIELDS"
 
 
 ################################################
@@ -158,7 +159,7 @@ CABLE_TX = "1"
 ANY_OTHER_TX = "2"
 
 OTHER_TX_CHOICES = (
-    (N_A, 'Not applicable'),
+    (N_A, 'Xoriso'),
     (CABLE_TX, 'Cable Transport'),
     (ANY_OTHER_TX, 'Any other, please specify'),
 )
