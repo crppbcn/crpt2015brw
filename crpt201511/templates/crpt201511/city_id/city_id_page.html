@@ -1,9 +1,9 @@
 {% extends "crpt201511/common/nav_menu.html" %}
 {% load widget_tweaks %}
 {% block content %}
-<div id="crpt-menu_page" class="row col-lg-12">
-    <div class="row col-lg-12">
-        <div id="crpt-left-menu" class="col-lg-2 padding_right">
+<div id="crpt-menu_page" class="row col-md-12">
+    <div class="row col-md-12">
+        <div id="crpt-left-menu" class="col-md-2 padding_right">
 
             <div class="list-group table-of-contents">
                 {% for elem in left_elements %}
@@ -16,7 +16,7 @@
 
         </div>
 
-        <div id="crpt-center" class="col-lg-6 padding_right">
+        <div id="crpt-center" class="col-md-6 padding_right">
             <div class="bs-component">
                 <div class="well bs-component">
                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
@@ -42,8 +42,8 @@
                                 <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
-                                    <div class="col-lg-9">
+                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_short.value }}</label>
+                                    <div class="col-md-12">
                                         {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                         {% render_field form.response class+="form-control" placeholder=form.placeholder.value %}
                                         {% if form.help_text and form.help_text.value != '' %}
@@ -79,8 +79,8 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
-                                        <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
-                                        <div class="col-lg-9">
+                                        <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_short.value }}</label>
+                                        <div class="col-md-12">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
                                             {% if form.help_text and form.help_text.value != '' %}
@@ -116,8 +116,8 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
-                                        <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
-                                        <div class="col-lg-9">
+                                        <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_short.value }}</label>
+                                        <div class="col-md-12">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
                                             {% render_field form.other class+="form-control" %}
@@ -157,14 +157,14 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-lg-3 control-label padding_right">{{ form.question_short.value }}</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_short.value }}</label>
+                                    <div class="col-md-12">
                                         {% with form_id=form.id.html_name %}
                                         <a href="#" class="btn btn-danger" {% if not form.file_2 %}onclick="upload_files_click('{{form_id}}');"{% endif %}>Select files</a>
                                         {% endwith%}
                                         {% render_field form.files class+="no_visible" %}
                                     </div>
-                                    <div class="col-lg-7">
+                                    <div class="col-md-7">
                                         {% if form.files.errors %}
                                             {{ form.files.errors }}
                                         {% else %}
@@ -184,7 +184,7 @@
                                             </ul>
                                         {% endif%}
                                     </div>
-                                    <div class="col-lg-9 col-lg-offset-3">
+                                    <div class="col-md-9 col-md-offset-3">
                                         {% if form.help_text and form.help_text.value != '' %}
                                             <span class="help-block">{{ form.help_text.value }}</span>
                                         {% endif %}
@@ -206,7 +206,7 @@
                             {% endfor %}
 
                             <div class="form-group" order="9999">
-                                <div class="col-lg-10 col-lg-offset-3">
+                                <div class="col-md-10 col-md-offset-0">
                                   {% comment %}
                                   <button type="reset" class="btn btn-default">Cancel</button>
                                   {% endcomment %}
@@ -220,7 +220,7 @@
             </div>
         </div> <!-- crpt-center -->
 
-        <div id="crpt-right-column" class="col-lg-4">
+        <div id="crpt-right-column" class="col-md-4">
 
             <div id="crpt-right-menu" class="right-menu">
                 <a id="a-considerations" class="selected" href="#" onclick="showConsiderations();">Considerations</a>

@@ -1,6 +1,6 @@
 {% extends "crpt201511/common/header.html" %}
 {% block content %}
-<div class="jumbotron col-lg-12" >
+<div class="jumbotron col-md-12" >
     <h1 class="page-header">Welcome</h1>
 
     <div id="welcome">
@@ -10,7 +10,7 @@
 
         <p>Should we put a checkbox to allow user hide this page? (Do not show this page again?).</p>
     </div>
-    <div class="col-lg-1 col-lg-offset-11" style="padding-left:30px;">
+    <div class="col-md-1 col-md-offset-11" style="padding-left:30px;">
         <a href="{% url 'steps' assessment_id=assessment.id %}" class="btn btn-danger">Next</a>
     </div>
 

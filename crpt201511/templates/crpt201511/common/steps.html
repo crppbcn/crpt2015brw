@@ -1,28 +1,28 @@
 {% extends "crpt201511/common/header.html" %}
 {% load admin_static %}
 {% block content %}
-<div class="jumbotron col-lg-12" >
+<div class="jumbotron col-md-12" >
     <h1 class="page-header">Steps</h1>
 
-    <div class="row col-lg-12" style="position:relative;">
-        <div class="col-lg-3">
-            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-lg-5" style="height:180px;width:100%;">
+    <div class="row col-md-12" style="position:relative;">
+        <div class="col-md-3">
+            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-md-5" style="height:180px;width:100%;">
                 <img src="{% static 'crpt201511/img/step1.png' %}" class="steps"/>
             </a>
         </div>
-        <div class="col-lg-3">
-            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-lg-5" style="height:180px;width:100%;">
+        <div class="col-md-3">
+            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-md-5" style="height:180px;width:100%;">
                 <img src="{% static 'crpt201511/img/step2.png' %}" class="steps"/>
             </a>
         </div>
-        <div class="col-lg-3">
-            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-lg-5" style="height:180px;width:100%;">
+        <div class="col-md-3">
+            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-md-5" style="height:180px;width:100%;">
                 <img src="{% static 'crpt201511/img/step3.png' %}" class="steps"/>
             </a>
         </div>
 
-        <div class="col-lg-3">
-            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-lg-5" style="height:180px;width:100%;">
+        <div class="col-md-3">
+            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-md-5" style="height:180px;width:100%;">
                 <img src="{% static 'crpt201511/img/step4.png' %}" class="steps"/>
             </a>
         </div>
