@@ -1,0 +1,5 @@
+Section Code	Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
+CID0024	Cooperation	Inter-city cooperation	Inter-city cooperation	Ex.: sister-cities, twin-cities, city-to-city	Cooperation with other cities, existing or in the process of creation	TEXT_FIELD	10	Yes	
+CID0024	Cooperation	Partnerships to develop resilience, international	Partnerships to develop resilience, international	Ex.: international NGOs, development banks, cooperation/development agencies, etc.	Cooperation with international agencies or actors, existing or in the process of creation	TEXT_FIELD	20	Yes	
+CID0024	Cooperation	Partnerships to develop resilience, supra-local	Partnerships to develop resilience, supra-local	Ex.: civil defence, ministries, etc.	Cooperation with national or regional level government bodies, existing or in the process of creation	TEXT_FIELD	30	Yes	
+CID0024	Cooperation	Partnerships to develop resilience, local	Partnerships to develop resilience, local	Ex.: public-private partnerships, local NGOs, etc.	Cooperation with private sector or civil society in the local level, existing or in the process of creation	TEXT_FIELD	40	Yes	

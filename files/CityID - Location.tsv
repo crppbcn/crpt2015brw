@@ -1,0 +1,18 @@
+Code	Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
+CID0002	Geographic	Country	Country		Name	CHAR_FIELD	10		
+CID0002	Geographic	Capital	Capital		Name	CHAR_FIELD	20		
+CID0002	Geographic	Supra-Local	Main Supra-Local Divisions	Ex.: Region, State, etc.	Major administrative supra-local divisions	TEXT_FIELD	30	YES	
+CID0002	Geographic	Other-Supra-Local	Other Supra-Local Divisions	Ex.: County, Province, etc.	Other relevant administrative supra-local divisions.	TEXT_FIELD	40	YES	
+CID0002	Geographic	Time zone	Time zone	Ex: +[hh]:[mm]	In relation to UTC (Coordinated Universal Time)	CHAR_FIELD	50		
+CID0002	Geographic	Coordinates	Coordinates	Ex: 41°24'45.1"N 2°10'29.9"E	Geodetic coordinates	CHAR_FIELD	60		
+CID0002	Geographic	Altitude	Altitude	Ex: From 35 to 367m	Range of altitudes, in meters	CHAR_FIELD	70		
+CID0002	Geographic	Characteristics	Geographical characteristics	Ex: Coastal area, mainland, near or on a mountain, near or on a river, near or on a tectonic fault line, etc.	Main geographical characteristics	TEXT_FIELD	80		
+CID0003	Climate	Climate type	Climate type	Ex: Tropical monsoon climate (Am)	According to Köppen climate classification	CHAR_FIELD	90		
+CID0003	Climate	Temperature range	Temperature range	Ex: min. -5 C; max. +27 C; avg. 15 C	Minimum, maximum and average yearly temperature	CHAR_FIELD	100		
+CID0003	Climate	Rainfall range	Rainfall range	Ex: min. 35 mm; max. 180mm; avg. 91mm   If relevant, please indicate the same data for snowfall	Minimum, maximum and average monthly rainfall	CHAR_FIELD	110		
+CID0003	Climate	Other	Other climatic relevant information	Ex.: Extreme temperatures, rainfall, drought, monsoon, etc.	Months with characteristic phenomena	TEXT_FIELD	120		
+CID0004	Local	Urban area	Urban area	Ex: Municipality area in km2	Area within the boundaries where your local government has jurisdiction	CHAR_FIELD	130		
+CID0004	Local	Metropolitan area	Metropolitan area		Area of influence in terms of economy and labour market, in km2	CHAR_FIELD	140		
+CID0004	Local	Sub-local divisions	Sub-local divisions	Ex.: Districts, wards, neighbourhoods, etc.	Relevant administrative subdivisions	CHAR_FIELD	150		
+CID0004	Local	Map of the city	Representative plan or map of your city	Please upload or provide link(s) to a masterplan or map of your city including the boundaries of your local government.	Please upload or provide link(s) to a masterplan or map of your city including the boundaries of your local government.	UPLOAD_FIELD	160		
+CID0004	Local	View of the city	Representative view of your city	Please upload or provide link(s) to an orthophoto and/or aerial view of your city.	Please upload or provide link(s) to an orthophoto and/or aerial view of your city.	UPLOAD_FIELD	170		

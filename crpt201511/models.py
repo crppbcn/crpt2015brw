@@ -6,11 +6,12 @@ from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.utils import timezone
 
-"""""""""""""""""""""""""""""""""""""""
+#######################################
+#
+# Basic abstract classes
+#
+#######################################
 
-Basic abstract classes
-
-"""""""""""""""""""""""""""""""""""""""
 
 class Common(django.db.models.Model):
     """
@@ -34,11 +35,11 @@ class BasicName(Common):
     class Meta:
         abstract = True
 
-"""""""""""""""""""""""""""""""""""""""
-
-Users & roles
-
-"""""""""""""""""""""""""""""""""""""""
+#######################################
+#
+# User & roles
+#
+#######################################
 
 
 class Role(BasicName):
@@ -66,11 +67,11 @@ class Person(BasicName):
     personal_title = django.db.models.CharField(max_length=5, null=True, blank=True)
     role = django.db.models.ForeignKey(Role)
 
-"""""""""""""""""""""""""""""""""""""""
-
-Utilities: tracing
-
-"""""""""""""""""""""""""""""""""""""""
+#######################################
+#
+# Utilities: tracing
+#
+#######################################
 
 
 class TraceAction(Common):
@@ -82,11 +83,18 @@ class TraceAction(Common):
     person = django.db.models.ForeignKey(Person)
     date = django.db.models.DateTimeField(default=timezone.now, null=False, blank=False)
 
-"""""""""""""""""""""""""""""""""""""""
+#######################################
+#
+# Master Data
+#
+#######################################
 
-Master Data
 
-"""""""""""""""""""""""""""""""""""""""
+class Dimension(BasicName):
+    """
+    Represents a dimension of the model
+    """
+
 
 class AssessmentVersion(Common):
     """
@@ -125,10 +133,12 @@ class Element(BasicName):
     parent = django.db.models.ForeignKey('self', null=True, blank=True)
 
 
-class CityIDSection(BasicName):
+class CityIDSection(Common):
     """
     Represents a section of CityID
     """
+    code = django.db.models.CharField(max_length=20)
+    name = django.db.models.CharField(max_length=50, null=True, blank=True)
     order = django.db.models.IntegerField(null=True, blank=True)
     parent = django.db.models.ForeignKey('self', null=True, blank=True, related_name="parent_section")
     next_one = django.db.models.ForeignKey('self', null=True, blank=True, related_name="next_section")
@@ -198,7 +208,7 @@ class CityIDQuestionSelectField(CityIDQuestion):
     Represents a CityID question with CharField answer
     """
     choices = django.db.models.CharField(max_length=50)
-    multi = django.db.models.BooleanField(default=False)
+    multi = django.db.models.BooleanField(blank=True)
 
 
 class CityIDQuestionTextField(CityIDQuestion):
@@ -300,6 +310,50 @@ class AssessmentCityIDSectionComment(Common):
     comment = django.db.models.CharField(max_length=500)
     person = django.db.models.ForeignKey(Person)
     date_created = django.db.models.DateTimeField(auto_now=True)
+
+
+#######################################
+#
+# Indicators
+#
+#######################################
+class Component(Common):
+    """
+    Represents an indicator
+    """
+    assessment_version = django.db.models.ForeignKey(AssessmentVersion)
+    code = django.db.models.CharField(max_length=20)
+    name = django.db.models.CharField(max_length=50, null=True, blank=True)
+    order = django.db.models.IntegerField(null=True, blank=True)
+    parent = django.db.models.ForeignKey('self', null=True, blank=True, related_name="parent_element")
+    next_one = django.db.models.ForeignKey('self', null=True, blank=True, related_name="next_element")
+    long_name = django.db.models.CharField(max_length=250, null=True, blank=True)
+    description = django.db.models.TextField(null=True, blank=True)
+    dimension = django.db.models.ForeignKey(Dimension, null=True, blank=True)
+    data_source = django.db.models.CharField(max_length=250, null=True, blank=True)
+    comment = django.db.models.CharField(max_length=500, null=True, blank=True)
+
+
+class ComponentConsideration(Common):
+    """
+    Represents comments for a CityID Section
+    """
+    element = django.db.models.ForeignKey(Component)
+    comment = django.db.models.CharField(max_length=500)
+
+
+class ComponentExample(Common):
+    """
+    Represents comments for a CityID Section
+    """
+    element = django.db.models.ForeignKey(Component)
+    example = django.db.models.CharField(max_length=500)
+
+
+
+
+
+
 
 
 #######################################

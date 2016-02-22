@@ -213,3 +213,4 @@ FILE_EXTENSIONS = ['pdf', 'PDF', 'jpg', 'JPG', 'png', 'PNG']
 ################################################
 YES_STR = "YES"
 NO_STR = "NO"
+EXAMPLE = "Example(s)"

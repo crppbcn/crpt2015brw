@@ -21,10 +21,10 @@
                 <div class="well bs-component">
                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
                         <legend>
-                            {{ section.name }}
+                            {{ section.long_name }}
                             <a href="#" alt="Help" data-toggle="modal" data-target="#myModal"></a>&nbsp;&nbsp;
                         </legend>
-                        <blockquote>{{ subsection.name }}</blockquote>
+                        <blockquote>{{ subsection.long_name }}</blockquote>
                         <fieldset id="fs">
                             {% comment %} fs_cf display {% endcomment %}
                             {{ fs_cf.management_form }}
@@ -42,7 +42,7 @@
                                 <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_short.value }}</label>
+                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
                                     <div class="col-md-12">
                                         {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                         {% render_field form.response class+="form-control" placeholder=form.placeholder.value %}
@@ -79,10 +79,10 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
-                                        <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_short.value }}</label>
+                                        <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
                                         <div class="col-md-12">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
-                                            {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
+                                            {% render_field form.response class+="form-control" placeholder=form.placeholder.value rows=3 %}
                                             {% if form.help_text and form.help_text.value != '' %}
                                                 <span class="help-block">{{ form.help_text.value }}</span>
                                             {% endif %}
@@ -116,10 +116,10 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
-                                        <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_short.value }}</label>
+                                        <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
                                         <div class="col-md-12">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
-                                            {% render_field form.response class+="form-control" placeholder=form.question_short.value rows=3 %}
+                                            {% render_field form.response class+="" placeholder=form.placeholder.value rows=3 %}
                                             {% render_field form.other class+="form-control" %}
                                             {% if form.help_text and form.help_text.value != '' %}
                                                 <span class="help-block">{{ form.help_text.value }}</span>
@@ -157,18 +157,18 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_short.value }}</label>
+                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
                                     <div class="col-md-12">
                                         {% with form_id=form.id.html_name %}
                                         <a href="#" class="btn btn-danger" {% if not form.file_2 %}onclick="upload_files_click('{{form_id}}');"{% endif %}>Select files</a>
                                         {% endwith%}
                                         {% render_field form.files class+="no_visible" %}
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-12">
                                         {% if form.files.errors %}
                                             {{ form.files.errors }}
                                         {% else %}
-                                            &nbsp;&nbsp;&nbsp;&nbsp;Uploaded files:<br>
+                                            Uploaded files:<br>
                                             <ul>
                                             {% if form.file_0 %}
                                                 <li>{{ form.file_0.value }}
@@ -184,7 +184,7 @@
                                             </ul>
                                         {% endif%}
                                     </div>
-                                    <div class="col-md-9 col-md-offset-3">
+                                    <div class="col-md-12">
                                         {% if form.help_text and form.help_text.value != '' %}
                                             <span class="help-block">{{ form.help_text.value }}</span>
                                         {% endif %}

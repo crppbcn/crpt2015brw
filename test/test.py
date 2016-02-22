@@ -96,7 +96,7 @@ def test_create_new_assessment():
             a_cid_question.choices = cid_question.choices
             a_cid_question.multi = cid_question.multi
             # creation of other tx choices for this assessment
-            if cid_question.choices == OTHER_TX:
+            if cid_question.choices.strip() == OTHER_TX:
                 for other_tx in ChoicesOtherTx.objects.all():
                     a_cid_other_tx = AssessmentCityIDChoicesOtherTx()
                     a_cid_other_tx.name = other_tx
@@ -134,8 +134,12 @@ def test_get_remote_folder_name():
     print("test_get_remote_folder_name.End")
 
 
-
-
+def test_multi():
+    print("test_multi.Start")
+    question = AssessmentCityIDQuestionSelectField.objects.get(id=14)
+    print("QUESTION: " + question.question_short)
+    print("MULTI: " + str(question.multi))
+    print("test_multi.End")
 
 
 
@@ -144,6 +148,7 @@ if __name__ == "__main__":
     #test_threading()
     #test_version_selected()
     #test_get_remote_folder_name()
+    #test_multi()
     test_create_new_assessment()
 
 

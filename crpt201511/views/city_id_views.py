@@ -155,7 +155,7 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
                             # n_a field not found
                             pass
                     # Not needed. Each form is saved individually
-                    #fs_sf.save()
+                    fs_sf.save()
                 else:
                     print("fs_sf not informed or not valid!")
                     print(str(fs_sf.errors))

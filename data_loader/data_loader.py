@@ -234,8 +234,8 @@ def load_elements():
     print("load_elements. End.")
 
 
-def load_recursive_entity(file_name, class_name):
-    print("load_recursive_entity. Start: " + file_name + " - " + str(class_name))
+def load_city_id_sections(file_name, class_name):
+    print("load_city_id_sections. Start: " + file_name + " - " + str(class_name))
     file_path = settings.BASE_DIR + "/files/" + file_name
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
     data_reader.next()  # to skip headers row
@@ -243,48 +243,52 @@ def load_recursive_entity(file_name, class_name):
     for row in data_reader:
         # check for parent element
         try:
-            if row[2].strip() == '':
+            if row[3].strip() == '':
                 parent_element = None
             else:
-                parent_element = class_name.objects.get(name=row[2].strip())
+                parent_element = class_name.objects.get(code=row[3].strip())
         except:
             parent_element = class_name()
-            parent_element.name = row[0].strip()
-            parent_element.long_name = row[1].strip()
-            parent_element.order = row[4].strip()
-            parent_element.comments = row[5].strip()
+            parent_element.code = row[0].strip()
+            parent_element.name = row[1].strip()
+            parent_element.long_name = row[2].strip()
+            parent_element.order = row[5].strip()
             parent_element.save()
         # load element
         try:
-            element = class_name.objects.get(name=row[0].strip())
+            element = class_name.objects.get(code=row[0].strip())
             element.parent = parent_element
             element.save()
         except:
             element = class_name()
-            element.name = row[0].strip()
-            element.long_name = row[1].strip()
-            element.order = row[4].strip()
+            element.code = row[0].strip()
+            element.name = row[1].strip()
+            element.long_name = row[2].strip()
+            element.order = row[5].strip()
             element.parent = parent_element
             element.save()
-    print("load_recursive_entity. End: " + file_name + " - " + str(class_name))
+    print("load_city_id_sections. End: " + file_name + " - " + str(class_name))
 
 
-def set_next_element(file_name, class_name):
+def set_next_element(file_name, class_name, next_element_field):
     print("set_next_element. Start: " + file_name + " - " + str(class_name))
     file_path = settings.BASE_DIR + "/files/" + file_name
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
     data_reader.next()  # to skip headers row
 
     for row in data_reader:
-        element_name = row[0].strip()
-        next_element_name = row[3].strip()
+        element_code = row[0].strip()
+        next_element_code = row[next_element_field].strip()
         try:
-            if next_element_name != "":
-                element = class_name.objects.get(name=element_name)
-                next_one = class_name.objects.get(name=next_element_name)
+            print("element_code: " + element_code)
+            print("next_element_code: " + next_element_code)
+            if next_element_code != "":
+                element = class_name.objects.get(code=element_code)
+                next_one = class_name.objects.get(code=next_element_code)
                 element.next_one = next_one
                 element.save()
         except:
+            print("Error in set_next_element: " + str(sys.exc_info()))
             print("Error in set_next_element: " + str(sys.exc_traceback))
 
     print("set_next_element. End: " + file_name + " - " + str(class_name))
@@ -297,7 +301,7 @@ def load_considerations_file(file_name, class_name, class_name_comment):
     data_reader.next()  # to skip headers row
     for row in data_reader:
         try:
-            element = class_name.objects.get(name=row[0].strip())
+            element = class_name.objects.get(code=row[0].strip())
             comment = class_name_comment()
             comment.comment = row[1].strip()
             comment.element = element
@@ -320,15 +324,15 @@ def load_city_id_file(file_name):
                 section = None
             else:
                 print("Looking for section: " + row[0].strip())
-                section = CityIDSection.objects.get(name=row[0].strip())
+                section = CityIDSection.objects.get(code=row[0].strip())
         except:
             print("ERROR: " + str(sys.exc_info()))
             print("ERROR: " + str(sys.exc_traceback))
             section = CityIDSection()
-            section.name = row[0].strip()
+            section.code = row[0].strip()
             section.save()
         # question
-        question_type = row[5].strip()
+        question_type = row[6].strip()
         if question_type == CHAR_FIELD:
             question = CityIDQuestionCharField()
         if question_type == TEXT_FIELD:
@@ -337,20 +341,20 @@ def load_city_id_file(file_name):
             question = CityIDQuestionUploadField()
         if question_type == SELECT_SINGLE:
             question = CityIDQuestionSelectField()
-            question.choices = row[8].strip()
+            question.choices = row[9].strip()
             question.multi = False
         if question_type == SELECT_MULTI:
             question = CityIDQuestionSelectField()
-            question.choices = row[8].strip()
+            question.choices = row[9].strip()
             question.multi = True
 
         question.section = section
-        question.question_short = row[1].strip()
-        question.question_long = row[2].strip()
-        question.help_text = row[3].strip()
-        question.placeholder= row[4].strip()
-        question.order = row[6].strip()
-        question.not_applicable = row[7].strip().upper() == YES_STR
+        question.question_short = row[2].strip()
+        question.question_long = row[3].strip()
+        question.help_text = row[4].strip()
+        question.placeholder= row[5].strip()
+        question.order = row[7].strip()
+        question.not_applicable = row[8].strip().upper() == YES_STR
 
         # TODO: creation of new version of assessment procedure!!
         question.version = AssessmentVersion.objects.order_by('-date_released')[0]
@@ -359,10 +363,88 @@ def load_city_id_file(file_name):
     print("load_city_id_file. End: " + file_name)
 
 
+def load_indicator_components(file_name, class_name):
+    print("load_indicator_components. End: " + file_name)
+    file_path = settings.BASE_DIR + "/files/" + file_name
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    assesment_version =  AssessmentVersion.objects.order_by('-date_released')[0]
+
+    for row in data_reader:
+        # check for parent element
+        try:
+            if row[4].strip() == '':
+                parent_element = None
+            else:
+                parent_element = class_name.objects.get(code=row[4].strip())
+        except:
+            parent_element = class_name()
+            parent_element.assessment_version = assesment_version
+            parent_element.code = row[0].strip()
+            parent_element.name = row[1].strip()
+            parent_element.long_name = row[2].strip()
+            parent_element.description = row[3].strip()
+            parent_element.order = row[6].strip()
+            if row[7].strip() != "" and row[7].strip() != "0":
+                parent_element.dimension = Dimension.objects.get(name=row[7].strip())
+            if row[8].strip() != "#N/A":
+                parent_element.data_source = row[8].strip()
+            parent_element.comment = row[11].strip()
+            parent_element.save()
+        # load element
+        try:
+            element = class_name.objects.get(code=row[0].strip())
+            element.parent = parent_element
+            element.save()
+        except:
+            element = class_name()
+            element.assessment_version = assesment_version
+            element.parent = parent_element
+            element.code = row[0].strip()
+            element.name = row[1].strip()
+            element.long_name = row[2].strip()
+            element.description = row[3].strip()
+            element.order = row[6].strip()
+            if row[7].strip() != "" and row[7].strip() != "0":
+                element.dimension = Dimension.objects.get(name=row[7].strip())
+            if row[8].strip() != "#N/A":
+                element.data_source = row[8].strip()
+            element.comment = row[11].strip()
+            element.save()
+    print("load_indicator_components. End: " + file_name)
+
+
+def load_considerations_examples_file(file_name, class_name, class_name_consideration, class_name_example):
+    print("load_considerations_examples_file. Start: " + file_name + " - " + str(class_name))
+    file_path = settings.BASE_DIR + "/files/" + file_name
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+    for row in data_reader:
+        try:
+            element = class_name.objects.get(code=row[0].strip())
+            if row[1].strip() == EXAMPLE:
+                example = class_name_example()
+                example.example = row[3].strip()
+                example.element = element
+                example.save()
+            else:
+                consideration = class_name_consideration()
+                consideration.comment = row[3].strip()
+                consideration.element = element
+                consideration.save()
+        except:
+            print("Error setting consideration/example " + row[0].strip() + "-" + row[2].strip())
+
+    print("load_considerations_examples_file. End: " + file_name + " - " + str(class_name))
+
+
 if __name__ == "__main__":
+    """
     load_users_file()
     load_entity_single_field_name("cities.tsv", City)
     load_entity_single_field_name("roles.tsv", Role)
+    load_entity_single_field_name("dimensions.tsv", Dimension)
     load_entity_single_field_name("mov.tsv", MoVType)
     load_entity_single_field_name("value_type.tsv", ValueType)
     load_people()
@@ -374,19 +456,26 @@ if __name__ == "__main__":
     load_entity_single_field_name("CityID Options - RAIL_TX.tsv", ChoicesRailTx)
     load_entity_single_field_name("CityID Options - WATER_TX.tsv", ChoicesWaterTx)
     load_entity_single_field_name("CityID Options - OTHER_TX.tsv", ChoicesOtherTx)
-    load_recursive_entity("CityID-Sections.tsv", CityIDSection)
-    set_next_element("CityID-Sections.tsv", CityIDSection)
     load_hazards()
     load_elements()
-    load_considerations_file("CityID-SectionComments.tsv", CityIDSection, CityIDSectionConsideration)
-    load_city_id_file("CityID-Location.tsv")
-    load_city_id_file("CityID-Population.tsv")
-    load_city_id_file("CityID-Gov&Policies.tsv")
-    load_city_id_file("CityID-Economy.tsv")
-    load_city_id_file("CityID-BuiltEnvironment.tsv")
-    load_city_id_file("CityID-Partnerships.tsv")
-    load_city_id_file("CityID-PublicRelations.tsv")
-    load_city_id_file("CityID-Other.tsv")
+    # CityID
+    load_city_id_sections("CityID - Sections.tsv", CityIDSection)
+    set_next_element("CityID - Sections.tsv", CityIDSection, 4)
+    load_considerations_file("CityID - SectionComments.tsv", CityIDSection, CityIDSectionConsideration)
+    load_city_id_file("CityID - Location.tsv")
+    load_city_id_file("CityID - Population.tsv")
+    load_city_id_file("CityID - Gov. & Policies.tsv")
+    load_city_id_file("CityID - Economy.tsv")
+    load_city_id_file("CityID - Built Environment.tsv")
+    load_city_id_file("CityID - Partnerships.tsv")
+    load_city_id_file("CityID - Public Relations.tsv")
+    load_city_id_file("CityID - Other.tsv")
+    """
+    # Indicators
+    #load_indicator_components("Indicators - Components.tsv", Component)
+    #set_next_element("Indicators - Components.tsv", Component, 5)
+    load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration, ComponentExample)
+
 
 
 

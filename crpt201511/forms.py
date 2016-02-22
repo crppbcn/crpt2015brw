@@ -105,7 +105,7 @@ class AssessmentCityIDQuestionSelectFieldForm(forms.ModelForm):
                 if self.instance.choices == GAS_SUPPLY:
                     if self.instance.multi:
                         self.fields['response'].widget = \
-                            forms.widgets.SelectMultiple(
+                            forms.widgets.CheckboxSelectMultiple (
                                 choices=tuple([a.id, a.name] for a in ChoicesGasSupply.objects.all().order_by('id')))
                     else:
                         self.fields['response'].widget = \
@@ -115,7 +115,7 @@ class AssessmentCityIDQuestionSelectFieldForm(forms.ModelForm):
                 if self.instance.choices == CITY_ROLE:
                     if self.instance.multi:
                         self.fields['response'].widget = \
-                            forms.widgets.SelectMultiple(
+                            forms.widgets.CheckboxSelectMultiple(
                                 choices=tuple([a.id, a.name] for a in ChoicesCityRole.objects.all().order_by('id')))
                     else:
                         self.fields['response'].widget = \
@@ -125,7 +125,7 @@ class AssessmentCityIDQuestionSelectFieldForm(forms.ModelForm):
                 if self.instance.choices == ROAD_TX:
                     if self.instance.multi:
                         self.fields['response'].widget = \
-                            forms.widgets.SelectMultiple(
+                            forms.widgets.CheckboxSelectMultiple(
                                 choices=tuple([a.id, a.name] for a in ChoicesRoadTx.objects.all().order_by('id')))
                     else:
                         self.fields['response'].widget = \
@@ -135,33 +135,46 @@ class AssessmentCityIDQuestionSelectFieldForm(forms.ModelForm):
                 if self.instance.choices == RAIL_TX:
                     if self.instance.multi:
                         self.fields['response'].widget = \
-                            forms.widgets.SelectMultiple(
+                            forms.widgets.CheckboxSelectMultiple(
                                 choices=tuple([a.id, a.name] for a in ChoicesRailTx.objects.all().order_by('id')))
                     else:
                         self.fields['response'].widget = \
                             forms.widgets.Select(
                                 choices=tuple([a.id, a.name] for a in ChoicesRailTx.objects.all().order_by('id')))
 
+                if self.instance.choices == WATER_TX:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesWaterTx.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesWaterTx.objects.all().order_by('id')))
+
                 if self.instance.choices == OTHER_TX:
                     if self.instance.multi:
                         self.fields['response'].widget = \
-                            forms.widgets.SelectMultiple(choices=tuple([str(a.id), a.name]for a in
+                            forms.widgets.CheckboxSelectMultiple(choices=tuple([str(a.id), a.name]for a in
                             AssessmentCityIDChoicesOtherTx.objects.filter(assessment=self.instance.assessment).order_by('id')))
                     else:
                         self.fields['response'].widget = \
                             forms.widgets.Select(choices=tuple([str(a.id), a.name] for a in
                             AssessmentCityIDChoicesOtherTx.objects.filter(assessment=self.instance.assessment).order_by('id')))
                     # setting initial value with some processing of stored string of selected values
-                    selected = literal_eval(self.instance.response)
-                    self.initial['response'] = selected
+                    if self.instance.response:
+                        selected = literal_eval(self.instance.response)
+                        self.initial['response'] = selected
 
                     # add field to input new option
                     self.fields['other'] = forms.CharField( label='Add new', max_length=250, required=False)
 
             # add checkbox field for not applicable option
+            """
             if self.instance.not_applicable:
                 self.fields['n_a'] = forms.BooleanField(required=False, initial=False,
                                                         widget=forms.CheckboxInput(attrs={}))
+            """
 
 
 class AssessmentCityIDQuestionCharFieldForm(forms.ModelForm):
@@ -175,6 +188,7 @@ class AssessmentCityIDQuestionCharFieldForm(forms.ModelForm):
                 self.fields['n_a'] = forms.BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={}))
 
 
+
 class AssessmentCityIDQuestionTextFieldForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -184,4 +198,3 @@ class AssessmentCityIDQuestionTextFieldForm(forms.ModelForm):
         if self.instance:
             if self.instance.not_applicable:
                 self.fields['n_a'] = forms.BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={}))
-
