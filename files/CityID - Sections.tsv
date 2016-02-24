@@ -4,11 +4,11 @@ CID0002	Geographic	Geographical Information	CID0001	CID0003	20
 CID0003	Climate	Climate	CID0001	CID0004	30
 CID0004	Local	Local Information	CID0001		40
 CID0005	Population	Population		CID0010	60
-CID0006	General	General Information	CID0005	CID0007	70
-CID0007	Detailed	Detailed Information	CID0005	CID0008	80
+CID0006	General	General Population Information	CID0005	CID0007	70
+CID0007	Detailed	Detailed Population Information	CID0005	CID0008	80
 CID0008	Statistics	Statistics	CID0005	CID0009	90
 CID0009	Languages	Languages	CID0005		100
-CID0010	Gov. & Policies	Governance & Policies		CID0013	110
+CID0010	Gov. & Policies	Governance and Policies		CID0013	110
 CID0011	Governance	Governance	CID0010	CID0012	120
 CID0012	Policies	Policies	CID0010		130
 CID0013	Economy	Economy		CID0018	140
@@ -16,7 +16,7 @@ CID0014	General	General Economic Information	CID0013	CID0015	150
 CID0015	Opportunities	Opportunities and Workforce	CID0013	CID0016	160
 CID0016	Local Budget	Local Budget	CID0013	CID0017	170
 CID0017	Other Economic Information	Other Economic Information	CID0013		180
-CID0018	Built Env.	Built Environment & Infrastructure		CID0023	190
+CID0018	Built Env.	Built Environment and Infrastructure		CID0023	190
 CID0019	Built Environment	Built Environment	CID0018	CID0020	200
 CID0020	Basic Infrastructure	Basic Infrastructure	CID0018	CID0021	210
 CID0021	Transport	Transport	CID0018	CID0022	220
@@ -26,4 +26,4 @@ CID0024	Cooperation	Cooperation	CID0023		250
 CID0025	Public Relations	Public Relations		CID0026	260
 CID0026	Communications	Communications	CID0025		270
 CID0027	Other	Other Relevant Information		CID0001	280
-CID0028	Others	Other Relevant Information	CID0027		290
+CID0028	Others	Others	CID0027		290

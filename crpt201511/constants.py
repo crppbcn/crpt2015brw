@@ -50,6 +50,7 @@ ITEMS_PER_PAGE = 15
 TEMPLATE_BASE = "crpt201511/"
 TEMPLATE_COMMON = "common/"
 TEMPLATE_CITY_ID = "city_id/"
+TEMPLATE_COMPONENTS = "components/"
 TEMPLATE_LOGIN = TEMPLATE_BASE + TEMPLATE_COMMON + "login.html"
 TEMPLATE_LOGOUT = TEMPLATE_BASE + TEMPLATE_COMMON + "logout.html"
 TEMPLATE_ERROR = TEMPLATE_BASE + TEMPLATE_COMMON + "error.html"
@@ -57,6 +58,7 @@ TEMPLATE_WELCOME = TEMPLATE_BASE + TEMPLATE_COMMON +"welcome.html"
 TEMPLATE_STEPS = TEMPLATE_BASE + TEMPLATE_COMMON +"steps.html"
 TEMPLATE_COPYRIGHT = TEMPLATE_BASE + TEMPLATE_COMMON + "copyright.html"
 TEMPLATE_CITY_ID_PAGE = TEMPLATE_BASE + TEMPLATE_CITY_ID + "city_id_page.html"
+TEMPLATE_COMPONENTS_PAGE = TEMPLATE_BASE + TEMPLATE_COMPONENTS + "component.html"
 TEMPLATE_TEST = TEMPLATE_BASE + "test.html"
 
 
@@ -90,107 +92,39 @@ RAIL_TX = "RAIL_TX"
 WATER_TX = "WATER_TX"
 AIR_TX = "AIR_TX"
 OTHER_TX = "OTHER_TX"
-
-YES_NO_CHOICES = (
-    (YES, 'Yes'),
-    (NO, 'No'),
-)
-
-POLITICAL = 1
-ECONOMIC = 2
-SOCIAL = 3
-REGIONAL = 4
-NATIONAL = 5
-
-CITY_ROLE_CHOICES = (
-    (N_A, 'Not applicable'),
-    (POLITICAL, 'Political'),
-    (ECONOMIC, 'Economic'),
-    (SOCIAL, 'Social'),
-    (REGIONAL, 'Regional'),
-    (NATIONAL, 'National'),
-)
-
-INDUSTRY = "1"
-HOUSING = "2"
-
-GAS_SUPPLY_CHOICES = (
-    (N_A, 'Not applicable'),
-    (INDUSTRY, 'Industry'),
-    (HOUSING, 'Housing'),
-)
-
-SHARED_TX = "1"
-PRIVATE_TX = "2"
-GOODS_TX = "3"
-NON_MOTOR_TX = "4"
+MOV_SOURCE = "MOV_SOURCE"
+MOV_SCALE = "MOV_SCALE"
+MC1 = "MC1"
+MC2 = "MC2"
+SC1 = "SC1"
+SC2 = "SC2"
+SC3 = "SC3"
+SC4 = "SC4"
+SC5 = "SC5"
 
 
-ROAD_TX_CHOICES = (
-    (N_A, 'Not applicable'),
-    (SHARED_TX, 'Shared Transport'),
-    (PRIVATE_TX, 'Private Transport'),
-    (GOODS_TX, 'Goods Transport'),
-    (NON_MOTOR_TX, 'Non-motorised Transport'),
-)
-
-
-LIGHT_RAIL = "1"
-HEAVY_RAIL = "2"
-
-RAIL_TX_CHOICES = (
-    (N_A, 'Not applicable'),
-    (LIGHT_RAIL, 'Light Rail'),
-    (HEAVY_RAIL, 'Heavy Rail'),
-)
-
-
-LIGHT_WATER = "1"
-HEAVY_WATER = "2"
-
-WATER_TX_CHOICES = (
-    (N_A, 'Not applicable'),
-    (LIGHT_WATER, 'Light Rail'),
-    (HEAVY_WATER, 'Heavy Rail'),
-)
-
-
-CABLE_TX = "1"
-ANY_OTHER_TX = "2"
-
-OTHER_TX_CHOICES = (
-    (N_A, 'Xoriso'),
-    (CABLE_TX, 'Cable Transport'),
-    (ANY_OTHER_TX, 'Any other, please specify'),
-)
-
-
-AIRPORT_TX = "1"
-
-AIR_TX_CHOICES = (
-    (N_A, 'Not applicable'),
-    (AIRPORT_TX, 'Airport'),
-
-)
-
-CHOICES = {YES_NO: YES_NO_CHOICES, CITY_ROLE: CITY_ROLE_CHOICES, GAS_SUPPLY: GAS_SUPPLY_CHOICES,
-           ROAD_TX: ROAD_TX_CHOICES, RAIL_TX: RAIL_TX_CHOICES, WATER_TX: WATER_TX_CHOICES,
-           AIR_TX: AIR_TX_CHOICES, OTHER_TX: OTHER_TX_CHOICES,}
+################################################
+#
+# Form label tags
+#
+################################################
+LABEL_TAG_ANY_OTHER = "Any other (please specify)"
 
 ################################################
 #
 # MoV Types
 #
 ################################################
-FOCAL_POINT_KNOWLEDGE = "Focal Point knowledge"
-NATIONAl_STATISTICS = "National Statistics"
-REGIONAL_STATISTICS = "Regional Statistics"
-LOCAL_STATISTICS = "Local Statistics"
+MOV_ALL = "A"
+MOV_NOT = "NA"
+MOV_NY = "NY"
+MOV_NS = "NS"
+MOV_NYS = "NYS"
 
 
 ################################################
 #
-# MoV Types
+# Colors
 #
 ################################################
 BLUE = "#3D6FB6"

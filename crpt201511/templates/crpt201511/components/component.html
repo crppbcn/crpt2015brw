@@ -7,10 +7,14 @@
 
             <div class="list-group table-of-contents">
                 {% for elem in left_elements %}
-                    <a class="list-group-item {% if subsection.name == elem.name %}selected{% endif %}" href="{% url 'city_id' assessment_id=assessment.id section_id=section.id subsection_id=elem.id %}">{{ elem.name }}</a>
-                    {% for item in elem.elements %}
-                        <a class="list-group-item group_item" href="{% url 'city_id' assessment_id=assessment.id section_id=section.id subsection_id=elem.id %}">&nbsp;&nbsp;{{ item.name }}</a>
-                    {% endfor %}
+                    {% if subsection.name == elem.name %}
+                        <a class="list-group-item selected" href="{% url 'component' assessment_id=assessment.id component_id=section.id subcomponent_id=elem.id %}">{{ elem.name }}</a>
+                        {% for item in elem.parent_element.all|dictsort:"order" %}
+                            <a class="list-group-item group_item {% if item.name = third_component.name %} selected2 {% endif %}" href="{% url 'component' assessment_id=assessment.id component_id=section.id subcomponent_id=elem.id third_component_id=item.id%}">&nbsp;&nbsp;{{ item.name }}</a>
+                        {% endfor %}
+                    {% else %}
+                        <a class="list-group-item left_section" href="{% url 'component' assessment_id=assessment.id component_id=section.id subcomponent_id=elem.id %}">{{ elem.name }}</a>
+                    {% endif%}
                 {% endfor %}
             </div>
 
@@ -24,7 +28,7 @@
                             {{ section.long_name }}
                             <a href="#" alt="Help" data-toggle="modal" data-target="#myModal"></a>&nbsp;&nbsp;
                         </legend>
-                        <blockquote>{{ subsection.long_name }}</blockquote>
+                        <blockquote>{{ subsection.long_name }} - {{ third_component.long_name }}</blockquote>
                         <fieldset id="fs">
                             {% comment %} fs_cf display {% endcomment %}
                             {{ fs_cf.management_form }}
@@ -42,6 +46,9 @@
                                 <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
                                 <div class="form-group" order="{{ form.order.value }}">
+                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                        <legend></legend>
+                                    {% endif %}
                                     <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
                                     <div class="col-md-12">
                                         {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
@@ -59,6 +66,7 @@
                                         {{ form.section.as_hidden }}
                                         {{ form.assessment.as_hidden }}
                                         {{ form.not_applicable.as_hidden }}
+                                        {{ form.has_mov.as_hidden }}
                                     </div>
                                 </div>
                                 {% endif %}
@@ -79,6 +87,9 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
+                                        {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                            <legend></legend>
+                                        {% endif %}
                                         <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
                                         <div class="col-md-12">
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
@@ -96,6 +107,7 @@
                                             {{ form.section.as_hidden }}
                                             {{ form.assessment.as_hidden }}
                                             {{ form.not_applicable.as_hidden }}
+                                            {{ form.has_mov.as_hidden }}
                                         </div>
                                     </div>
                                     {% endif %}
@@ -116,19 +128,21 @@
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
                                     <div class="form-group" order="{{ form.order.value }}">
+                                        {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                            <legend></legend>
+                                        {% endif %}
                                         <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
                                         <div id="crpt-select-form" class="col-md-12">
-                                            {% if form.help_text and form.help_text.value != '' %}
-                                                <span class="help-block">{{ form.help_text.value }}</span>
-                                            {% endif %}
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% if form.multi.value = True %}
                                                 {% render_field form.response class+="" placeholder=form.placeholder.value rows=3 %}
                                             {% else %}
                                                 {% render_field form.response class+="form-control" placeholder=form.placeholder.value rows=3 %}
                                             {% endif %}
-                                            {{ form.other.label_tag }}
                                             {% render_field form.other class+="form-control" %}
+                                            {% if form.help_text and form.help_text.value != '' %}
+                                                <span class="help-block">{{ form.help_text.value }}</span>
+                                            {% endif %}
                                             {% comment %}Print hidden fields{% endcomment %}
                                             {{ form.question_short.as_hidden }}
                                             {{ form.question_long.as_hidden }}
@@ -141,73 +155,12 @@
                                             {{ form.multi.as_hidden }}
                                             {{ form.choices.as_hidden }}
                                             {{ form.not_applicable.as_hidden }}
+                                            {{ form.has_mov.as_hidden }}
                                         </div>
                                     </div>
                                     {% endif %}
                                 {% endfor %}
 
-
-                            {% comment %} fs_uf display {% endcomment %}
-                            {{ fs_uf.management_form }}
-                            {% if fs_uf.errors %}
-                            <!-- TODO: form errors treatement -->
-                            {% endif %}
-                            {% for form in fs_uf %}
-                                {%comment%}
-                                    preparing the form to be printed
-                                    need to print form.id to avoid errors in post request
-                                    rest of hidden fields
-                                {%endcomment%}
-                                {{form.id}}
-                                    <!-- TODO: form fields display as a function of type of question and except MoV section -->
-                                {% if form.question_short.value %}
-                                <div class="form-group" order="{{ form.order.value }}">
-                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
-                                    {% if form.help_text and form.help_text.value != '' %}
-                                        <span class="help-block">{{ form.help_text.value }}</span>
-                                    {% endif %}
-                                    <div class="col-md-12">
-                                        {% if form.files.errors %}
-                                            {{ form.files.errors }}
-                                        {% else %}
-                                            Uploaded files:<br>
-                                            <ul>
-                                            {% if form.file_0 %}
-                                                <li>{{ form.file_0.value }}
-                                            {% endif %}
-
-                                            {% if form.file_1 %}
-                                                <li>{{ form.file_1.value }}
-                                            {% endif %}
-
-                                            {% if form.file_2 %}
-                                                <li>{{ form.file_2.value }}
-                                            {% endif %}
-                                            </ul>
-                                        {% endif%}
-                                    </div>
-                                    <div class="col-md-12">
-                                        {% with form_id=form.id.html_name %}
-                                        <a href="#" class="btn btn-danger" {% if not form.file_2 %}onclick="upload_files_click('{{form_id}}');"{% endif %}>Select files</a>
-                                        {% endwith%}
-                                        {% render_field form.files class+="no_visible" %}
-                                    </div>
-                                    <div class="col-md-12">
-                                        {% comment %}Print hidden fields{% endcomment %}
-                                        {{ form.not_applicable.as_hidden }}
-                                        {{ form.question_short.as_hidden }}
-                                        {{ form.question_long.as_hidden }}
-                                        {{ form.help_text.as_hidden }}
-                                        {{ form.order.as_hidden }}
-                                        {{ form.placeholder.as_hidden }}
-                                        {{ form.version.as_hidden }}
-                                        {{ form.section.as_hidden }}
-                                        {{ form.assessment.as_hidden }}
-                                        {{ form.not_applicable.as_hidden }}
-                                    </div>
-                                </div>
-                                {% endif %}
-                            {% endfor %}
 
                             <div class="form-group" order="9999">
                                 <div class="col-md-10 col-md-offset-0">

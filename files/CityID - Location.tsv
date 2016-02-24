@@ -1,8 +1,8 @@
 Code	Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
 CID0002	Geographic	Country	Country		Name	CHAR_FIELD	10		
 CID0002	Geographic	Capital	Capital		Name	CHAR_FIELD	20		
-CID0002	Geographic	Supra-Local	Main Supra-Local Divisions	Ex.: Region, State, etc.	Major administrative supra-local divisions	TEXT_FIELD	30	YES	
-CID0002	Geographic	Other-Supra-Local	Other Supra-Local Divisions	Ex.: County, Province, etc.	Other relevant administrative supra-local divisions.	TEXT_FIELD	40	YES	
+CID0002	Geographic	Supra-local	Main supra-local divisions	Ex.: Region, State, etc.	Major administrative supra-local divisions	TEXT_FIELD	30	YES	
+CID0002	Geographic	Other-supra-local	Other supra-local divisions	Ex.: County, Province, etc.	Other relevant administrative supra-local divisions	TEXT_FIELD	40	YES	
 CID0002	Geographic	Time zone	Time zone	Ex: +[hh]:[mm]	In relation to UTC (Coordinated Universal Time)	CHAR_FIELD	50		
 CID0002	Geographic	Coordinates	Coordinates	Ex: 41°24'45.1"N 2°10'29.9"E	Geodetic coordinates	CHAR_FIELD	60		
 CID0002	Geographic	Altitude	Altitude	Ex: From 35 to 367m	Range of altitudes, in meters	CHAR_FIELD	70		

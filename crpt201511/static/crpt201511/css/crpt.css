@@ -134,7 +134,11 @@ Left menu
 }
 
 #crpt-left-menu .group_item {
-    background-color: rgba(61,111,182,.3);
+    #background-color: rgba(61,111,182,.3);
+}
+
+#crpt-left-menu .left_section {
+    background-color: #fcfcfc;
 }
 
 
@@ -233,6 +237,11 @@ Center
     padding-top: 10px;
 }
 
+#crpt-select-form ul {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
 /*******************
 
 Forms
@@ -250,3 +259,12 @@ Forms
     z-index: -11;
 }
 
+
+/*******************
+
+Lists
+
+********************/
+ul.no_bullet {
+    list-style-type: none;
+}

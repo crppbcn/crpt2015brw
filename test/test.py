@@ -34,8 +34,8 @@ def test_version_selected():
     print("test_version_selected. End.")
 
 
-def test_create_new_assessment():
-    print("test_create_new_assessment. Start.")
+def test_create_new_assessment_city_id():
+    print("create_new_asessment_city_id. Start.")
     # new assessment - TODO: set generic procedure
     try:
         assessment = Assessment.objects.all()[:1].get()
@@ -119,7 +119,84 @@ def test_create_new_assessment():
             a_cid_question.assessment = assessment
             a_cid_question.save()
         print("CityID Section End: " + section.name)
-    print("test_create_new_assessment. End.")
+    print("create_new_asessment_city_id. End.")
+
+
+def test_create_new_assessment_components():
+    print("test_create_new_assessment_components. Start.")
+    # new assessment - TODO: set generic procedure
+    try:
+        assessment = Assessment.objects.all()[:1].get()
+    except:
+        assessment = Assessment()
+        assessment.name = "Test Assessment"
+        assessment.city = City.objects.get(name="Test")
+        assessment.considerations = "Test Assessment"
+        assessment.focal_point_started = Person.objects.get(name="City, Test")
+        assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
+        assessment.save()
+
+    # Components (indicators). For each component create AssessmentQuestions and correspondent responses
+    components = Component.objects.all()
+    for component in components:
+        print("Component Start: " + component.name)
+        # CharField
+        component_questions = ComponentQuestionCharField.objects.filter(component=component)
+        for question in component_questions:
+            a_question = AssessmentComponentQuestionCharField()
+            a_question.question_short = question.question_short
+            a_question.question_long = question.question_long
+            a_question.order = question.order
+            a_question.help_text = question.help_text
+            a_question.placeholder = question.placeholder
+            a_question.not_applicable = question.not_applicable
+            a_question.version = question.version
+            a_question.component = component
+            a_question.assessment = assessment
+            a_question.has_mov = question.has_mov
+            a_question.save()
+        # TextField
+        component_questions = ComponentQuestionTextField.objects.filter(component=component)
+        for question in component_questions:
+            a_question = AssessmentComponentQuestionCharField()
+            a_question.question_short = question.question_short
+            a_question.question_long = question.question_long
+            a_question.order = question.order
+            a_question.help_text = question.help_text
+            a_question.placeholder = question.placeholder
+            a_question.not_applicable = question.not_applicable
+            a_question.version = question.version
+            a_question.component = component
+            a_question.assessment = assessment
+            a_question.has_mov = question.has_mov
+            a_question.save()
+            # SelectField
+        component_questions = ComponentQuestionSelectField.objects.filter(component=component)
+        for question in component_questions:
+            a_question = AssessmentComponentQuestionSelectField()
+            a_question.question_short = question.question_short
+            a_question.question_long = question.question_long
+            a_question.order = question.order
+            a_question.help_text = question.help_text
+            a_question.placeholder = question.placeholder
+            a_question.not_applicable = question.not_applicable
+            a_question.version = question.version
+            a_question.component = component
+            a_question.assessment = assessment
+            a_question.choices = question.choices
+            a_question.multi = question.multi
+            a_question.has_mov = question.has_mov
+            a_question.save()
+            # creation of other tx choices for this assessment
+            if question.choices.strip() == MC1:
+                for other_tx in ChoicesOtherTx.objects.all():
+                    a_cid_other_tx = AssessmentChoicesMC1()
+                    a_cid_other_tx.name = other_tx
+                    a_cid_other_tx.assessment = assessment
+                    a_cid_other_tx.save()
+        print("Component End: " + component.name)
+
+    print("test_create_new_assessment_components. End.")
 
 
 def test_get_remote_folder_name():
@@ -149,7 +226,8 @@ if __name__ == "__main__":
     #test_version_selected()
     #test_get_remote_folder_name()
     #test_multi()
-    test_create_new_assessment()
+    test_create_new_assessment_city_id()
+    test_create_new_assessment_components()
 
 
 

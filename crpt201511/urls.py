@@ -49,6 +49,11 @@ urlpatterns = [
     # url to add comment to a section
     url(r'^add_section_comment/$', 'crpt201511.views.city_id_views.add_section_comment', name='add_section_comment'),
 
+    # url to components form page
+    url(r'^component/(?P<assessment_id>\d+)/(?P<component_id>\d+)/$', 'crpt201511.views.component_views.component', name='component'),
+    url(r'^component/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/$', 'crpt201511.views.component_views.component', name='component'),
+    url(r'^component/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/(?P<third_component_id>\d+)/$', 'crpt201511.views.component_views.component', name='component'),
+    url(r'^component/(?P<assessment_id>\d+)/$', 'crpt201511.views.component_views.component', name='component'),
 
     # url to test page
     url(r'^test/$', 'crpt201511.views.views.test', name='test'),

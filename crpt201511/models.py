@@ -271,13 +271,6 @@ class AssessmentCityIDQuestionSelectField(AssessmentCityIDQuestion):
     multi = django.db.models.BooleanField(default=False)
 
 
-class AssessmentCityIDChoicesOtherTx(BasicName):
-    """
-    Represents Other Means of Tx added by city in an assessment
-    """
-    assessment = django.db.models.ForeignKey(Assessment)
-
-
 class AssessmentCityIDQuestionTextField(AssessmentCityIDQuestion):
     """
     Represents a question for CityID in an assessment with value CharField
@@ -339,21 +332,112 @@ class ComponentConsideration(Common):
     Represents comments for a CityID Section
     """
     element = django.db.models.ForeignKey(Component)
-    comment = django.db.models.CharField(max_length=500)
+    comment = django.db.models.CharField(max_length=800)
+    type = django.db.models.CharField(max_length=25)
 
 
-class ComponentExample(Common):
+class ComponentQuestion(QuestionSimple):
     """
-    Represents comments for a CityID Section
+    Represents a Component Question with base parameters
     """
+    component = django.db.models.ForeignKey(Component)
+    not_applicable = django.db.models.BooleanField(default=False)
+    has_mov = django.db.models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+
+class ComponentQuestionCharField(ComponentQuestion):
+    """
+    Represents a Component Question CharField response type
+    """
+
+class ComponentQuestionTextField(ComponentQuestion):
+    """
+    Represents a Component Question TextField Response Type
+    """
+
+
+class ComponentQuestionSelectField(ComponentQuestion):
+    """
+    Represents a Component Question with choices
+    """
+
+    choices = django.db.models.CharField(max_length=50)
+    multi = django.db.models.BooleanField(blank=True)
+
+
+#######################################
+#
+# Assessment - Component
+#
+#######################################
+
+
+class AssessmentComponentComment(Common):
+    """
+    Represents comments for a component
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
     element = django.db.models.ForeignKey(Component)
-    example = django.db.models.CharField(max_length=500)
+    comment = django.db.models.CharField(max_length=500)
+    person = django.db.models.ForeignKey(Person)
+    date_created = django.db.models.DateTimeField(auto_now=True)
 
 
+class AssessmentComponentQuestion(ComponentQuestion):
+
+    assessment = django.db.models.ForeignKey(Assessment)
+    score = django.db.models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    weight = django.db.models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+
+    class Meta:
+        abstract = True
 
 
+class AssessmentComponentQuestionCharField(AssessmentComponentQuestion):
+    """
+    Links a ComponentStatement with an Assessment
+    """
+    response = django.db.models.CharField(max_length=250, null=True, blank=True)
 
 
+class AssessmentComponentQuestionSelectField(AssessmentComponentQuestion):
+    """
+    Links a ComponentStatement with an Assessment
+    """
+    response = django.db.models.CharField(max_length=250, null=True, blank=True)
+    choices = django.db.models.CharField(max_length=50, null=True, blank=True)
+    multi = django.db.models.BooleanField(default=False)
+
+
+class AssessmentComponentQuestionTextField(AssessmentComponentQuestion):
+    """
+    Represents a question for Component in an assessment with value CharField
+    """
+    response = django.db.models.TextField(null=True, blank=True)
+
+
+#######################################
+#
+# Assessment choices
+#
+#######################################
+
+
+class AssessmentCityIDChoicesOtherTx(BasicName):
+    """
+    Represents Other Means of Tx added by city in an assessment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+
+
+class AssessmentChoicesMC1(BasicName):
+    """
+    Represents Other Means of Tx added by city in an assessment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
 
 
 #######################################
@@ -361,6 +445,8 @@ class ComponentExample(Common):
 # CityID Options for select questions
 #
 #######################################
+
+
 class ChoicesCityRole(BasicName):
     """
     Represents City Roles
@@ -385,6 +471,12 @@ class ChoicesRailTx(BasicName):
     """
 
 
+class ChoicesAirTx(BasicName):
+    """
+    Represents Rail Transport types
+    """
+
+
 class ChoicesWaterTx(BasicName):
     """
     Represents Water Transport types
@@ -395,6 +487,73 @@ class ChoicesOtherTx(BasicName):
     """
     Represents Other Transport types
     """
+
+#######################################
+#
+# Components Options for select questions
+#
+#######################################
+
+
+class ChoicesMoVScale(BasicName):
+    """
+    Represents MoV Scale options
+    """
+
+
+class ChoicesMoVSource(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesMC1(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesMC2(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC1(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC1(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC2(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC3(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC4(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC5(BasicName):
+    """
+    Represents MoV Source options
+    """
+
 
 #######################################
 #

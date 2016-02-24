@@ -2,19 +2,19 @@ Section Code	Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	OR
 CID0014	General	GDP (city)	GDP (city)		In local currency or international currency. Please specify.	CHAR_FIELD	10		
 CID0014	General	GINI index	GINI index		Please use local data, if available	CHAR_FIELD	20		
 CID0014	General	Average income	Average income		Per capita and per family. Specified by gender.	CHAR_FIELD	30		
-CID0014	General	Pop. below poverty line	Population below poverty line		Percentage, consider national or local standard, if any. Please specify.	CHAR_FIELD	40		
-CID0014	General	Income of the richest 10%	Income of the richest 10%		In relation to total GDP	CHAR_FIELD	50		
+CID0014	General	Income of the richest 10%	Income of the richest 10%		In relation to total GDP	CHAR_FIELD	40		
+CID0014	General	Pop. below poverty line	Population below poverty line		Percentage, consider national or local standard, if any. Please specify.	CHAR_FIELD	50		
 CID0015	Opportunities	Business development	Business development		Business development support networks and services. Specify, if any.	TEXT_FIELD	60	Yes	
 CID0015	Opportunities	New businesses	New businesses		Total number of new enterprises opened within the last year	CHAR_FIELD	70		
-CID0015	Opportunities	Unemployment rate	Unemployment rate		Percentage of total labour force. Specify by gender and age.	CHAR_FIELD	80		
-CID0015	Opportunities	Youth unemployment rate	Youth unemployment rate		Percentage of total labour force, specified by gender and age.	CHAR_FIELD	90	Yes	
+CID0015	Opportunities	Unemployment rate	Unemployment rate		Percentage of total labour force. Specified by gender and age.	CHAR_FIELD	80		
+CID0015	Opportunities	Youth unemployment rate	Youth unemployment rate		Percentage of total labour force. Specified by gender and age.	CHAR_FIELD	90	Yes	
 CID0015	Opportunities	Informal employment rate	Informal employment rate		Percentage of total labour force. Specified by gender.	CHAR_FIELD	100	Yes	
 CID0016	Local Budget	City budget	City budget		Total, in local currency	CHAR_FIELD	110		
 CID0016	Local Budget	City budget, direct income	City budget, direct income		From taxes, fees, fines, etc. Percentage of total.	CHAR_FIELD	120		
 CID0016	Local Budget	City budget, supra-local	City budget, supra-local government contributions		From regional or national governments. Percentage of total.	CHAR_FIELD	130	Yes	
 CID0016	Local Budget	City budget, external	City budget, external contributions		From international agencies, banks, investors, aid, etc. Percentage of total.	CHAR_FIELD	140	Yes	
 CID0016	Local Budget	Budget allocated for resilience	Budget allocated for resilience	Ex.: In disaster risk reduction, climate change, sustainable development, contingency allocation, sub-budget from other departments, etc.	Percentage of total	CHAR_FIELD	150	Yes	
-CID0016	Local Budget	DRR financial mechanisms	Alternative Disaster Risk Reduction financial mechanisms	Ex.: Insurance, micro-insurance, contingency credits, etc.	Specify, if any	CHAR_FIELD	160	Yes	
+CID0016	Local Budget	DRR financial mechanisms	Alternative disaster risk reduction financial mechanisms	Ex.: Insurance, micro-insurance, contingency credits, etc.	Specify, if any	CHAR_FIELD	160	Yes	
 CID0017	Other	Banking access	Banking access		Percentage of population covered by formal or informal banking/credit groups	CHAR_FIELD	170		
 CID0017	Other	Personal savings	Personal savings		Percentage of household gross savings, in relation to total GDP	CHAR_FIELD	180		
-CID0017	Other	Private property insurance	Private property insurance		Percentage of population covered by insurance (crop insurance, weather-based index insurance, etc.)	CHAR_FIELD	190		
+CID0017	Other	Private property insurance	Private property insurance	Ex: Crop insurance, weather-based index insurance, etc.	Percentage of population covered by insurance	CHAR_FIELD	190		

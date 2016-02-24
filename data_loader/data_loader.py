@@ -351,6 +351,8 @@ def load_city_id_file(file_name):
         question.section = section
         question.question_short = row[2].strip()
         question.question_long = row[3].strip()
+        if question.question_long.strip() == "" and question.question_short.strip() != "":
+            question.question_long = question.question_short
         question.help_text = row[4].strip()
         question.placeholder= row[5].strip()
         question.order = row[7].strip()
@@ -369,20 +371,19 @@ def load_indicator_components(file_name, class_name):
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
     data_reader.next()  # to skip headers row
 
-    assesment_version =  AssessmentVersion.objects.order_by('-date_released')[0]
+    assesment_version = AssessmentVersion.objects.order_by('-date_released')[0]
 
     for row in data_reader:
         # check for parent element
-        try:
-            if row[4].strip() == '':
-                parent_element = None
-            else:
-                parent_element = class_name.objects.get(code=row[4].strip())
-        except:
+        if row[4].strip() == '' or row[4].strip() == "0":
+            print("processing parent element: " + row[0].strip())
             parent_element = class_name()
             parent_element.assessment_version = assesment_version
             parent_element.code = row[0].strip()
-            parent_element.name = row[1].strip()
+            if row[1].strip() != "":
+                parent_element.name = row[1].strip()
+            else:
+                parent_element.name = row[2].strip()
             parent_element.long_name = row[2].strip()
             parent_element.description = row[3].strip()
             parent_element.order = row[6].strip()
@@ -392,30 +393,40 @@ def load_indicator_components(file_name, class_name):
                 parent_element.data_source = row[8].strip()
             parent_element.comment = row[11].strip()
             parent_element.save()
-        # load element
-        try:
-            element = class_name.objects.get(code=row[0].strip())
-            element.parent = parent_element
-            element.save()
-        except:
-            element = class_name()
-            element.assessment_version = assesment_version
-            element.parent = parent_element
-            element.code = row[0].strip()
-            element.name = row[1].strip()
-            element.long_name = row[2].strip()
-            element.description = row[3].strip()
-            element.order = row[6].strip()
-            if row[7].strip() != "" and row[7].strip() != "0":
-                element.dimension = Dimension.objects.get(name=row[7].strip())
-            if row[8].strip() != "#N/A":
-                element.data_source = row[8].strip()
-            element.comment = row[11].strip()
-            element.save()
+        else:
+            try:
+                parent_element = class_name.objects.get(code=row[4].strip())
+            except:
+                print("Parent element not found: " + row[4].strip())
+            # load element
+            try:
+                print("processing element: " + row[0].strip())
+                print("with parent element: " + parent_element.name)
+                element = class_name()
+                element.assessment_version = assesment_version
+                element.parent = parent_element
+                element.code = row[0].strip()
+                if row[1].strip() != "":
+                    element.name = row[1].strip()
+                else:
+                    element.name = row[2].strip()
+                element.long_name = row[2].strip()
+                element.description = row[3].strip()
+                element.order = row[6].strip()
+                if row[7].strip() != "" and row[7].strip() != "0":
+                    element.dimension = Dimension.objects.get(name=row[7].strip())
+                if row[8].strip() != "#N/A":
+                    element.data_source = row[8].strip()
+                element.comment = row[11].strip()
+                element.save()
+            except:
+                print("Error processing element: " + row[0].strip())
+                print("With parent: " + row[4].strip())
+                print(sys.exc_info())
     print("load_indicator_components. End: " + file_name)
 
 
-def load_considerations_examples_file(file_name, class_name, class_name_consideration, class_name_example):
+def load_considerations_examples_file(file_name, class_name, class_name_consideration):
     print("load_considerations_examples_file. Start: " + file_name + " - " + str(class_name))
     file_path = settings.BASE_DIR + "/files/" + file_name
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
@@ -423,24 +434,134 @@ def load_considerations_examples_file(file_name, class_name, class_name_consider
     for row in data_reader:
         try:
             element = class_name.objects.get(code=row[0].strip())
-            if row[1].strip() == EXAMPLE:
-                example = class_name_example()
-                example.example = row[3].strip()
-                example.element = element
-                example.save()
-            else:
-                consideration = class_name_consideration()
-                consideration.comment = row[3].strip()
-                consideration.element = element
-                consideration.save()
+            consideration = class_name_consideration()
+            consideration.type = EXAMPLE
+            consideration.comment = row[3].strip()
+            consideration.element = element
+            consideration.save()
         except:
             print("Error setting consideration/example " + row[0].strip() + "-" + row[2].strip())
+            print(sys.exc_info())
 
     print("load_considerations_examples_file. End: " + file_name + " - " + str(class_name))
 
 
+def load_component_file(file_name):
+    print("load_component_file. Start: " + file_name)
+    file_path = settings.BASE_DIR + "/files/" + file_name
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+    for row in data_reader:
+        # section
+        try:
+            if row[0].strip() == '':
+                component = None
+            else:
+                print("Looking for component: " + row[0].strip())
+                component = Component.objects.get(code=row[0].strip())
+        except:
+            print("ERROR: " + str(sys.exc_info()))
+            print("ERROR: " + str(sys.exc_traceback))
+        # question
+        question_type = row[5].strip()
+        if question_type == CHAR_FIELD:
+            question = ComponentQuestionCharField()
+        if question_type == TEXT_FIELD:
+            question = ComponentQuestionTextField()
+        if question_type == SELECT_SINGLE:
+            question = ComponentQuestionSelectField()
+            question.choices = row[8].strip()
+            question.multi = False
+        if question_type == SELECT_MULTI:
+            question = ComponentQuestionSelectField()
+            question.choices = row[8].strip()
+            question.multi = True
+
+        question.component = component
+        question.question_short = row[1].strip()
+        question.question_long = row[2].strip()
+        question.help_text = row[3].strip()
+        question.placeholder= row[4].strip()
+        question.order = row[6].strip()
+        question.not_applicable = row[7].strip().upper() == YES_STR
+
+        # TODO: creation of new version of assessment procedure!!
+        question.version = AssessmentVersion.objects.order_by('-date_released')[0]
+        question.save()
+
+        # processing of units column
+        if row[12].strip().upper() == YES_STR:
+            new_question = ComponentQuestionCharField()
+            new_question.component = question.component
+            new_question.order = int(question.order) + 2
+            new_question.not_applicable = False
+            new_question.help_text = ""  # TODO: decide which help text to assign
+            new_question.question_short = "Please specify units"
+            new_question.question_long = "Please specify units"
+            new_question.multi = False
+            new_question.version = question.version
+            new_question.save()
+
+
+        # processing of MoV
+        mov_txt = row[10].strip()
+        if mov_txt != MOV_NOT and mov_txt != "" and mov_txt != "0":
+            question.has_mov = True
+            question.save()
+            # codes
+            add_year = True
+            add_source = True
+            add_scale = True
+            if mov_txt == MOV_NS:
+                add_scale = False
+            if mov_txt == MOV_NY:
+                add_year == False
+            if mov_txt == MOV_NYS:
+                add_scale = False
+                add_year == False
+            # add questions
+            if add_source:
+                new_question = ComponentQuestionSelectField()
+                new_question.component = question.component
+                new_question.order = int(question.order) + 2
+                new_question.not_applicable = False
+                new_question.help_text = ""  # TODO: decide which help text to assign
+                new_question.question_short = "MoV Source"
+                new_question.question_long = "MoV Source"
+                new_question.multi = False
+                new_question.choices = MOV_SOURCE
+                new_question.version = question.version
+                new_question.save()
+            if add_scale:
+                new_question = ComponentQuestionSelectField()
+                new_question.component = question.component
+                new_question.order = int(question.order) + 4
+                new_question.not_applicable = False
+                new_question.help_text = ""  # TODO: decide which help text to assign
+                new_question.question_short = "MoV Scale"
+                new_question.question_long = "MoV Scale"
+                new_question.multi = False
+                new_question.choices = MOV_SCALE
+                new_question.version = question.version
+                new_question.save()
+            if add_scale:
+                new_question = ComponentQuestionCharField()
+                new_question.component = question.component
+                new_question.order = int(question.order) + 6
+                new_question.not_applicable = False
+                new_question.help_text = ""  # TODO: decide which help text to assign
+                new_question.question_short = "MoV Year"
+                new_question.question_long = "MoV Year"
+                new_question.version = question.version
+                new_question.save()
+        else:
+            question.has_mov = False
+            question.save()
+    print("load_component_file. End: " + file_name)
+
+
 if __name__ == "__main__":
-    """
+
     load_users_file()
     load_entity_single_field_name("cities.tsv", City)
     load_entity_single_field_name("roles.tsv", Role)
@@ -455,9 +576,20 @@ if __name__ == "__main__":
     load_entity_single_field_name("CityID Options - ROAD_TX.tsv", ChoicesRoadTx)
     load_entity_single_field_name("CityID Options - RAIL_TX.tsv", ChoicesRailTx)
     load_entity_single_field_name("CityID Options - WATER_TX.tsv", ChoicesWaterTx)
+    load_entity_single_field_name("CityID Options - AIR_TX.tsv", ChoicesAirTx)
     load_entity_single_field_name("CityID Options - OTHER_TX.tsv", ChoicesOtherTx)
+    load_entity_single_field_name("mov_scale.tsv", ChoicesMoVScale)
+    load_entity_single_field_name("mov_source.tsv", ChoicesMoVSource)
+    load_entity_single_field_name("MC1.tsv", ChoicesMC1)
+    load_entity_single_field_name("MC2.tsv", ChoicesMC2)
+    load_entity_single_field_name("SC1.tsv", ChoicesSC1)
+    load_entity_single_field_name("SC2.tsv", ChoicesSC2)
+    load_entity_single_field_name("SC3.tsv", ChoicesSC3)
+    load_entity_single_field_name("SC4.tsv", ChoicesSC4)
+    load_entity_single_field_name("SC5.tsv", ChoicesSC5)
     load_hazards()
     load_elements()
+
     # CityID
     load_city_id_sections("CityID - Sections.tsv", CityIDSection)
     set_next_element("CityID - Sections.tsv", CityIDSection, 4)
@@ -470,12 +602,13 @@ if __name__ == "__main__":
     load_city_id_file("CityID - Partnerships.tsv")
     load_city_id_file("CityID - Public Relations.tsv")
     load_city_id_file("CityID - Other.tsv")
-    """
-    # Indicators
-    #load_indicator_components("Indicators - Components.tsv", Component)
-    #set_next_element("Indicators - Components.tsv", Component, 5)
-    load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration, ComponentExample)
 
+    # Indicators
+
+    load_indicator_components("Indicators - Components.tsv", Component)
+    set_next_element("Indicators - Components.tsv", Component, 5)
+    load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration)
+    load_component_file("Indicators - Basic Infrastructure.tsv")
 
 
 

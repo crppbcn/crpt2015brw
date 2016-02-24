@@ -7,9 +7,8 @@ from fields import *
 from django import forms
 from django.utils.encoding import *
 
-from crpt201511.models import AssessmentCityIDQuestionUploadField, AssessmentCityIDQuestionFile, \
-    AssessmentCityIDQuestionSelectField, MoVType, ChoicesGasSupply, ChoicesCityRole, ChoicesRoadTx, ChoicesRailTx, \
-    ChoicesWaterTx, ChoicesOtherTx, AssessmentCityIDChoicesOtherTx
+from crpt201511.models import *
+
 from crpt201511.constants import *
 
 
@@ -152,6 +151,16 @@ class AssessmentCityIDQuestionSelectFieldForm(forms.ModelForm):
                             forms.widgets.Select(
                                 choices=tuple([a.id, a.name] for a in ChoicesWaterTx.objects.all().order_by('id')))
 
+                if self.instance.choices == AIR_TX:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesAirTx.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesAirTx.objects.all().order_by('id')))
+
                 if self.instance.choices == OTHER_TX:
                     if self.instance.multi:
                         self.fields['response'].widget = \
@@ -166,15 +175,23 @@ class AssessmentCityIDQuestionSelectFieldForm(forms.ModelForm):
                         selected = literal_eval(self.instance.response)
                         self.initial['response'] = selected
 
-                    # add field to input new option
-                    self.fields['other'] = forms.CharField( label='Add new', max_length=250, required=False)
+                if self.instance.choices == SC1:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC1.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC1.objects.all().order_by('id')))
 
-            # add checkbox field for not applicable option
-            """
-            if self.instance.not_applicable:
-                self.fields['n_a'] = forms.BooleanField(required=False, initial=False,
-                                                        widget=forms.CheckboxInput(attrs={}))
-            """
+
+                    # add field to input new option
+                    self.fields['other'] = forms.CharField(label=LABEL_TAG_ANY_OTHER, max_length=250, required=False)
+
+    class Meta:
+        model = AssessmentCityIDQuestionSelectField
+        fields = '__all__'
 
 
 class AssessmentCityIDQuestionCharFieldForm(forms.ModelForm):
@@ -187,6 +204,9 @@ class AssessmentCityIDQuestionCharFieldForm(forms.ModelForm):
             if self.instance.not_applicable:
                 self.fields['n_a'] = forms.BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={}))
 
+    class Meta:
+        model = AssessmentCityIDQuestionCharField
+        fields = '__all__'
 
 
 class AssessmentCityIDQuestionTextFieldForm(forms.ModelForm):
@@ -198,3 +218,153 @@ class AssessmentCityIDQuestionTextFieldForm(forms.ModelForm):
         if self.instance:
             if self.instance.not_applicable:
                 self.fields['n_a'] = forms.BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={}))
+
+    class Meta:
+        model = AssessmentCityIDQuestionTextField
+        fields = '__all__'
+
+
+class AssessmentComponentQuestionSelectFieldForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AssessmentComponentQuestionSelectFieldForm, self).__init__(*args, **kwargs)
+
+        # set multi and choices
+        if self.instance:
+
+            if self.instance.choices and self.instance.choices.strip() != "":
+                if self.instance.choices == MOV_SCALE:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple (
+                                choices=tuple([a.id, a.name] for a in ChoicesMoVScale.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesMoVScale.objects.all().order_by('id')))
+
+                if self.instance.choices == MOV_SOURCE:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesMoVSource.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesMoVSource.objects.all().order_by('id')))
+
+                if self.instance.choices == MC1:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(choices=tuple([a.id, a.name] for a in
+                            AssessmentChoicesMC1.objects.filter(assessment=self.instance.assessment).order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(choices=tuple([a.id, a.name] for a in
+                            AssessmentChoicesMC1.objects.filter(assessment=self.instance.assessment).order_by('id')))
+                    # setting initial value with some processing of stored string of selected values
+                    if self.instance.response:
+                        selected = literal_eval(self.instance.response)
+                        self.initial['response'] = selected
+
+                if self.instance.choices == MC2:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesMC2.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesMC2.objects.all().order_by('id')))
+
+                if self.instance.choices == SC1:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC1.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC1.objects.all().order_by('id')))
+
+                if self.instance.choices == SC2:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(choices=tuple([str(a.id), a.name]for a in
+                            ChoicesSC2.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(choices=tuple([str(a.id), a.name] for a in
+                            ChoicesSC2.objects.all().order_by('id')))
+
+                if self.instance.choices == SC3:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC3.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC3.objects.all().order_by('id')))
+
+                if self.instance.choices == SC4:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC4.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC4.objects.all().order_by('id')))
+
+                if self.instance.choices == SC5:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC5.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC5.objects.all().order_by('id')))
+
+                    # add field to input new option
+                    self.fields['other'] = forms.CharField( label='Add new', max_length=250, required=False)
+
+            # add checkbox field for not applicable option
+            """
+            if self.instance.not_applicable:
+                self.fields['n_a'] = forms.BooleanField(required=False, initial=False,
+                                                        widget=forms.CheckboxInput(attrs={}))
+            """
+    class Meta:
+        model = AssessmentComponentQuestionSelectField
+        fields = '__all__'
+
+
+class AssessmentComponentQuestionCharFieldForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AssessmentComponentQuestionCharFieldForm, self).__init__(*args, **kwargs)
+
+        # add checkbox field for not applicable option
+        if self.instance:
+            if self.instance.not_applicable:
+                self.fields['n_a'] = forms.BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={}))
+    class Meta:
+        model = AssessmentComponentQuestionCharField
+        fields = '__all__'
+
+
+class AssessmentComponentQuestionTextFieldForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AssessmentComponentQuestionTextFieldForm, self).__init__(*args, **kwargs)
+
+        # add checkbox field for not applicable option
+        if self.instance:
+            if self.instance.not_applicable:
+                self.fields['n_a'] = forms.BooleanField(required=False, initial=False, widget=forms.CheckboxInput(attrs={}))
+
+    class Meta:
+        model = AssessmentComponentQuestionTextField
+        fields = '__all__'

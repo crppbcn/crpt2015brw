@@ -24,7 +24,11 @@
             <div id="menu" class="col-md-10">
                 {% for elem in menu_elements %}
                     <div class="menu-horizontal" style="width:{{menu_horizontal_elem_width}}%;">
-                        <a href="/city_id/{{assessment.id}}/{{elem.id}}/" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.long_name }}" {% if section.name == elem.name %}class="selected"{% endif %}>{{ elem.name }}</a>
+                        {% if is_component %}
+                            <a href="/component/{{assessment.id}}/{{elem.id}}/" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.long_name }}" {% if section.name == elem.name %}class="selected"{% endif %}>{{ elem.name }}</a>
+                        {% else %}
+                            <a href="/city_id/{{assessment.id}}/{{elem.id}}/" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.long_name }}" {% if section.name == elem.name %}class="selected"{% endif %}>{{ elem.name }}</a>
+                        {% endif %}
                     </div>
                 {% endfor%}
             </div>
