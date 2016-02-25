@@ -287,6 +287,10 @@ class AssessmentComponentQuestionSelectFieldForm(forms.ModelForm):
                             forms.widgets.Select(
                                 choices=tuple([a.id, a.name] for a in ChoicesSC1.objects.all().order_by('id')))
 
+                    # add field to input new option
+                    self.fields['other'] = forms.CharField(label=LABEL_TAG_ANY_OTHER, max_length=250, required=False)
+
+
                 if self.instance.choices == SC2:
                     if self.instance.multi:
                         self.fields['response'].widget = \
@@ -326,9 +330,6 @@ class AssessmentComponentQuestionSelectFieldForm(forms.ModelForm):
                         self.fields['response'].widget = \
                             forms.widgets.Select(
                                 choices=tuple([a.id, a.name] for a in ChoicesSC5.objects.all().order_by('id')))
-
-                    # add field to input new option
-                    self.fields['other'] = forms.CharField( label='Add new', max_length=250, required=False)
 
             # add checkbox field for not applicable option
             """

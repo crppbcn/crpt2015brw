@@ -45,13 +45,43 @@
                                 {{form.errors}}
                                 <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                 {% if form.question_short.value %}
-                                <div class="form-group" order="{{ form.order.value }}">
-                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
-                                        <legend></legend>
-                                    {% endif %}
-                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
-                                    <div class="col-md-12">
-                                        {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
+                                        {% comment%} Treatment to put a single row for question with units {% endcomment %}
+                                        {% if form.mov_position.value == -1 %}
+                                            {% if form.units.value == 0 %}
+                                                <div class="form-group col-md-12" order="{{ form.order.value }}">
+                                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                                    <legend></legend>
+                                                    {% endif %}
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <div class="col-md-12">
+                                            {% endif %}
+                                            {% if form.units.value == 1 %}
+                                                <div class="form-group col-md-8" order="{{ form.order.value }}">
+                                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                                    <legend></legend>
+                                                    {% endif %}
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <div class="col-md-12">
+                                            {% endif %}
+                                            {% if form.units.value == 2 %}
+                                                <div class="form-group col-md-4" order="{{ form.order.value }}">
+                                                    {% if forloop.counter > 2 and form.has_mov.value  == True %}
+                                                    <legend></legend>
+                                                    {% endif %}
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <div class="col-md-12">
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if form.units.value == -1 %}
+                                                <div class="form-group col-md-4" order="{{ form.order.value }}">
+                                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                                    <legend></legend>
+                                                    {% endif %}
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <div class="col-md-12">
+                                        {% endif %}
+
+                                    {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                         {% render_field form.response class+="form-control" placeholder=form.placeholder.value %}
                                         {% if form.help_text and form.help_text.value != '' %}
                                             <span class="help-block">{{ form.help_text.value }}</span>
@@ -67,7 +97,9 @@
                                         {{ form.assessment.as_hidden }}
                                         {{ form.not_applicable.as_hidden }}
                                         {{ form.has_mov.as_hidden }}
-                                    </div>
+                                        {{ form.units.as_hidden }}
+
+                                            </div>
                                 </div>
                                 {% endif %}
                             {% endfor %}
@@ -108,6 +140,7 @@
                                             {{ form.assessment.as_hidden }}
                                             {{ form.not_applicable.as_hidden }}
                                             {{ form.has_mov.as_hidden }}
+                                            {{ form.units.as_hidden }}
                                         </div>
                                     </div>
                                     {% endif %}
@@ -127,13 +160,45 @@
                                     {{form.id}}
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
                                     {% if form.question_short.value %}
-                                    <div class="form-group" order="{{ form.order.value }}">
-                                        {% if forloop.counter > 1 and form.has_mov.value  == True %}
-                                            <legend></legend>
+
+                                        {% comment%} Treatment to put a single row for question with units {% endcomment %}
+                                        {% if form.mov_position.value == -1 %}
+                                            {% if form.units.value == 0 %}
+                                                <div class="form-group col-md-12" order="{{ form.order.value }}">
+                                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                                    <legend></legend>
+                                                    {% endif %}
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <div id="crpt-select-form" class="col-md-12">
+                                            {% endif %}
+                                            {% if form.units.value == 1 %}
+                                                <div class="form-group col-md-8" order="{{ form.order.value }}">
+                                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                                    <legend></legend>
+                                                    {% endif %}
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <div id="crpt-select-form" class="col-md-12">
+                                            {% endif %}
+                                            {% if form.units.value == 2 %}
+                                                <div class="form-group col-md-4" order="{{ form.order.value }}">
+                                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                                    <legend></legend>
+                                                    {% endif %}
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <div id="crpt-select-form" class="col-md-12">
+                                            {% endif %}
                                         {% endif %}
-                                        <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
-                                        <div id="crpt-select-form" class="col-md-12">
-                                            {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
+                                        {% if form.units.value == -1 %}
+                                                <div class="form-group col-md-4" order="{{ form.order.value }}">
+                                                    {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                                    <legend></legend>
+                                                    {% endif %}
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <div id="crpt-select-form" class="col-md-12">
+                                        {% endif %}
+
+
+                                        {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% if form.multi.value = True %}
                                                 {% render_field form.response class+="" placeholder=form.placeholder.value rows=3 %}
                                             {% else %}
@@ -156,8 +221,17 @@
                                             {{ form.choices.as_hidden }}
                                             {{ form.not_applicable.as_hidden }}
                                             {{ form.has_mov.as_hidden }}
-                                        </div>
-                                    </div>
+                                            {{ form.units.as_hidden }}
+
+
+
+
+
+
+                                            </div>
+                                            </div>
+
+
                                     {% endif %}
                                 {% endfor %}
 

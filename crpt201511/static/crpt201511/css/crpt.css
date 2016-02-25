@@ -260,11 +260,3 @@ Forms
 }
 
 
-/*******************
-
-Lists
-
-********************/
-ul.no_bullet {
-    list-style-type: none;
-}

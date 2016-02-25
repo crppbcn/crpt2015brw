@@ -483,23 +483,29 @@ def load_component_file(file_name):
         question.help_text = row[3].strip()
         question.placeholder= row[4].strip()
         question.order = row[6].strip()
+        question.units = int(row[12].strip().upper() == YES_STR)
         question.not_applicable = row[7].strip().upper() == YES_STR
+        question.mov_position = -1 # questions that are not MoV
 
         # TODO: creation of new version of assessment procedure!!
         question.version = AssessmentVersion.objects.order_by('-date_released')[0]
         question.save()
 
         # processing of units column
-        if row[12].strip().upper() == YES_STR:
+        if question.units == 1:
             new_question = ComponentQuestionCharField()
             new_question.component = question.component
-            new_question.order = int(question.order) + 2
+            new_question.order = int(question.order) + 1
             new_question.not_applicable = False
             new_question.help_text = ""  # TODO: decide which help text to assign
             new_question.question_short = "Please specify units"
             new_question.question_long = "Please specify units"
+            new_question.placeholder = "Specify units"
             new_question.multi = False
             new_question.version = question.version
+            new_question.units = 2 # to indicate this is textbox for units
+            new_question.has_mov = True # to add line separator
+            new_question.mov_position = -1 # questions that are not MoV
             new_question.save()
 
 
@@ -508,12 +514,15 @@ def load_component_file(file_name):
         if mov_txt != MOV_NOT and mov_txt != "" and mov_txt != "0":
             question.has_mov = True
             question.save()
+            # mov_position var for year (third column)
+            mov_position_year = 1
             # codes
             add_year = True
             add_source = True
             add_scale = True
             if mov_txt == MOV_NS:
                 add_scale = False
+                mov_position_year = 4 # when No Scale, Year in third column
             if mov_txt == MOV_NY:
                 add_year == False
             if mov_txt == MOV_NYS:
@@ -523,7 +532,7 @@ def load_component_file(file_name):
             if add_source:
                 new_question = ComponentQuestionSelectField()
                 new_question.component = question.component
-                new_question.order = int(question.order) + 2
+                new_question.order = int(question.order) + 1
                 new_question.not_applicable = False
                 new_question.help_text = ""  # TODO: decide which help text to assign
                 new_question.question_short = "MoV Source"
@@ -531,11 +540,16 @@ def load_component_file(file_name):
                 new_question.multi = False
                 new_question.choices = MOV_SOURCE
                 new_question.version = question.version
+                new_question.units = -1  # to indicate this textbox has nothing to do with MoV
+                if mov_txt == MOV_NYS:
+                    new_question.mov_position = MOV_LEFT_AND_LAST
+                else:
+                    new_question.mov_position = MOV_LEFT
                 new_question.save()
             if add_scale:
                 new_question = ComponentQuestionSelectField()
                 new_question.component = question.component
-                new_question.order = int(question.order) + 4
+                new_question.order = int(question.order) + 2
                 new_question.not_applicable = False
                 new_question.help_text = ""  # TODO: decide which help text to assign
                 new_question.question_short = "MoV Scale"
@@ -543,16 +557,26 @@ def load_component_file(file_name):
                 new_question.multi = False
                 new_question.choices = MOV_SCALE
                 new_question.version = question.version
+                new_question.units = -1  # to indicate this textbox has nothing to do with MoV
+                if mov_txt == MOV_ALL:
+                    new_question.mov_position = MOV_LEFT
+                if mov_txt == MOV_NY:
+                    new_question.mov_position = MOV_LEFT_AND_LAST
                 new_question.save()
-            if add_scale:
+            if add_year:
                 new_question = ComponentQuestionCharField()
                 new_question.component = question.component
-                new_question.order = int(question.order) + 6
+                new_question.order = int(question.order) + 3
                 new_question.not_applicable = False
                 new_question.help_text = ""  # TODO: decide which help text to assign
                 new_question.question_short = "MoV Year"
                 new_question.question_long = "MoV Year"
                 new_question.version = question.version
+                new_question.units = -1  # to indicate this textbox has nothing to do with MoV
+                if mov_txt == MOV_ALL:
+                    new_question.mov_position = MOV_RIGHT
+                if mov_txt == MOV_NS:
+                    new_question.mov_position = MOV_RIGHT_NO_MID
                 new_question.save()
         else:
             question.has_mov = False

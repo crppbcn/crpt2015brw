@@ -154,6 +154,8 @@ def test_create_new_assessment_components():
             a_question.component = component
             a_question.assessment = assessment
             a_question.has_mov = question.has_mov
+            a_question.units = question.units
+            a_question.mov_position = question.mov_position
             a_question.save()
         # TextField
         component_questions = ComponentQuestionTextField.objects.filter(component=component)
@@ -169,6 +171,8 @@ def test_create_new_assessment_components():
             a_question.component = component
             a_question.assessment = assessment
             a_question.has_mov = question.has_mov
+            a_question.mov_position = question.mov_position
+            a_question.units = question.units
             a_question.save()
             # SelectField
         component_questions = ComponentQuestionSelectField.objects.filter(component=component)
@@ -186,6 +190,8 @@ def test_create_new_assessment_components():
             a_question.choices = question.choices
             a_question.multi = question.multi
             a_question.has_mov = question.has_mov
+            a_question.units = question.units
+            a_question.mov_position = question.mov_position
             a_question.save()
             # creation of other tx choices for this assessment
             if question.choices.strip() == MC1:
@@ -219,13 +225,16 @@ def test_multi():
     print("test_multi.End")
 
 
-
+def test_simple():
+    print("value: " + str(int("YES" == YES_STR)))
+    print("value: " + str(int("" == YES_STR)))
 
 if __name__ == "__main__":
     #test_threading()
     #test_version_selected()
     #test_get_remote_folder_name()
     #test_multi()
+    #test_simple()
     test_create_new_assessment_city_id()
     test_create_new_assessment_components()
 

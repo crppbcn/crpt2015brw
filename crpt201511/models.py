@@ -343,6 +343,8 @@ class ComponentQuestion(QuestionSimple):
     component = django.db.models.ForeignKey(Component)
     not_applicable = django.db.models.BooleanField(default=False)
     has_mov = django.db.models.BooleanField(default=False)
+    units = django.db.models.IntegerField(null=True, blank=True)
+    mov_position = django.db.models.IntegerField(default=0)
 
     class Meta:
         abstract = True

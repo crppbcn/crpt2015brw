@@ -148,3 +148,16 @@ FILE_EXTENSIONS = ['pdf', 'PDF', 'jpg', 'JPG', 'png', 'PNG']
 YES_STR = "YES"
 NO_STR = "NO"
 EXAMPLE = "Example(s)"
+
+
+################################################
+#
+# MoV position on screen
+#
+################################################
+MOV_LEFT = 0
+MOV_MID = 1
+MOV_RIGHT = 2
+MOV_RIGHT_NO_MID = 3
+MOV_MID_AND_LAST = 4
+MOV_LEFT_AND_LAST = 5
