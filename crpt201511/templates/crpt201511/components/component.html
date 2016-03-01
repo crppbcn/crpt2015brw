@@ -98,7 +98,11 @@
                                         {{ form.not_applicable.as_hidden }}
                                         {{ form.has_mov.as_hidden }}
                                         {{ form.units.as_hidden }}
-
+                                        {{ form.mov_position.as_hidden }}
+                                        {{ form.component.as_hidden }}
+                                        {{ form.add_type.as_hidden  }}
+                                        {{ form.question_type.as_hidden  }}
+                                        {{ form.mov_type.as_hidden  }}
                                             </div>
                                 </div>
                                 {% endif %}
@@ -141,6 +145,11 @@
                                             {{ form.not_applicable.as_hidden }}
                                             {{ form.has_mov.as_hidden }}
                                             {{ form.units.as_hidden }}
+                                            {{ form.mov_position.as_hidden }}
+                                            {{ form.component.as_hidden }}
+                                            {{ form.add_type.as_hidden  }}
+                                            {{ form.question_type.as_hidden  }}
+                                            {{ form.mov_type.as_hidden  }}
                                         </div>
                                     </div>
                                     {% endif %}
@@ -159,8 +168,6 @@
                                     {%endcomment%}
                                     {{form.id}}
                                     <!-- TODO: form fields display as a function of type of question and except MoV section -->
-                                    {% if form.question_short.value %}
-
                                         {% comment%} Treatment to put a single row for question with units {% endcomment %}
                                         {% if form.mov_position.value == -1 %}
                                             {% if form.units.value == 0 %}
@@ -168,7 +175,11 @@
                                                     {% if forloop.counter > 1 and form.has_mov.value  == True %}
                                                     <legend></legend>
                                                     {% endif %}
-                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
+                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}
+                                                    {% if form.add_type.value == 1 %}
+                                                        <a href="{% url 'duplicate_question' assessment_id=assessment.id component_id=section.id subcomponent_id=subsection.id third_component_id=third_component.id initial_question_id=form.instance.id question_type=form.question_type.value %}">[+]</a>
+                                                    {% endif %}
+                                                    </label>
                                                     <div id="crpt-select-form" class="col-md-12">
                                             {% endif %}
                                             {% if form.units.value == 1 %}
@@ -197,19 +208,23 @@
                                                     <div id="crpt-select-form" class="col-md-12">
                                         {% endif %}
 
-
-                                        {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
+                                            {% if form.show_short_name.value == True %}
+                                                {% render_field form.question_short class+="form-control" %}
+                                            {% else %}
+                                                {{ form.question_short.as_hidden }}
+                                            {% endif %}
+                                            {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
                                             {% if form.multi.value = True %}
                                                 {% render_field form.response class+="" placeholder=form.placeholder.value rows=3 %}
                                             {% else %}
                                                 {% render_field form.response class+="form-control" placeholder=form.placeholder.value rows=3 %}
                                             {% endif %}
+                                            {% if form.other %} {{ form.other.label_tag }} {% endif %}
                                             {% render_field form.other class+="form-control" %}
                                             {% if form.help_text and form.help_text.value != '' %}
                                                 <span class="help-block">{{ form.help_text.value }}</span>
                                             {% endif %}
                                             {% comment %}Print hidden fields{% endcomment %}
-                                            {{ form.question_short.as_hidden }}
                                             {{ form.question_long.as_hidden }}
                                             {{ form.help_text.as_hidden }}
                                             {{ form.order.as_hidden }}
@@ -222,17 +237,13 @@
                                             {{ form.not_applicable.as_hidden }}
                                             {{ form.has_mov.as_hidden }}
                                             {{ form.units.as_hidden }}
-
-
-
-
-
-
+                                            {{ form.mov_position.as_hidden }}
+                                            {{ form.component.as_hidden }}
+                                            {{ form.add_type.as_hidden  }}
+                                            {{ form.question_type.as_hidden  }}
+                                            {{ form.mov_type.as_hidden  }}
                                             </div>
                                             </div>
-
-
-                                    {% endif %}
                                 {% endfor %}
 
 

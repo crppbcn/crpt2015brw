@@ -57,3 +57,20 @@ function upload_files_click(form_id) {
     elem = document.getElementById("id_fs_uf-0-files");
     elem.click()
 }
+
+function setFocusFirstElemForm(){
+  if(document.forms){
+     form = document.forms[0];
+     if(form){
+        if(form.elements){
+            for(i=0; i<form.length;i++){
+               if(form[i].readOnly == false && form[i].type != 'hidden'){
+                    form[i].focus();
+                    form[i].select();
+                    return;
+               }
+            }
+        }
+     }
+  }
+}

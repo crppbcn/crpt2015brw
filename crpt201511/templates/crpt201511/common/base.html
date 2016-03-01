@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'crpt201511/css/crpt.css' %}" media="screen">
     <link rel="stylesheet" href="{% static 'crpt201511/css/login_bootstrap.css' %}" media="screen">
 </head>
-<body onload="orderQuestions();">
+<body onload="orderQuestions();setFocusFirstElemForm();">
     <div id="crpt" class="container">
         {% block header%}{% endblock %}
         {% block main_menu %}{% endblock %}

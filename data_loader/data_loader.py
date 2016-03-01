@@ -392,6 +392,7 @@ def load_indicator_components(file_name, class_name):
             if row[8].strip() != "#N/A":
                 parent_element.data_source = row[8].strip()
             parent_element.comment = row[11].strip()
+            parent_element.add_type = int(row[10].strip().upper() == YES_STR)
             parent_element.save()
         else:
             try:
@@ -418,6 +419,7 @@ def load_indicator_components(file_name, class_name):
                 if row[8].strip() != "#N/A":
                     element.data_source = row[8].strip()
                 element.comment = row[11].strip()
+                element.add_type = int(row[10].strip().upper() == YES_STR)
                 element.save()
             except:
                 print("Error processing element: " + row[0].strip())
@@ -477,15 +479,19 @@ def load_component_file(file_name):
             question.choices = row[8].strip()
             question.multi = True
 
+        question.question_type = question_type
         question.component = component
         question.question_short = row[1].strip()
         question.question_long = row[2].strip()
         question.help_text = row[3].strip()
         question.placeholder= row[4].strip()
         question.order = row[6].strip()
-        question.units = int(row[12].strip().upper() == YES_STR)
+        question.units = int(row[12].strip().upper() == YES_STR or row[12].strip().upper() == Y_STR)
         question.not_applicable = row[7].strip().upper() == YES_STR
         question.mov_position = -1 # questions that are not MoV
+        # control of "add" questions
+        if row[13].strip().upper() != "" and row[13].strip().upper() != NO_STR:
+            question.add_type = ADD_TYPE_LGJ
 
         # TODO: creation of new version of assessment procedure!!
         question.version = AssessmentVersion.objects.order_by('-date_released')[0]
@@ -506,6 +512,8 @@ def load_component_file(file_name):
             new_question.units = 2 # to indicate this is textbox for units
             new_question.has_mov = True # to add line separator
             new_question.mov_position = -1 # questions that are not MoV
+            new_question.mov_type = ""
+            new_question.question_type = CHAR_FIELD
             new_question.save()
 
 
@@ -531,6 +539,7 @@ def load_component_file(file_name):
             # add questions
             if add_source:
                 new_question = ComponentQuestionSelectField()
+                new_question.question_type = SELECT_SINGLE
                 new_question.component = question.component
                 new_question.order = int(question.order) + 1
                 new_question.not_applicable = False
@@ -540,14 +549,16 @@ def load_component_file(file_name):
                 new_question.multi = False
                 new_question.choices = MOV_SOURCE
                 new_question.version = question.version
-                new_question.units = -1  # to indicate this textbox has nothing to do with MoV
+                new_question.units = -1  # to indicate this textbox has nothing to do with units
                 if mov_txt == MOV_NYS:
                     new_question.mov_position = MOV_LEFT_AND_LAST
                 else:
                     new_question.mov_position = MOV_LEFT
+                new_question.mov_type = ""
                 new_question.save()
             if add_scale:
                 new_question = ComponentQuestionSelectField()
+                new_question.question_type = SELECT_SINGLE
                 new_question.component = question.component
                 new_question.order = int(question.order) + 2
                 new_question.not_applicable = False
@@ -562,9 +573,11 @@ def load_component_file(file_name):
                     new_question.mov_position = MOV_LEFT
                 if mov_txt == MOV_NY:
                     new_question.mov_position = MOV_LEFT_AND_LAST
+                new_question.mov_type = ""
                 new_question.save()
             if add_year:
                 new_question = ComponentQuestionCharField()
+                new_question.question_type = CHAR_FIELD
                 new_question.component = question.component
                 new_question.order = int(question.order) + 3
                 new_question.not_applicable = False
@@ -577,6 +590,7 @@ def load_component_file(file_name):
                     new_question.mov_position = MOV_RIGHT
                 if mov_txt == MOV_NS:
                     new_question.mov_position = MOV_RIGHT_NO_MID
+                new_question.mov_type = ""
                 new_question.save()
         else:
             question.has_mov = False
@@ -628,7 +642,6 @@ if __name__ == "__main__":
     load_city_id_file("CityID - Other.tsv")
 
     # Indicators
-
     load_indicator_components("Indicators - Components.tsv", Component)
     set_next_element("Indicators - Components.tsv", Component, 5)
     load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration)

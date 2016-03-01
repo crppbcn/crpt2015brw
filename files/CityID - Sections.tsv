@@ -21,9 +21,9 @@ CID0019	Built Environment	Built Environment	CID0018	CID0020	200
 CID0020	Basic Infrastructure	Basic Infrastructure	CID0018	CID0021	210
 CID0021	Transport	Transport	CID0018	CID0022	220
 CID0022	Critical Infrastructure	Critical Infrastructure	CID0018		230
-CID0023	Partnerships	Partnerships		CID0024	240
+CID0023	Partnerships	Partnerships		CID0025	240
 CID0024	Cooperation	Cooperation	CID0023		250
-CID0025	Public Relations	Public Relations		CID0026	260
+CID0025	Public Relations	Public Relations		CID0027	260
 CID0026	Communications	Communications	CID0025		270
 CID0027	Other	Other Relevant Information		CID0001	280
 CID0028	Others	Others	CID0027		290

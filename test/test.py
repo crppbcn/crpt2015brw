@@ -156,6 +156,9 @@ def test_create_new_assessment_components():
             a_question.has_mov = question.has_mov
             a_question.units = question.units
             a_question.mov_position = question.mov_position
+            a_question.add_type = question.add_type
+            a_question.mov_type = question.mov_type
+            a_question.question_type = question.question_type
             a_question.save()
         # TextField
         component_questions = ComponentQuestionTextField.objects.filter(component=component)
@@ -173,6 +176,9 @@ def test_create_new_assessment_components():
             a_question.has_mov = question.has_mov
             a_question.mov_position = question.mov_position
             a_question.units = question.units
+            a_question.add_type = question.add_type
+            a_question.mov_type = question.mov_type
+            a_question.question_type = question.question_type
             a_question.save()
             # SelectField
         component_questions = ComponentQuestionSelectField.objects.filter(component=component)
@@ -192,6 +198,9 @@ def test_create_new_assessment_components():
             a_question.has_mov = question.has_mov
             a_question.units = question.units
             a_question.mov_position = question.mov_position
+            a_question.add_type = question.add_type
+            a_question.mov_type = question.mov_type
+            a_question.question_type = question.question_type
             a_question.save()
             # creation of other tx choices for this assessment
             if question.choices.strip() == MC1:

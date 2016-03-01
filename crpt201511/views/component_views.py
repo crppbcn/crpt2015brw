@@ -20,6 +20,7 @@ from crpt201511.models import *
 from crpt201511.settings import CRPT_URL
 from crpt201511.trace import *
 from crpt201511.utils.env_utils import *
+from crpt201511.utils.component_question_utils import *
 from crpt201511.forms import *
 from crpt201511.utils.form_utils import *
 from crpt201511.my_ftp import MyFTP
@@ -41,6 +42,17 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
     """
     try:
         left_elements = None
+
+        print("--INITIAL PARAMS. START --")
+
+        if component_id:
+            print("component_id: " + str(component_id))
+        if subcomponent_id:
+            print("subcomponent_id: " + str(subcomponent_id))
+        if third_component_id:
+            print("third_component_id: " + str(third_component_id))
+
+        print("--INITIAL PARAMS. END --")
 
         # get username from session
         person = get_person(request)
@@ -86,8 +98,16 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
                 third_component = Component.objects.filter(parent=subcomponent).order_by('order')[:1].get()
             except:
                 third_component = None
-        print("third_component_id: " + str(third_component_id))
-        print("third_component: " + third_component.name)
+
+
+        print("--CHECK PARAMS. START --")
+
+        print("component_id: " + str(component.id))
+        print("subcomponent_id: " + str(subcomponent.id))
+        print("thirdcomponent_id: " + str(third_component.id))
+
+        print("--CHECK PARAMS. END --")
+
 
 
         # considerations at component and subcomponent level
@@ -114,11 +134,11 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
                     order_by('date_created')
 
         # formset definition
-        fs_char_field = modelformset_factory(AssessmentComponentQuestionCharField, max_num=1, exclude=[],
+        fs_char_field = modelformset_factory(AssessmentComponentQuestionCharField, max_num=0, exclude=[],
                                              form=AssessmentComponentQuestionCharFieldForm)
-        fs_text_field = modelformset_factory(AssessmentComponentQuestionTextField, max_num=1, exclude=[],
+        fs_text_field = modelformset_factory(AssessmentComponentQuestionTextField, max_num=0, exclude=[],
                                              form=AssessmentComponentQuestionTextFieldForm)
-        fs_select_field = modelformset_factory(AssessmentComponentQuestionSelectField, max_num=1, exclude=[],
+        fs_select_field = modelformset_factory(AssessmentComponentQuestionSelectField, max_num=0, exclude=[],
                                                form=AssessmentComponentQuestionSelectFieldForm)
 
         if request.method == 'POST':
@@ -126,7 +146,10 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
             fs_tf = fs_text_field(request.POST, request.FILES, prefix='fs_tf')
             fs_sf = fs_select_field(request.POST, request.FILES, prefix='fs_sf')
 
-            if fs_cf and fs_cf.is_valid() and fs_tf and fs_tf.is_valid() and fs_sf and fs_sf.is_valid():
+            if fs_cf and fs_cf.is_valid() and fs_sf and fs_sf.is_valid():
+
+                print("1!!")
+
 
                 if fs_cf and fs_cf.is_valid():
                     not_applicable_responses_treatment(fs_cf)
@@ -181,32 +204,31 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
                     # Not needed. Each form is saved individually
                     fs_sf.save()
                 else:
+                    print("2!!")
                     print("fs_sf not informed or not valid!")
                     print(str(fs_sf.errors))
                     sys.stdout.flush()
 
+                print("3!!")
+
                 # navigate to next component
-                url_to_redirect = "/component/" + assessment_id + "/"
-                if subcomponent:
-                    if subcomponent.next_one:
-                        print("1.component: " + subcomponent.parent.name)
-                        print("1.subcomponent: " + subcomponent.next_one.name)
-                        url_to_redirect += str(subcomponent.parent.id) + "/" + str(subcomponent.next_one.id) + "/"
-                    else:
-                        if subcomponent.parent.next_one:
-                            print("2.component: " + subcomponent.parent.next_one.name)
-                            url_to_redirect += str(subcomponent.parent.next_one.id) + "/"
-                        else:
-                            print("3.component: " + subcomponent.parent.name)
-                            url_to_redirect += str(subcomponent.parent.id) + "/"
+                url_to_redirect = "/component/" + assessment_id + SLASH
+                if third_component and third_component.next_one:
+                    url_to_redirect += component.id + SLASH
+                    url_to_redirect += subcomponent.id + SLASH
+                    url_to_redirect += third_component.next_one.id + SLASH
                 else:
-                    """
-                    print("4.component: " + component.next_one.name)
-                    url_to_redirect += str(component.next_one.id) + "/"
-                    """
-                # print("url_to_redirect: " + url_to_redirect)
+                    if subcomponent and subcomponent.next_one:
+                        url_to_redirect += component.id + SLASH
+                        url_to_redirect += subcomponent.next_one.id + SLASH
+                    else:
+                        if component.next_one:
+                            url_to_redirect += component.next_one.id + SLASH
+
+
                 return redirect(url_to_redirect, context_instance=RequestContext(request))
             else:
+
                 # additional treatment of errors if needed
                 if fs_cf:
                     print("fs_cf errors: " + str(fs_cf.errors))
@@ -297,10 +319,10 @@ def add_section_comment(request):
                 pass
 
             # redirect to section page
-            url_to_redirect = "/city_id/" + assessment_id + "/"
+            url_to_redirect = "/city_id/" + assessment_id + SLASH
             if section.parent:
-                url_to_redirect += str(section.parent.id) + "/"
-            url_to_redirect += str(section.id) + "/"
+                url_to_redirect += str(section.parent.id) + SLASH
+            url_to_redirect += str(section.id) + SLASH
 
             return redirect(url_to_redirect, context_instance=RequestContext(request))
         else:
@@ -311,3 +333,37 @@ def add_section_comment(request):
         else:
             return render_to_response(TEMPLATE_ERROR, {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
                                       context_instance=RequestContext(request))
+
+
+@ensure_csrf_cookie
+@login_required
+def duplicate_question(request, assessment_id, component_id=None, subcomponent_id=None, third_component_id=None,
+                     initial_question_id=None, question_type=None):
+    """
+    View to generate a new quewstion for local gov. jurisdiction
+
+    :param request:
+    :param assessment_id:
+    :param component_id:
+    :param subcomponent_id:
+    :param third_component_id:
+    :param initial_question_id:
+    :return:
+    """
+    try:
+        print("ARRIBA!!!")
+        print("initial_q_id: " + str(initial_question_id))
+        sys.stdout.flush()
+
+        # create new question
+        new_question = duplicate_new_question(initial_question_id, question_type)
+    except:
+        print("Error creating new question: ")
+        print(sys.exc_info())
+
+        sys.stdout.flush()
+    finally:
+        # redirect
+        url_to_redirect = "/component/" + assessment_id + SLASH + component_id + SLASH + subcomponent_id + SLASH + \
+                          third_component_id
+        return redirect(url_to_redirect, context_instance=RequestContext(request))

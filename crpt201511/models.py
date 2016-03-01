@@ -325,6 +325,7 @@ class Component(Common):
     dimension = django.db.models.ForeignKey(Dimension, null=True, blank=True)
     data_source = django.db.models.CharField(max_length=250, null=True, blank=True)
     comment = django.db.models.CharField(max_length=500, null=True, blank=True)
+    add_type = django.db.models.IntegerField(default=0)
 
 
 class ComponentConsideration(Common):
@@ -344,7 +345,11 @@ class ComponentQuestion(QuestionSimple):
     not_applicable = django.db.models.BooleanField(default=False)
     has_mov = django.db.models.BooleanField(default=False)
     units = django.db.models.IntegerField(null=True, blank=True)
+    question_type = django.db.models.CharField(max_length=50, null=True, blank=True)
+    mov_type = django.db.models.CharField(max_length=10, null=True, blank=True)
     mov_position = django.db.models.IntegerField(default=0)
+    add_type = django.db.models.IntegerField(default=0)
+    show_short_name = django.db.models.BooleanField(default=False)
 
     class Meta:
         abstract = True

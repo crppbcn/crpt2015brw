@@ -28,7 +28,7 @@ class MyFTP():
             print("remote_folder: " + remote_folder)
             print("remote_file_name: " + remote_file_name)
 
-            ret = f.put(local_file_path, remote_folder + "/" + remote_file_name)
+            ret = f.put(local_file_path, remote_folder + SLASH + remote_file_name)
         except:
             print("Unexpected error:", sys.exc_info())
         finally:
@@ -54,7 +54,7 @@ class MyFTP():
                 for chunk in memory_file.chunks():
                     destination.write(chunk)
 
-            ret = f.put(default_storage.path('temp/'+str(memory_file)), remote_folder + "/" + remote_file_name)
+            ret = f.put(default_storage.path('temp/'+str(memory_file)), remote_folder + SLASH + remote_file_name)
         except:
             print("Unexpected error:", sys.exc_info())
         finally:
@@ -72,7 +72,7 @@ class MyFTP():
             # cd base folder
             f.cd(FTP_BASE_DIR)
             # download the file
-            contents = f.get(remote_folder + "/" + remote_file_name)
+            contents = f.get(remote_folder + SLASH + remote_file_name)
             my_file = open(local_file_path, 'wb')
             my_file.write(contents)
             my_file.close()
@@ -90,7 +90,7 @@ class MyFTP():
             # cd base folder
             f.cd(FTP_BASE_DIR)
             # download the file
-            contents = f.get(remote_folder + "/" + remote_file_name)
+            contents = f.get(remote_folder + SLASH + remote_file_name)
         except:
             print("Unexpected error:", sys.exc_info())
         finally:

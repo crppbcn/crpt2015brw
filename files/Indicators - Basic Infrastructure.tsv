@@ -1,14 +1,14 @@
-Component	Short Desc	Long Desc	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION	ADD OPTION	MoV	Dimension	Units
-1.1.1	Population with access to any means of electricity supply	Population with access to any means of electricity supply			CHAR_FIELD	10				A		Yes
-1.1.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	20		MC1	Yes	NA		
-1.1.1	Population connected to the network	Population connected to the network			CHAR_FIELD	30				A		Yes
-1.1.1	Population with alternative sources of electricity	Population with alternative sources of electricity			CHAR_FIELD	40				A		
-1.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	50		SC1		NYS		
-1.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_MULTI	60		SC2		NA		
-1.1.3	What is the average amount of disruptions per consumer per year?	What is the average amount of disruptions per consumer per year?			CHAR_FIELD	70				A		
-1.1.3	What is the average disruption time?	What is the average disruption time?			CHAR_FIELD	80				A		
-1.1.3	What is level of impact of the disruptions?	What is level of impact of the disruptions?			SELECT_MULTI	90		SC3		NYS		
-1.1.3	Is there an operation and maintenance plan for the electricity supply network?	Is there an operation and maintenance plan for the electricity supply network?			SELECT_SINGLE	100		SC1		A		
-1.1.4	Development Plan	Development Plan			SELECT_SINGLE	110		SC4		NS		
-1.1.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	120		SC5		NS		
-1.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_SINGLE	130		MC2		NA		
+Component	Short Desc	Long Desc	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION	ADD OPTION	MoV	Dimension	Units	PLUS
+1.1.1	Population with access to any means of electricity supply	Population with access to any means of electricity supply			CHAR_FIELD	10				NA	Physical	Y	No
+1.1.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	20		MC1	Yes	A	Physical	0	No
+1.1.1	Population connected to the network	Population connected to the network			CHAR_FIELD	30				A	Physical	Y	No
+1.1.1	Population with alternative sources of electricity	Population with alternative sources of electricity			CHAR_FIELD	40				A	Physical	Y	No
+1.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	50		SC1		NYS	Physical	0	No
+1.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_MULTI	60		SC2		NA	Organisational	0	PLUS_1
+1.1.3	What is the average amount of disruptions per consumer per year?	What is the average amount of disruptions per consumer per year?			CHAR_FIELD	70				A	Functional	0	PLUS_1
+1.1.3	What is the average disruption time?	What is the average disruption time?			CHAR_FIELD	80				A	Functional	Y	No
+1.1.3	What is level of impact of the disruptions?	What is level of impact of the disruptions?			SELECT_MULTI	90		SC3		NYS	Functional	0	No
+1.1.3	Is there an operation and maintenance plan for the electricity supply network?	Is there an operation and maintenance plan for the electricity supply network?			SELECT_SINGLE	100		SC1		A	Functional	0	No
+1.1.4	Development Plan	Development Plan			SELECT_SINGLE	110		SC4		NS	Functional	0	No
+1.1.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	120		SC5		NS	Functional	0	No
+1.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_SINGLE	130		MC2		NA	Functional	0	No

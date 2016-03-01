@@ -190,22 +190,22 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
                     sys.stdout.flush()
 
                 # navigate to next section
-                url_to_redirect = "/city_id/" + assessment_id + "/"
+                url_to_redirect = "/city_id/" + assessment_id + SLASH
                 if subsection:
                     if subsection.next_one:
                         print("1.section: " + subsection.parent.name)
                         print("1.subsection: " + subsection.next_one.name)
-                        url_to_redirect += str(subsection.parent.id) + "/" + str(subsection.next_one.id) + "/"
+                        url_to_redirect += str(subsection.parent.id) + SLASH + str(subsection.next_one.id) + SLASH
                     else:
                         if subsection.parent.next_one:
                             print("2.section: " + subsection.parent.next_one.name)
-                            url_to_redirect += str(subsection.parent.next_one.id) + "/"
+                            url_to_redirect += str(subsection.parent.next_one.id) + SLASH
                         else:
                             print("3.section: " + subsection.parent.name)
-                            url_to_redirect += str(subsection.parent.id) + "/"
+                            url_to_redirect += str(subsection.parent.id) + SLASH
                 else:
                     print("4.section: " + section.next_one.name)
-                    url_to_redirect += str(section.next_one.id) + "/"
+                    url_to_redirect += str(section.next_one.id) + SLASH
 
                 # print("url_to_redirect: " + url_to_redirect)
                 return redirect(url_to_redirect, context_instance=RequestContext(request))
@@ -304,10 +304,10 @@ def add_section_comment(request):
                 pass
 
             # redirect to section page
-            url_to_redirect = "/city_id/" + assessment_id + "/"
+            url_to_redirect = "/city_id/" + assessment_id + SLASH
             if section.parent:
-                url_to_redirect += str(section.parent.id) + "/"
-            url_to_redirect += str(section.id) + "/"
+                url_to_redirect += str(section.parent.id) + SLASH
+            url_to_redirect += str(section.id) + SLASH
 
             return redirect(url_to_redirect, context_instance=RequestContext(request))
         else:
