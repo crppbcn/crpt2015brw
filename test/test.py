@@ -17,6 +17,7 @@ from crpt201511.trace import trace_action
 from crpt201511.models import *
 from crpt201511.constants import *
 from crpt201511.utils.assessment_utils import get_remote_folder_name
+from crpt201511.utils.component_question_utils import *
 
 
 def test_threading():
@@ -48,42 +49,35 @@ def test_create_new_assessment_city_id():
         assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
         assessment.save()
 
+    # create assessment elements - first parents
+    for elem in Element.objects.filter(version=assessment.version, parent=None).order_by('id'):
+        a_element = AssessmentElement()
+        a_element.element = elem
+        a_element.assessment = assessment
+        a_element.save()
+    # create assessment elements - then the rest
+    for elem in Element.objects.filter(version=assessment.version).exclude(parent=None).order_by('id'):
+        a_element = AssessmentElement()
+        a_element.element = elem
+        a_element.assessment = assessment
+        print("element.name: " + elem.name)
+        if elem.parent:
+            print("element.parent.name: " + elem.parent.name)
+            sys.stdout.flush()
+
+            a_element.parent = AssessmentElement.objects.get(element=elem.parent, assessment=assessment)
+        a_element.save()
+
+
+
     # new City ID. For each section create AssessmentCityIDStatements and correspondent responses
     cid_sections = CityIDSection.objects.all()
     for section in cid_sections:
         print("CtyID Section Start: " + section.name)
         # CharField
-        cid_questions = CityIDQuestionCharField.objects.filter(section=section)
+        cid_questions = CityIDQuestion.objects.filter(section=section)
         for cid_question in cid_questions:
-            a_cid_question = AssessmentCityIDQuestionCharField()
-            a_cid_question.question_short = cid_question.question_short
-            a_cid_question.question_long = cid_question.question_long
-            a_cid_question.order = cid_question.order
-            a_cid_question.help_text = cid_question.help_text
-            a_cid_question.placeholder = cid_question.placeholder
-            a_cid_question.not_applicable = cid_question.not_applicable
-            a_cid_question.version = cid_question.version
-            a_cid_question.section = section
-            a_cid_question.assessment = assessment
-            a_cid_question.save()
-        # TextField
-        cid_questions = CityIDQuestionTextField.objects.filter(section=section)
-        for cid_question in cid_questions:
-            a_cid_question = AssessmentCityIDQuestionTextField()
-            a_cid_question.question_short = cid_question.question_short
-            a_cid_question.question_long = cid_question.question_long
-            a_cid_question.order = cid_question.order
-            a_cid_question.help_text = cid_question.help_text
-            a_cid_question.placeholder = cid_question.placeholder
-            a_cid_question.not_applicable = cid_question.not_applicable
-            a_cid_question.version = cid_question.version
-            a_cid_question.section = section
-            a_cid_question.assessment = assessment
-            a_cid_question.save()
-        # SelectField
-        cid_questions = CityIDQuestionSelectField.objects.filter(section=section)
-        for cid_question in cid_questions:
-            a_cid_question = AssessmentCityIDQuestionSelectField()
+            a_cid_question = AssessmentCityIDQuestion()
             a_cid_question.question_short = cid_question.question_short
             a_cid_question.question_long = cid_question.question_long
             a_cid_question.order = cid_question.order
@@ -95,6 +89,11 @@ def test_create_new_assessment_city_id():
             a_cid_question.assessment = assessment
             a_cid_question.choices = cid_question.choices
             a_cid_question.multi = cid_question.multi
+            a_cid_question.question_type = cid_question.question_type
+            if cid_question.element:
+                print("Get Assessment Element for element: " + cid_question.element.name)
+                a_cid_question.assessment_element = AssessmentElement.objects.get(element=cid_question.element)
+            a_cid_question.save()
             # creation of other tx choices for this assessment
             if cid_question.choices.strip() == OTHER_TX:
                 for other_tx in ChoicesOtherTx.objects.all():
@@ -104,20 +103,6 @@ def test_create_new_assessment_city_id():
                     a_cid_other_tx.save()
             a_cid_question.save()
 
-        # UploadField
-        cid_questions = CityIDQuestionUploadField.objects.filter(section=section)
-        for cid_question in cid_questions:
-            a_cid_question = AssessmentCityIDQuestionUploadField()
-            a_cid_question.question_short = cid_question.question_short
-            a_cid_question.question_long = cid_question.question_long
-            a_cid_question.order = cid_question.order
-            a_cid_question.help_text = cid_question.help_text
-            a_cid_question.placeholder = cid_question.placeholder
-            a_cid_question.not_applicable = cid_question.not_applicable
-            a_cid_question.version = cid_question.version
-            a_cid_question.section = section
-            a_cid_question.assessment = assessment
-            a_cid_question.save()
         print("CityID Section End: " + section.name)
     print("create_new_asessment_city_id. End.")
 
@@ -141,9 +126,9 @@ def test_create_new_assessment_components():
     for component in components:
         print("Component Start: " + component.name)
         # CharField
-        component_questions = ComponentQuestionCharField.objects.filter(component=component)
+        component_questions = ComponentQuestion.objects.filter(component=component)
         for question in component_questions:
-            a_question = AssessmentComponentQuestionCharField()
+            a_question = AssessmentComponentQuestion()
             a_question.question_short = question.question_short
             a_question.question_long = question.question_long
             a_question.order = question.order
@@ -153,60 +138,39 @@ def test_create_new_assessment_components():
             a_question.version = question.version
             a_question.component = component
             a_question.assessment = assessment
+            a_question.element = question.element
             a_question.has_mov = question.has_mov
             a_question.units = question.units
+            # dimension
+            a_question.dimension = question.dimension
+            # scorable consideration
+            if question.units == 1 or question.choices == MOV_SOURCE or \
+                            question.choices == SC1 or question.choices == SC2 or question.choices == SC3 or \
+                            question.choices == SC4 or question.choices == SC5:
+                a_question.scorable = True
             a_question.mov_position = question.mov_position
             a_question.add_type = question.add_type
             a_question.mov_type = question.mov_type
             a_question.question_type = question.question_type
-            a_question.save()
-        # TextField
-        component_questions = ComponentQuestionTextField.objects.filter(component=component)
-        for question in component_questions:
-            a_question = AssessmentComponentQuestionCharField()
-            a_question.question_short = question.question_short
-            a_question.question_long = question.question_long
-            a_question.order = question.order
-            a_question.help_text = question.help_text
-            a_question.placeholder = question.placeholder
-            a_question.not_applicable = question.not_applicable
-            a_question.version = question.version
-            a_question.component = component
-            a_question.assessment = assessment
-            a_question.has_mov = question.has_mov
-            a_question.mov_position = question.mov_position
-            a_question.units = question.units
-            a_question.add_type = question.add_type
-            a_question.mov_type = question.mov_type
-            a_question.question_type = question.question_type
-            a_question.save()
-            # SelectField
-        component_questions = ComponentQuestionSelectField.objects.filter(component=component)
-        for question in component_questions:
-            a_question = AssessmentComponentQuestionSelectField()
-            a_question.question_short = question.question_short
-            a_question.question_long = question.question_long
-            a_question.order = question.order
-            a_question.help_text = question.help_text
-            a_question.placeholder = question.placeholder
-            a_question.not_applicable = question.not_applicable
-            a_question.version = question.version
-            a_question.component = component
-            a_question.assessment = assessment
             a_question.choices = question.choices
+            # set max num of choices
+            if a_question.choices != "":
+                set_max_num_of_choices(a_question)
             a_question.multi = question.multi
-            a_question.has_mov = question.has_mov
-            a_question.units = question.units
-            a_question.mov_position = question.mov_position
-            a_question.add_type = question.add_type
-            a_question.mov_type = question.mov_type
-            a_question.question_type = question.question_type
+            # look for assessment element
+            if question.element:
+                print("Get Assessment Element for element: " + question.element.name)
+                a_question.assessment_element = AssessmentElement.objects.get(element=question.element,
+                                                                              assessment=assessment)
+
+            # save question
             a_question.save()
-            # creation of other tx choices for this assessment
-            if question.choices.strip() == MC1:
-                for other_tx in ChoicesOtherTx.objects.all():
+
+            # treatment of choices
+            if str(question.choices).strip() == MC1:
+                for elem in ChoicesMC1.objects.all():
                     a_cid_other_tx = AssessmentChoicesMC1()
-                    a_cid_other_tx.name = other_tx
+                    a_cid_other_tx.name = elem.name
                     a_cid_other_tx.assessment = assessment
                     a_cid_other_tx.save()
         print("Component End: " + component.name)
@@ -226,12 +190,18 @@ def test_get_remote_folder_name():
     print("test_get_remote_folder_name.End")
 
 
-def test_multi():
-    print("test_multi.Start")
-    question = AssessmentCityIDQuestionSelectField.objects.get(id=14)
+def test_obtain_max_selected_value():
+    print("test_obtain_max_selected_value.Start")
+    question = AssessmentComponentQuestion.objects.get(id=54)
     print("QUESTION: " + question.question_short)
-    print("MULTI: " + str(question.multi))
-    print("test_multi.End")
+    print("Response: " + str(question.response))
+    resp_length = len(str(question.response))
+    try:
+        max_selected_value = int(str(question.response)[resp_length-3:resp_length-2])
+    except:
+        max_selected_value = 0
+    print("Max selected value: " + str(max_selected_value))
+    print("test_obtain_max_selected_value.End")
 
 
 def test_simple():
@@ -243,7 +213,7 @@ if __name__ == "__main__":
     #test_version_selected()
     #test_get_remote_folder_name()
     #test_multi()
-    #test_simple()
+    #test_obtain_max_selected_value()
     test_create_new_assessment_city_id()
     test_create_new_assessment_components()
 

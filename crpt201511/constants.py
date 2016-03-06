@@ -170,3 +170,14 @@ MOV_RIGHT = 2
 MOV_RIGHT_NO_MID = 3
 MOV_MID_AND_LAST = 4
 MOV_LEFT_AND_LAST = 5
+
+
+################################################
+#
+# Dimensions
+#
+################################################
+ORGANIZATIONAL = "Organisational"
+SPATIAL = "Spatial"
+PHYSICAL = "Physical"
+FUNCTIONAL = "Functional"

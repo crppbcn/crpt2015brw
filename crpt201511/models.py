@@ -1,10 +1,14 @@
-import os
+from __future__ import division
+import os, sys
 import django.db.models
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.utils import timezone
+
+from crpt201511.utils.models_utils import *
+from crpt201511.constants import *
 
 #######################################
 #
@@ -131,6 +135,7 @@ class Element(BasicName):
     """
     order = django.db.models.IntegerField(null=True, blank=True)
     parent = django.db.models.ForeignKey('self', null=True, blank=True)
+    version = django.db.models.ForeignKey(AssessmentVersion)
 
 
 class CityIDSection(Common):
@@ -174,6 +179,10 @@ class QuestionSimple(Common):
     placeholder = django.db.models.CharField(max_length=250, null=True, blank=True)
     version = django.db.models.ForeignKey(AssessmentVersion)
     order = django.db.models.IntegerField(null=True, blank=True)
+    choices = django.db.models.CharField(max_length=50, null=True, blank=True)
+    multi = django.db.models.BooleanField(default=False)
+    question_type = django.db.models.CharField(max_length=25, null=True, blank=True)
+    not_applicable = django.db.models.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -191,37 +200,7 @@ class CityIDQuestion(QuestionSimple):
     Represents a CityID Question with base parameters
     """
     section = django.db.models.ForeignKey(CityIDSection)
-    not_applicable = django.db.models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
-
-
-class CityIDQuestionCharField(CityIDQuestion):
-    """
-    Represents a CityID question with CharField answer
-    """
-
-
-class CityIDQuestionSelectField(CityIDQuestion):
-    """
-    Represents a CityID question with CharField answer
-    """
-    choices = django.db.models.CharField(max_length=50)
-    multi = django.db.models.BooleanField(blank=True)
-
-
-class CityIDQuestionTextField(CityIDQuestion):
-    """
-    Represents a CityID question with CharField answer
-    """
-
-
-class CityIDQuestionUploadField(CityIDQuestion):
-    """
-    Represents a question with UploadField value
-    """
-
+    element = django.db.models.ForeignKey(Element, null=True, blank=True)
 
 
 #######################################
@@ -239,7 +218,31 @@ class Assessment(BasicName):
     city = django.db.models.ForeignKey(City)
     date_started = django.db.models.DateField(auto_now=True)
     focal_point_started = django.db.models.ForeignKey(Person)
-    #TODO: status (%) of fulfillment
+    organizational_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    physical_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    functional_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    mov_public_knowledge_noq = django.db.models.IntegerField(default=0)
+    mov_media_noq = django.db.models.IntegerField(default=0)
+    mov_official_document_noq = django.db.models.IntegerField(default=0)
+    degree_of_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+
+
+class AssessmentElement(Common):
+    """
+    Represents an element of the urban system model in the assessment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+    parent = django.db.models.ForeignKey('self', null=True, blank=True, related_name="parent_a_element")
+    element = django.db.models.ForeignKey(Element)
+    enabled = django.db.models.BooleanField(default=True)
+    spatial_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    organizational_score = django.db.models.DecimalField(max_digits=6, decimal_places=2,  default=0)
+    physical_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    functional_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    mov_public_knowledge_noq = django.db.models.IntegerField(default=0)
+    mov_media_noq = django.db.models.IntegerField(default=0)
+    mov_official_document_noq = django.db.models.IntegerField(default=0)
+    degree_of_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
 
 #######################################
@@ -250,39 +253,8 @@ class Assessment(BasicName):
 class AssessmentCityIDQuestion(CityIDQuestion):
 
     assessment = django.db.models.ForeignKey(Assessment)
-
-    class Meta:
-        abstract = True
-
-
-class AssessmentCityIDQuestionCharField(AssessmentCityIDQuestion):
-    """
-    Links a CityIDStatement with an Assessment
-    """
     response = django.db.models.CharField(max_length=250, null=True, blank=True)
-
-
-class AssessmentCityIDQuestionSelectField(AssessmentCityIDQuestion):
-    """
-    Links a CityIDStatement with an Assessment
-    """
-    response = django.db.models.CharField(max_length=250, null=True, blank=True)
-    choices = django.db.models.CharField(max_length=50, null=True, blank=True)
-    multi = django.db.models.BooleanField(default=False)
-
-
-class AssessmentCityIDQuestionTextField(AssessmentCityIDQuestion):
-    """
-    Represents a question for CityID in an assessment with value CharField
-    """
-    response = django.db.models.TextField(null=True, blank=True)
-
-
-class AssessmentCityIDQuestionUploadField(AssessmentCityIDQuestion):
-    """
-    Represents a question for CityID in an assessment with value TextField
-    """
-    response = django.db.models.TextField(null=True, blank=True)
+    assessment_element = django.db.models.ForeignKey(AssessmentElement, null=True, blank=True)
 
 
 class AssessmentCityIDQuestionFile(Common):
@@ -291,7 +263,7 @@ class AssessmentCityIDQuestionFile(Common):
     """
     name = django.db.models.CharField(max_length=250, null=False, blank=False, unique=False)
     remote_folder = django.db.models.CharField(max_length=250)
-    question = django.db.models.ForeignKey(AssessmentCityIDQuestionUploadField)
+    question = django.db.models.ForeignKey(AssessmentCityIDQuestion)
 
 
 class AssessmentCityIDSectionComment(Common):
@@ -335,44 +307,23 @@ class ComponentConsideration(Common):
     element = django.db.models.ForeignKey(Component)
     comment = django.db.models.CharField(max_length=800)
     type = django.db.models.CharField(max_length=25)
+    show_separator = django.db.models.BooleanField(default=False)
 
 
 class ComponentQuestion(QuestionSimple):
     """
     Represents a Component Question with base parameters
     """
+
     component = django.db.models.ForeignKey(Component)
-    not_applicable = django.db.models.BooleanField(default=False)
     has_mov = django.db.models.BooleanField(default=False)
     units = django.db.models.IntegerField(null=True, blank=True)
-    question_type = django.db.models.CharField(max_length=50, null=True, blank=True)
     mov_type = django.db.models.CharField(max_length=10, null=True, blank=True)
     mov_position = django.db.models.IntegerField(default=0)
     add_type = django.db.models.IntegerField(default=0)
     show_short_name = django.db.models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
-
-
-class ComponentQuestionCharField(ComponentQuestion):
-    """
-    Represents a Component Question CharField response type
-    """
-
-class ComponentQuestionTextField(ComponentQuestion):
-    """
-    Represents a Component Question TextField Response Type
-    """
-
-
-class ComponentQuestionSelectField(ComponentQuestion):
-    """
-    Represents a Component Question with choices
-    """
-
-    choices = django.db.models.CharField(max_length=50)
-    multi = django.db.models.BooleanField(blank=True)
+    element = django.db.models.ForeignKey(Element)
+    dimension = django.db.models.ForeignKey(Dimension)
 
 
 #######################################
@@ -396,34 +347,62 @@ class AssessmentComponentComment(Common):
 class AssessmentComponentQuestion(ComponentQuestion):
 
     assessment = django.db.models.ForeignKey(Assessment)
-    score = django.db.models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    weight = django.db.models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-
-    class Meta:
-        abstract = True
-
-
-class AssessmentComponentQuestionCharField(AssessmentComponentQuestion):
-    """
-    Links a ComponentStatement with an Assessment
-    """
+    score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    weight = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
     response = django.db.models.CharField(max_length=250, null=True, blank=True)
+    choices_length = django.db.models.IntegerField(default=0)
+    assessment_element = django.db.models.ForeignKey(AssessmentElement, null=True, blank=True)
+    scorable = django.db.models.BooleanField(default=False)
 
+    # Overriding save method to calculate score. TODO: use signals to recalculate overall score?
+    def save(self, *args, **kwargs):
+        if str(self.response).strip() != "":
+            # Scoring for questions with percentage. TODO: for now we assume all them will be with %
+            if self.units == 1:
+                try:
+                    try:
+                        int_response = int(self.response)
+                    except:
+                        int_response = 0
+                    self.score = float(int_response / 10)
+                except:
+                    print("Error calculating score for % question")
+                    print("Error: " + str(sys.exc_info()))
+                    sys.stdout.flush()
+            # Scoring for Select Single questions
+            if self.question_type == SELECT_SINGLE and self.choices_length > 0:
+                try:
+                    int_response = int(self.response)
+                except:
+                    print("Error calculating score for SELECT_SINGLE question")
+                    print("Error: " + str(sys.exc_info()))
+                    sys.stdout.flush()
 
-class AssessmentComponentQuestionSelectField(AssessmentComponentQuestion):
-    """
-    Links a ComponentStatement with an Assessment
-    """
-    response = django.db.models.CharField(max_length=250, null=True, blank=True)
-    choices = django.db.models.CharField(max_length=50, null=True, blank=True)
-    multi = django.db.models.BooleanField(default=False)
+                    int_response = 1
+                # if MoV Source only counting source types
+                if self.choices == MOV_SOURCE:
+                    self.score = (int_response - 1)
+                else:
+                    # response -1 to range from 0 to 10 as options selected begin in 1
+                    self.score = (10 / self.choices_length) * (int_response - 1)
+            # Scoring for Select Multiple choices questions
+            if self.choices_length > 0 and self.question_type == SELECT_MULTI:
+                try:
+                    # obtain max selected value
+                    resp_length = len(str(self.response))
+                    max_selected_value = get_max_selected_value(self.response)
+                except:
+                    max_selected_value = 0
+                    print("Error calculating score for SELECT_MULTI question")
+                    print("Error: " + str(sys.exc_info()))
+                    sys.stdout.flush()
+                # calculate the score
+                self.score = (10 / self.choices_length) * max_selected_value
+        else:
+            self.score = 0
 
-
-class AssessmentComponentQuestionTextField(AssessmentComponentQuestion):
-    """
-    Represents a question for Component in an assessment with value CharField
-    """
-    response = django.db.models.TextField(null=True, blank=True)
+        # Always call parent save method
+        super(AssessmentComponentQuestion, self).save(*args, **kwargs)
 
 
 #######################################

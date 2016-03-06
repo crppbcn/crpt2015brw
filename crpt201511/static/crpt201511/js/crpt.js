@@ -52,9 +52,9 @@ function orderQuestions() {
 }
 
 function upload_files_click(form_id) {
-    var field_name = '#id_' + form_id.substr(0,8) + 'files';
+    var field_name = 'id_form-' + form_id + '-files';
     //alert(field_name);
-    elem = document.getElementById("id_fs_uf-0-files");
+    elem = document.getElementById(field_name);
     elem.click()
 }
 

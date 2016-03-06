@@ -13,6 +13,8 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
+import crpt201511.signals.receivers
+
 from django.conf.urls import include, url
 from django.contrib import admin
 
@@ -56,7 +58,7 @@ urlpatterns = [
     url(r'^component/(?P<assessment_id>\d+)/$', 'crpt201511.views.component_views.component', name='component'),
 
     # url to new question lgj
-    url(r'^duplicate_question/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/(?P<third_component_id>\d+)/(?P<initial_question_id>\d+)/(?P<question_type>[^/]+)/$', 'crpt201511.views.component_views.duplicate_question', name='duplicate_question'),
+    url(r'^duplicate_question/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/(?P<third_component_id>\d+)/(?P<initial_question_id>\d+)/$', 'crpt201511.views.component_views.duplicate_question', name='duplicate_question'),
 
     # url to test page
     url(r'^test/$', 'crpt201511.views.views.test', name='test'),

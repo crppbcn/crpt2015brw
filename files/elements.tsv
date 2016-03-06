@@ -54,10 +54,10 @@ Non-motorised Transport	Roads
 Railways	Land		
 Light Rail Transit	Railways		
 Heavy Rail Transit	Railways		
-Water	Transport		
+Water Transport	Transport		
 Light Vessels	Water		
 Heavy Vessels(Port)	Water		
 Air	Transport		
 Airport	Air		
-Other	Transport	Yes	Other Means
+Other Transport	Transport	Yes	Other Means
 Cable Transportation	Other		

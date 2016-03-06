@@ -21,6 +21,7 @@ django.setup()
 from django.contrib.auth.models import User, Group
 from crpt201511.models import *
 from crpt201511.constants import *
+from crpt201511.utils.component_question_utils import *
 
 
 def load_users_file():
@@ -209,6 +210,8 @@ def load_elements():
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
     data_reader.next()  # to skip headers row
 
+    # TODO: set version
+    version = AssessmentVersion.objects.order_by('-date_released')[0]
     for row in data_reader:
         # check for parent element
         try:
@@ -219,16 +222,19 @@ def load_elements():
         except:
             parent_element = Element()
             parent_element.name = row[1].strip()
+            parent_element.version = version
             parent_element.save()
         # load hazard
         try:
             element = Element.objects.get(name=row[0].strip())
             element.parent = parent_element
+            element.version = version
             element.save()
         except:
             element = Element()
             element.name = row[0].strip()
             element.parent = parent_element
+            element.version = version
             element.save()
 
     print("load_elements. End.")
@@ -332,22 +338,9 @@ def load_city_id_file(file_name):
             section.code = row[0].strip()
             section.save()
         # question
-        question_type = row[6].strip()
-        if question_type == CHAR_FIELD:
-            question = CityIDQuestionCharField()
-        if question_type == TEXT_FIELD:
-            question = CityIDQuestionTextField()
-        if question_type == UPLOAD_FIELD:
-            question = CityIDQuestionUploadField()
-        if question_type == SELECT_SINGLE:
-            question = CityIDQuestionSelectField()
-            question.choices = row[9].strip()
-            question.multi = False
-        if question_type == SELECT_MULTI:
-            question = CityIDQuestionSelectField()
-            question.choices = row[9].strip()
-            question.multi = True
 
+        question = CityIDQuestion()
+        question.question_type = row[6].strip()
         question.section = section
         question.question_short = row[2].strip()
         question.question_long = row[3].strip()
@@ -357,6 +350,12 @@ def load_city_id_file(file_name):
         question.placeholder= row[5].strip()
         question.order = row[7].strip()
         question.not_applicable = row[8].strip().upper() == YES_STR
+        question.choices = row[9].strip().upper()
+        question.multi = row[9].strip().upper() == SELECT_MULTI
+        if len(row) >= 11:
+            if row[10].strip() != "":
+                print("Looking for element: " + str(row[10].strip()))
+                question.element = Element.objects.get(name=row[10].strip())
 
         # TODO: creation of new version of assessment procedure!!
         question.version = AssessmentVersion.objects.order_by('-date_released')[0]
@@ -433,11 +432,15 @@ def load_considerations_examples_file(file_name, class_name, class_name_consider
     file_path = settings.BASE_DIR + "/files/" + file_name
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
     data_reader.next()  # to skip headers row
+    consideration_type = None
     for row in data_reader:
         try:
             element = class_name.objects.get(code=row[0].strip())
             consideration = class_name_consideration()
-            consideration.type = EXAMPLE
+            if consideration_type != row[1].strip():
+                consideration_type = row[1].strip()
+                consideration.show_separator = True
+            consideration.type = row[1].strip()
             consideration.comment = row[3].strip()
             consideration.element = element
             consideration.save()
@@ -466,20 +469,10 @@ def load_component_file(file_name):
             print("ERROR: " + str(sys.exc_traceback))
         # question
         question_type = row[5].strip()
-        if question_type == CHAR_FIELD:
-            question = ComponentQuestionCharField()
-        if question_type == TEXT_FIELD:
-            question = ComponentQuestionTextField()
-        if question_type == SELECT_SINGLE:
-            question = ComponentQuestionSelectField()
-            question.choices = row[8].strip()
-            question.multi = False
-        if question_type == SELECT_MULTI:
-            question = ComponentQuestionSelectField()
-            question.choices = row[8].strip()
-            question.multi = True
-
-        question.question_type = question_type
+        question = ComponentQuestion()
+        question.question_type = row[5].strip()
+        question.multi = question_type == SELECT_MULTI
+        question.choices = row[8].strip()
         question.component = component
         question.question_short = row[1].strip()
         question.question_long = row[2].strip()
@@ -492,109 +485,28 @@ def load_component_file(file_name):
         # control of "add" questions
         if row[13].strip().upper() != "" and row[13].strip().upper() != NO_STR:
             question.add_type = ADD_TYPE_LGJ
+        # dimension
+        question.dimension = Dimension.objects.get(name=row[11].strip())
+        # element column
+        if row[14].strip() != "":
+            question.element = Element.objects.get(name=row[14].strip())
+
+        # control of mov_type
+        mov_txt = row[10].strip().upper()
+        if mov_txt == "" or mov_txt == "0":
+            mov_txt = MOV_NOT
+        question.mov_type = mov_txt
 
         # TODO: creation of new version of assessment procedure!!
         question.version = AssessmentVersion.objects.order_by('-date_released')[0]
         question.save()
 
-        # processing of units column
-        if question.units == 1:
-            new_question = ComponentQuestionCharField()
-            new_question.component = question.component
-            new_question.order = int(question.order) + 1
-            new_question.not_applicable = False
-            new_question.help_text = ""  # TODO: decide which help text to assign
-            new_question.question_short = "Please specify units"
-            new_question.question_long = "Please specify units"
-            new_question.placeholder = "Specify units"
-            new_question.multi = False
-            new_question.version = question.version
-            new_question.units = 2 # to indicate this is textbox for units
-            new_question.has_mov = True # to add line separator
-            new_question.mov_position = -1 # questions that are not MoV
-            new_question.mov_type = ""
-            new_question.question_type = CHAR_FIELD
-            new_question.save()
+        # treatment of units - creation of additional question if needed
+        units_treatment(question)
 
+        # treatment of MoV - creation of additional questions if needed
+        mov_treatment(question)
 
-        # processing of MoV
-        mov_txt = row[10].strip()
-        if mov_txt != MOV_NOT and mov_txt != "" and mov_txt != "0":
-            question.has_mov = True
-            question.save()
-            # mov_position var for year (third column)
-            mov_position_year = 1
-            # codes
-            add_year = True
-            add_source = True
-            add_scale = True
-            if mov_txt == MOV_NS:
-                add_scale = False
-                mov_position_year = 4 # when No Scale, Year in third column
-            if mov_txt == MOV_NY:
-                add_year == False
-            if mov_txt == MOV_NYS:
-                add_scale = False
-                add_year == False
-            # add questions
-            if add_source:
-                new_question = ComponentQuestionSelectField()
-                new_question.question_type = SELECT_SINGLE
-                new_question.component = question.component
-                new_question.order = int(question.order) + 1
-                new_question.not_applicable = False
-                new_question.help_text = ""  # TODO: decide which help text to assign
-                new_question.question_short = "MoV Source"
-                new_question.question_long = "MoV Source"
-                new_question.multi = False
-                new_question.choices = MOV_SOURCE
-                new_question.version = question.version
-                new_question.units = -1  # to indicate this textbox has nothing to do with units
-                if mov_txt == MOV_NYS:
-                    new_question.mov_position = MOV_LEFT_AND_LAST
-                else:
-                    new_question.mov_position = MOV_LEFT
-                new_question.mov_type = ""
-                new_question.save()
-            if add_scale:
-                new_question = ComponentQuestionSelectField()
-                new_question.question_type = SELECT_SINGLE
-                new_question.component = question.component
-                new_question.order = int(question.order) + 2
-                new_question.not_applicable = False
-                new_question.help_text = ""  # TODO: decide which help text to assign
-                new_question.question_short = "MoV Scale"
-                new_question.question_long = "MoV Scale"
-                new_question.multi = False
-                new_question.choices = MOV_SCALE
-                new_question.version = question.version
-                new_question.units = -1  # to indicate this textbox has nothing to do with MoV
-                if mov_txt == MOV_ALL:
-                    new_question.mov_position = MOV_LEFT
-                if mov_txt == MOV_NY:
-                    new_question.mov_position = MOV_LEFT_AND_LAST
-                new_question.mov_type = ""
-                new_question.save()
-            if add_year:
-                new_question = ComponentQuestionCharField()
-                new_question.question_type = CHAR_FIELD
-                new_question.component = question.component
-                new_question.order = int(question.order) + 3
-                new_question.not_applicable = False
-                new_question.help_text = ""  # TODO: decide which help text to assign
-                new_question.question_short = "MoV Year"
-                new_question.question_long = "MoV Year"
-                new_question.version = question.version
-                new_question.units = -1  # to indicate this textbox has nothing to do with MoV
-                if mov_txt == MOV_ALL:
-                    new_question.mov_position = MOV_RIGHT
-                if mov_txt == MOV_NS:
-                    new_question.mov_position = MOV_RIGHT_NO_MID
-                new_question.mov_type = ""
-                new_question.save()
-        else:
-            question.has_mov = False
-            question.save()
     print("load_component_file. End: " + file_name)
 
 
@@ -608,7 +520,6 @@ if __name__ == "__main__":
     load_entity_single_field_name("value_type.tsv", ValueType)
     load_people()
     load_assessments()
-    load_entity_single_field_name("model_dimensions.tsv", Dimension)
     load_entity_single_field_name("CityID Options - GAS_SUPPLY.tsv", ChoicesGasSupply)
     load_entity_single_field_name("CityID Options - CITY_ROLE.tsv", ChoicesCityRole)
     load_entity_single_field_name("CityID Options - ROAD_TX.tsv", ChoicesRoadTx)

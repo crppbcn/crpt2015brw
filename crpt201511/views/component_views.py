@@ -25,6 +25,7 @@ from crpt201511.forms import *
 from crpt201511.utils.form_utils import *
 from crpt201511.my_ftp import MyFTP
 from crpt201511.utils.mail_utils import send_comments_email
+from crpt201511.signals.my_signals import *
 
 
 @ensure_csrf_cookie
@@ -42,7 +43,7 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
     """
     try:
         left_elements = None
-
+        """
         print("--INITIAL PARAMS. START --")
 
         if component_id:
@@ -53,7 +54,7 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
             print("third_component_id: " + str(third_component_id))
 
         print("--INITIAL PARAMS. END --")
-
+        """
         # get username from session
         person = get_person(request)
         # get assessment
@@ -99,7 +100,7 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
             except:
                 third_component = None
 
-
+        """
         print("--CHECK PARAMS. START --")
 
         print("component_id: " + str(component.id))
@@ -107,7 +108,7 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
         print("thirdcomponent_id: " + str(third_component.id))
 
         print("--CHECK PARAMS. END --")
-
+        """
 
 
         # considerations at component and subcomponent level
@@ -134,89 +135,38 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
                     order_by('date_created')
 
         # formset definition
-        fs_char_field = modelformset_factory(AssessmentComponentQuestionCharField, max_num=0, exclude=[],
-                                             form=AssessmentComponentQuestionCharFieldForm)
-        fs_text_field = modelformset_factory(AssessmentComponentQuestionTextField, max_num=0, exclude=[],
-                                             form=AssessmentComponentQuestionTextFieldForm)
-        fs_select_field = modelformset_factory(AssessmentComponentQuestionSelectField, max_num=0, exclude=[],
-                                               form=AssessmentComponentQuestionSelectFieldForm)
+        fs = modelformset_factory(AssessmentComponentQuestion, max_num=0, exclude=[],
+                                             form=AssessmentComponentQuestionForm)
 
         if request.method == 'POST':
-            fs_cf = fs_char_field(request.POST, request.FILES, prefix='fs_cf')
-            fs_tf = fs_text_field(request.POST, request.FILES, prefix='fs_tf')
-            fs_sf = fs_select_field(request.POST, request.FILES, prefix='fs_sf')
+            f_set = fs(request.POST, request.FILES)
 
-            if fs_cf and fs_cf.is_valid() and fs_sf and fs_sf.is_valid():
+            if f_set and f_set.is_valid():
 
-                print("1!!")
+                not_applicable_responses_treatment(f_set)
+                trace_updated_fields(f_set, person, assessment)
+                # get assessment element to recalculate scoring
+                a_element = None
+                for f in f_set:
+                    # get question
+                    a_element = f.instance.assessment_element
 
-
-                if fs_cf and fs_cf.is_valid():
-                    not_applicable_responses_treatment(fs_cf)
-                    trace_updated_fields(fs_cf, person, assessment)
-                    fs_cf.save()
-                else:
-                    print("fs_cf not informed or not valid!")
-                    print(str(fs_cf.errors))
+                    print("assessment_element.element.name: " + f.instance.assessment_element.element.name)
+                    print("component.name: " + f.instance.component.name)
                     sys.stdout.flush()
 
-                if fs_tf and fs_tf.is_valid():
-                    not_applicable_responses_treatment(fs_tf)
-                    trace_updated_fields(fs_tf, person, assessment)
-                    fs_tf.save()
-                else:
-                    print("fs_tf not informed or not valid!")
-                    print(str(fs_tf.errors))
-                    print(str(fs_tf.errors))
-                    sys.stdout.flush()
+                    break
+                f_set.save()
 
-                if fs_sf and fs_sf.is_valid():
-                    trace_updated_fields(fs_sf, person, assessment)
-                    # treatment for user added choices ("please specify")
-                    for f in fs_sf:
-                        data = f.cleaned_data
-                        try:
-                            # add new choice to the list
-                            # TODO: delete??
-                            """
-                            other_choice = data['other']
-                            if other_choice != "":
-                                print("other_choice: " + other_choice)
-                                a_cid_other_tx = AssessmentCityIDChoicesOtherTx()
-                                a_cid_other_tx.assessment = assessment
-                                a_cid_other_tx.name = other_choice
-                                a_cid_other_tx.save()
-                                # add new selected choice
-                                question = f.save(commit=False)
-                                response = data['response']
-                                response = response[:len(response)-1]
-                                new_str = ", u'" + str(a_cid_other_tx.id) + "']"
-                                response += new_str
-                                question.response = response
-                                question.save()
-                            else:
-                                f.save()
-                            """
-                            pass
-                        except KeyError:
-                            # n_a field not found
-                            pass
-                    # Not needed. Each form is saved individually
-                    fs_sf.save()
-                else:
-                    print("2!!")
-                    print("fs_sf not informed or not valid!")
-                    print(str(fs_sf.errors))
-                    sys.stdout.flush()
-
-                print("3!!")
+                # send signal to recalculate score of element
+                recalculate_element_score.send(sender=a_element, element=a_element)
 
                 # navigate to next component
                 url_to_redirect = "/component/" + assessment_id + SLASH
                 if third_component and third_component.next_one:
-                    url_to_redirect += component.id + SLASH
-                    url_to_redirect += subcomponent.id + SLASH
-                    url_to_redirect += third_component.next_one.id + SLASH
+                    url_to_redirect += str(component.id) + SLASH
+                    url_to_redirect += str(subcomponent.id) + SLASH
+                    url_to_redirect += str(third_component.next_one.id) + SLASH
                 else:
                     if subcomponent and subcomponent.next_one:
                         url_to_redirect += component.id + SLASH
@@ -228,32 +178,19 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
 
                 return redirect(url_to_redirect, context_instance=RequestContext(request))
             else:
-
-                # additional treatment of errors if needed
-                if fs_cf:
-                    print("fs_cf errors: " + str(fs_cf.errors))
-                if fs_tf:
-                    print("fs_tf errors: " + str(fs_tf.errors))
-                if fs_sf:
-                    print("fs_sf errors: " + str(fs_sf.errors))
+                # TODO: additional treatment of errors if needed
+                print("fs_sf not informed or not valid!")
+                print(str(f_set.errors))
                 sys.stdout.flush()
         else:
             # formsets
-            query_set = AssessmentComponentQuestionCharField.objects.filter(component=third_component).order_by('order')
-            fs_cf = fs_char_field(queryset=query_set, prefix='fs_cf')
-
-            query_set = AssessmentComponentQuestionTextField.objects.filter(component=third_component).order_by('order')
-            fs_tf = fs_text_field(queryset=query_set, prefix='fs_tf')
-
-            query_set = AssessmentComponentQuestionSelectField.objects.filter(component=third_component).order_by('order')
-            fs_sf = fs_select_field(queryset=query_set, prefix='fs_sf')
+            query_set = AssessmentComponentQuestion.objects.filter(component=third_component).order_by('order')
+            f_set = fs(queryset=query_set)
 
         # return page
         template = loader.get_template(TEMPLATE_COMPONENTS_PAGE)
         context = RequestContext(request, {
-            'fs_cf': fs_cf,
-            'fs_tf': fs_tf,
-            'fs_sf': fs_sf,
+            'fs': f_set,
             'person': person,
             'left_elements': left_elements,
             'menu_elements': menu_elements,
@@ -338,9 +275,9 @@ def add_section_comment(request):
 @ensure_csrf_cookie
 @login_required
 def duplicate_question(request, assessment_id, component_id=None, subcomponent_id=None, third_component_id=None,
-                     initial_question_id=None, question_type=None):
+                       initial_question_id=None):
     """
-    View to generate a new quewstion for local gov. jurisdiction
+    View to generate a new question for local gov. jurisdiction
 
     :param request:
     :param assessment_id:
@@ -351,16 +288,11 @@ def duplicate_question(request, assessment_id, component_id=None, subcomponent_i
     :return:
     """
     try:
-        print("ARRIBA!!!")
-        print("initial_q_id: " + str(initial_question_id))
-        sys.stdout.flush()
-
         # create new question
-        new_question = duplicate_new_question(initial_question_id, question_type)
+        new_question = duplicate_question_function(initial_question_id)
     except:
         print("Error creating new question: ")
         print(sys.exc_info())
-
         sys.stdout.flush()
     finally:
         # redirect

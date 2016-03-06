@@ -4,6 +4,7 @@ from ftpretty import ftpretty
 
 from settings import FTP_HOST, FTP_USER, FTP_PASS, FTP_BASE_DIR
 
+from crpt201511.constants import SLASH
 
 class MyFTP():
 

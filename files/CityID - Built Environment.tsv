@@ -1,25 +1,25 @@
-Section Code	Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION
-CID0019	Built Env.	Building typology(ies)	Building typology(ies)	Ex.: single house units, condominiums, townhouses, etc.	Please specify all applicable	CHAR_FIELD	10		
-CID0019	Built Env.	Construction type(s)	Construction type(s)	Ex.: masonry, stone, timber, stilt houses, etc.	Please specify all applicable	CHAR_FIELD	20		
-CID0020	Basic Infrastructure	Electricity supply sources	Electricity supply sources	Ex.: hydro, coal or nuclear power plants, solar panels, wind farms, etc.   Specify if there are powerplants within a 100 km radius of the city	Please specify type and percentage of energy used	CHAR_FIELD	30		
-CID0020	Basic Infrastructure	Gas supply network	Gas supply network	Please select all applicable, if any		SELECT_MULTI	40	Yes	GAS_SUPPLY
-CID0020	Basic Infrastructure	Water supply sources	Water supply sources	Ex.: lake, river, drinking water treatment plants, desalination treatment plants, wastewater treatment plants (chemical and/or natural means), etc.  Specify if there are treatment plants within a 100 km radius of the city	Please specify type of water sources	TEXT_FIELD	50		
-CID0021	Transport	Road	Public transportation systems - Road	Please select all applicable modes.		SELECT_MULTI	60	Yes	ROAD_TX
-CID0021	Transport	Rail	Public transportation systems - Rail	Please select all applicable modes.		SELECT_MULTI	70	Yes	RAIL_TX
-CID0021	Transport	Long-distance railway	Long-distance railway networks	Ex: Passenger, goods; public, private, military, out of service	Within influence area, if any. Please specify use	CHAR_FIELD	80	Yes	
-CID0021	Transport	Water	Public transportation systems - Water	Please select all applicable modes.		SELECT_MULTI	90	Yes	WATER_TX
-CID0021	Transport	Harbours/ports	Harbours/ports	Ex: Passenger, goods; public, private, military, out of service	Within influence area, if any. Please specify use.	CHAR_FIELD	100	Yes	
-CID0021	Transport	Air	Public transportation systems - Air	Please select all applicable modes.		SELECT_MULTI	110	Yes	AIR_TX
-CID0021	Transport	Airports	Airports	Ex: Public, private, military, out of service	Within influence area, if any. Please specify use.	TEXT_FIELD	120	Yes	
-CID0021	Transport	Other	Public transportation systems - Other	Please select all applicable modes.		SELECT_MULTI	130	Yes	OTHER_TX
-CID0021	Transport	Are public transports accessible for people with reduced mobility?	Are public transports accessible for people with reduced mobility?	Consider all public transport systems		SELECT_SINGLE	140		SC1
-CID0022	Critical Infrastructure	24-Hour health care facilities	24-Hour health care facilities		Number of facilities within urban area, if any	CHAR_FIELD	150	Yes	
-CID0022	Critical Infrastructure	Other health care facilities	Other health care facilities	Ex.: day clinics, medical centres	Number of facilities within urban area	CHAR_FIELD	160		
-CID0022	Critical Infrastructure	Prisons, detention centres	Prisons, detention centres		Number of facilities within urban area, if any	CHAR_FIELD	170	Yes	
-CID0022	Critical Infrastructure	Sport facilities	Sport facilities		Number of facilities within urban area	CHAR_FIELD	180		
-CID0022	Critical Infrastructure	Cultural facilities	Cultural facilities	Ex.: libraries, concert halls, museums, cultural centres, religious temples, etc.	Number of facilities within urban area	CHAR_FIELD	190		
-CID0022	Critical Infrastructure	Schools	Schools		Number of facilities within urban area	CHAR_FIELD	200		
-CID0022	Critical Infrastructure	Universities	Universities		Number of facilities within urban area, if any	CHAR_FIELD	210	Yes	
-CID0022	Critical Infrastructure	Industrial areas	Industrial areas		Number of industrial complexes/parks/zones within influence area, if any	CHAR_FIELD	220	Yes	
-CID0022	Critical Infrastructure	Events	Events with high concentration of people		Relevant events/gatherings associated to tourism, sport, political, cultural or religious matters. Please specify frequency.	TEXT_FIELD	230	Yes	
-CID0022	Critical Infrastructure	Other relevant infrastructure	Other relevant infrastructure		List other critical infrastructure in influence area	TEXT_FIELD	240	Yes	
+Section Code	Section	Short Name	Long Name (hover)	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION	Element
+CID0019	Built Env.	Building typology(ies)	Building typology(ies)	Ex.: single house units, condominiums, townhouses, etc.	Please specify all applicable	CHAR_FIELD	10			
+CID0019	Built Env.	Construction type(s)	Construction type(s)	Ex.: masonry, stone, timber, stilt houses, etc.	Please specify all applicable	CHAR_FIELD	20			
+CID0020	Basic Infrastructure	Electricity supply sources	Electricity supply sources	Ex.: hydro, coal or nuclear power plants, solar panels, wind farms, etc.   Specify if there are powerplants within a 100 km radius of the city	Please specify type and percentage of energy used	CHAR_FIELD	30			
+CID0020	Basic Infrastructure	Gas supply network	Gas supply network	Please select all applicable, if any		SELECT_MULTI	40	Yes	GAS_SUPPLY	Gas Supply
+CID0020	Basic Infrastructure	Water supply sources	Water supply sources	Ex.: lake, river, drinking water treatment plants, desalination treatment plants, wastewater treatment plants (chemical and/or natural means), etc.  Specify if there are treatment plants within a 100 km radius of the city	Please specify type of water sources	TEXT_FIELD	50			
+CID0021	Transport	Road	Public transportation systems - Road	Please select all applicable modes.		SELECT_MULTI	60	Yes	ROAD_TX	
+CID0021	Transport	Rail	Public transportation systems - Rail	Please select all applicable modes.		SELECT_MULTI	70	Yes	RAIL_TX	Railways
+CID0021	Transport	Long-distance railway	Long-distance railway networks	Ex: Passenger, goods; public, private, military, out of service	Within influence area, if any. Please specify use	CHAR_FIELD	80	Yes		
+CID0021	Transport	Water	Public transportation systems - Water	Please select all applicable modes.		SELECT_MULTI	90	Yes	WATER_TX	Water Transport
+CID0021	Transport	Harbours/ports	Harbours/ports	Ex: Passenger, goods; public, private, military, out of service	Within influence area, if any. Please specify use.	CHAR_FIELD	100	Yes		
+CID0021	Transport	Air	Public transportation systems - Air	Please select all applicable modes.		SELECT_MULTI	110	Yes	AIR_TX	Airport
+CID0021	Transport	Airports	Airports	Ex: Public, private, military, out of service	Within influence area, if any. Please specify use.	TEXT_FIELD	120	Yes		
+CID0021	Transport	Other	Public transportation systems - Other	Please select all applicable modes.		SELECT_MULTI	130	Yes	OTHER_TX	Other Transport
+CID0021	Transport	Are public transports accessible for people with reduced mobility?	Are public transports accessible for people with reduced mobility?	Consider all public transport systems		SELECT_SINGLE	140		SC1	
+CID0022	Critical Infrastructure	24-Hour health care facilities	24-Hour health care facilities		Number of facilities within urban area, if any	CHAR_FIELD	150	Yes		
+CID0022	Critical Infrastructure	Other health care facilities	Other health care facilities	Ex.: day clinics, medical centres	Number of facilities within urban area	CHAR_FIELD	160			
+CID0022	Critical Infrastructure	Prisons, detention centres	Prisons, detention centres		Number of facilities within urban area, if any	CHAR_FIELD	170	Yes		
+CID0022	Critical Infrastructure	Sport facilities	Sport facilities		Number of facilities within urban area	CHAR_FIELD	180			
+CID0022	Critical Infrastructure	Cultural facilities	Cultural facilities	Ex.: libraries, concert halls, museums, cultural centres, religious temples, etc.	Number of facilities within urban area	CHAR_FIELD	190			
+CID0022	Critical Infrastructure	Schools	Schools		Number of facilities within urban area	CHAR_FIELD	200			
+CID0022	Critical Infrastructure	Universities	Universities		Number of facilities within urban area, if any	CHAR_FIELD	210	Yes		
+CID0022	Critical Infrastructure	Industrial areas	Industrial areas		Number of industrial complexes/parks/zones within influence area, if any	CHAR_FIELD	220	Yes		
+CID0022	Critical Infrastructure	Events	Events with high concentration of people		Relevant events/gatherings associated to tourism, sport, political, cultural or religious matters. Please specify frequency.	TEXT_FIELD	230	Yes		
+CID0022	Critical Infrastructure	Other relevant infrastructure	Other relevant infrastructure		List other critical infrastructure in influence area	TEXT_FIELD	240	Yes		
