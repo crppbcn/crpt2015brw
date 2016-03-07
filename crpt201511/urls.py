@@ -57,6 +57,9 @@ urlpatterns = [
     url(r'^component/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/(?P<third_component_id>\d+)/$', 'crpt201511.views.component_views.component', name='component'),
     url(r'^component/(?P<assessment_id>\d+)/$', 'crpt201511.views.component_views.component', name='component'),
 
+    url(r'^parent_component/(?P<assessment_id>\d+)/$', 'crpt201511.views.component_views.parent_component', name='parent_component'),
+    url(r'^component_2/(?P<assessment_id>\d+)/(?P<component_id>\d+)/$', 'crpt201511.views.component_views.component_2', name='component_2'),
+
     # url to new question lgj
     url(r'^duplicate_question/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/(?P<third_component_id>\d+)/(?P<initial_question_id>\d+)/$', 'crpt201511.views.component_views.duplicate_question', name='duplicate_question'),
 

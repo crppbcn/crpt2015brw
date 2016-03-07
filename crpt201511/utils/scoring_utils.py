@@ -2,7 +2,7 @@ from __future__ import division
 
 import sys
 
-from crpt201511.models import AssessmentComponentQuestion, Dimension, AssessmentElement
+from crpt201511.models import AssessmentComponentQuestion, Dimension, AssessmentElement, AssessmentCityIDQuestion
 from crpt201511.constants import *
 
 
@@ -152,7 +152,7 @@ def calculate_overall_assessment_scoring(assessment):
     :return:
     """
     print("calculate_overall_assessment_scoring. Start. " + str(assessment.id))
-    # initialization
+    # Elements calculation  - initialization
     elements = AssessmentElement.objects.filter(assessment=assessment, parent=None).order_by('id')
     elements_number = len(elements)
     if elements_number > 0:
@@ -174,13 +174,23 @@ def calculate_overall_assessment_scoring(assessment):
             assessment.mov_media_noq += int(elem.mov_media_noq)
             assessment.mov_official_document_noq += int(elem.mov_official_document_noq)
             degree_of_completion += float(elem.degree_of_completion)
-        # final calculation
+        # Elements - final calculation
         assessment.organizational_score = organizational_score / elements_number
         assessment.spatial_score = spatial_score / elements_number
         assessment.physical_score = physical_score / elements_number
         assessment.functional_score = functional_score / elements_number
         assessment.degree_of_completion = degree_of_completion / elements_number
-        # save
+        # City ID - calculation
+        assessment.city_id_completion = 0
+        cid_questions = AssessmentCityIDQuestion.objects.filter(assessment=assessment).\
+            exclude(question_type=UPLOAD_FIELD)
+        total_noq = len(cid_questions)
+        noq_answered = 0
+        for question in cid_questions:
+            if question.response and str(question.response).strip() != "":
+                noq_answered += 1
+        assessment.city_id_completion = noq_answered / total_noq
+        # save assessment
         assessment.save()
     print("calculate_overall_assessment_scoring. End. " + str(assessment.id))
     sys.stdout.flush()

@@ -10,9 +10,23 @@
 
         <p>Should we put a checkbox to allow user hide this page? (Do not show this page again?).</p>
     </div>
-    <div class="col-md-1 col-md-offset-11" style="padding-left:30px;">
+    <div class="col-md-12">
+        <div id="overall-completion" class="col-md-4" style="background-color:#F5F5F5;">
+
+        </div>
+        <div id="overall-dimensions" class="col-md-4">
+
+        </div>
+        <div id="overall-mov" class="col-md-4">
+
+        </div>
+    </div >
+    <div class="col-md-1 col-md-offset-11" style="padding-left:30px;margin-top:15px;">
         <a href="{% url 'steps' assessment_id=assessment.id %}" class="btn btn-danger">Next</a>
     </div>
+
+
+
 
 </div>
 

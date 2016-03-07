@@ -225,6 +225,7 @@ class Assessment(BasicName):
     mov_media_noq = django.db.models.IntegerField(default=0)
     mov_official_document_noq = django.db.models.IntegerField(default=0)
     degree_of_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    city_id_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
 
 class AssessmentElement(Common):

@@ -1,0 +1,16 @@
+{% extends "crpt201511/common/header.html" %}
+{% load admin_static %}
+{% block content %}
+<div class="jumbotron col-md-12" >
+    <h1 class="page-header">Urban System Elements</h1>
+    <div class="row col-md-12" style="position:relative;">
+        {% for element in elements %}
+        <div class="col-md-1">
+            <a href="{% url 'component_2' assessment_id=assessment.id component_id=element.id %}" class="btn col-md-5" style="width:100%;">
+                {{ element.name }}
+            </a>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+{% endblock %}

@@ -74,14 +74,29 @@ def welcome(request):
     try:
         person = get_person(request)
         # try:
-        # get the latest assessment from the city
+        # get the latest assessment from the city. TODO: get the right assessment
         assessment = Assessment.objects.order_by('-date_started')[0]
         # except:
             # raise Exception('The City does not have any open assessment')
         template = loader.get_template(TEMPLATE_WELCOME)
+
+        print("degree of completion: " + str(assessment.degree_of_completion))
+        print("100-degree of completion: " + str(float(100-assessment.degree_of_completion)))
+
+        total_mov_questions = assessment.mov_public_knowledge_noq + assessment.mov_media_noq + \
+                              assessment.mov_official_document_noq
+
         context = RequestContext(request, {
             'person': person,
-            'assessment':assessment,
+            'assessment': assessment,
+            'filled_percen': str(assessment.degree_of_completion),
+            'not_filled_percen': str(float(100-assessment.degree_of_completion)),
+            'organisational_score': str(assessment.organizational_score),
+            'physical_score': str(assessment.physical_score),
+            'functional_score': str(assessment.functional_score),
+            'mov_public_knowledge': str(assessment.mov_public_knowledge_noq),
+            'mov_media': str(assessment.mov_media_noq),
+            'mov_official_document': str(assessment.mov_official_document_noq),
         })
         return HttpResponse(template.render(context))
     except:
