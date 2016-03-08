@@ -169,11 +169,11 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
                     url_to_redirect += str(third_component.next_one.id) + SLASH
                 else:
                     if subcomponent and subcomponent.next_one:
-                        url_to_redirect += component.id + SLASH
-                        url_to_redirect += subcomponent.next_one.id + SLASH
+                        url_to_redirect += str(component.id) + SLASH
+                        url_to_redirect += str(subcomponent.next_one.id) + SLASH
                     else:
                         if component.next_one:
-                            url_to_redirect += component.next_one.id + SLASH
+                            url_to_redirect += str(component.next_one.id) + SLASH
 
 
                 return redirect(url_to_redirect, context_instance=RequestContext(request))
@@ -321,14 +321,18 @@ def parent_component(request, assessment_id):
             print("assessment: " + assessment.name)
             raise Exception('User has no permission to access this assessment')
         # get first level components
-        elements = Component.objects.filter(parent=None)
+        elements = Component.objects.filter(parent=None).order_by('id')
+        print("len(elements): " + str(len(elements)))
 
+        # calculate element width on screen
+        element_width = 100/len(elements)*2
         # return page
         template = loader.get_template(TEMPLATE_COMPONENTS_PARENT_COMPONENT_PAGE)
         context = RequestContext(request, {
             'person': person,
             'elements': elements,
             'assessment': assessment,
+            'element_width': element_width,
         })
         return HttpResponse(template.render(context))
     except:
@@ -341,7 +345,7 @@ def parent_component(request, assessment_id):
 
 @ensure_csrf_cookie
 @login_required
-def component_2(request, assessment_id, component_id=None):
+def component_2(request, assessment_id, component_id=None, subcomponent_id=None, third_component_id=None):
     """
     View for component of indicators form
 
@@ -379,8 +383,8 @@ def component_2(request, assessment_id, component_id=None):
         else:
             component = Component.objects.all().order_by('order')[:1].get()
 
-        # elements of menu
-        menu_elements = Component.objects.filter(parent=None).order_by('order')
+        # elements of menu - component sons
+        menu_elements = Component.objects.filter(parent=component).order_by('order')
 
         # TODO: review data_loader to assign parent properly
 
@@ -392,22 +396,32 @@ def component_2(request, assessment_id, component_id=None):
             subcomponent = Component.objects.get(id=subcomponent_id)
         else:
             try:
-                subcomponent = Component.objects.filter(parent=component).order_by('order')[:1].get()
+                print("Searching left menu elems for: " + menu_elements[0].name)
+                subcomponent = menu_elements[0]
             except:
+                print("Error: " + str(sys.exc_info()))
                 subcomponent = None
 
         # elements of left menu
         if component:
-            left_elements = Component.objects.filter(parent_id=component.id).order_by('order')
+            left_elements = Component.objects.filter(parent=subcomponent).order_by('order')
+            print("N0 of left_elements: " + str(len(left_elements)))
 
         # third level of hierarchy
         if third_component_id:
             third_component = Component.objects.get(id=third_component_id)
         else:
             try:
-                third_component = Component.objects.filter(parent=subcomponent).order_by('order')[:1].get()
+                third_component = left_elements[0]
             except:
                 third_component = None
+
+        print("Component: " + component.name)
+        print("Subcomponent: " + subcomponent.name + " - " + str(subcomponent.id))
+        if third_component:
+            print("Thirdcomponent: " + third_component.name)
+        sys.stdout.flush()
+
 
         """
         print("--CHECK PARAMS. START --")
@@ -471,18 +485,18 @@ def component_2(request, assessment_id, component_id=None):
                 recalculate_element_score.send(sender=a_element, element=a_element)
 
                 # navigate to next component
-                url_to_redirect = "/component/" + assessment_id + SLASH
+                url_to_redirect = "/component_2/" + assessment_id + SLASH
                 if third_component and third_component.next_one:
                     url_to_redirect += str(component.id) + SLASH
                     url_to_redirect += str(subcomponent.id) + SLASH
                     url_to_redirect += str(third_component.next_one.id) + SLASH
                 else:
                     if subcomponent and subcomponent.next_one:
-                        url_to_redirect += component.id + SLASH
-                        url_to_redirect += subcomponent.next_one.id + SLASH
+                        url_to_redirect += str(component.id) + SLASH
+                        url_to_redirect += str(subcomponent.next_one.id) + SLASH
                     else:
                         if component.next_one:
-                            url_to_redirect += component.next_one.id + SLASH
+                            url_to_redirect += str(component.next_one.id) + SLASH
 
 
                 return redirect(url_to_redirect, context_instance=RequestContext(request))
@@ -497,17 +511,17 @@ def component_2(request, assessment_id, component_id=None):
             f_set = fs(queryset=query_set)
 
         # return page
-        template = loader.get_template(TEMPLATE_COMPONENTS_PAGE)
+        template = loader.get_template(TEMPLATE_COMPONENTS_2_PAGE)
         context = RequestContext(request, {
             'fs': f_set,
             'person': person,
             'left_elements': left_elements,
             'menu_elements': menu_elements,
             'menu_horizontal_elem_width': menu_horizontal_elem_width,
-            'page': "city_id",
             'assessment': assessment,
-            'section': component,
-            'subsection': subcomponent,
+            'section': subcomponent,  # to select in horizontal menu
+            'component': component,
+            'subcomponent': subcomponent,
             'third_component': third_component,
             'comments': comments,
             'considerations': considerations,

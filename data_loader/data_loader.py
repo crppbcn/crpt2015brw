@@ -179,25 +179,120 @@ def load_hazards():
     :return:
     """
     print("load_hazards. Start.")
-    file_path = settings.BASE_DIR + "/files/" + "hazards.tsv"
+    file_path = settings.BASE_DIR + "/files/" + "Hazards - Hazards.tsv"
     data_reader = csv.reader(open(file_path), dialect='excel-tab')
     data_reader.next()  # to skip headers row
 
     for row in data_reader:
-        # check for hazard category
+        # check for hazard group. if not found create it
         try:
-            hazard_category = HazardCategory.objects.get(name=row[1].strip())
+            hazard_group = HazardGroup.objects.get(code=row[0].strip())
         except:
-            hazard_category = HazardCategory()
-            hazard_category.name = row[1].strip()
-            hazard_category.save()
-        # load hazard
-        hazard = Hazard()
-        hazard.name = row[0].strip()
-        hazard.hazard_category = hazard_category
-        hazard.save()
+            hazard_group = HazardGroup()
+            hazard_group.code = row[0].strip()
+            hazard_group.name = row[1].strip()
+            hazard_group.save()
+        # check for hazard type. if not found create it
+        try:
+            hazard_type = HazardType.objects.get(code=row[2].strip())
+        except:
+            hazard_type = HazardType()
+            hazard_type.code = row[2].strip()
+            hazard_type.name = row[3].strip()
+            hazard_type.hazard_group = hazard_group
+            hazard_type.save()
+        # check for hazard subtype. if not found create it
+        try:
+            hazard_subtype = HazardSubtype.objects.get(code=row[4].strip())
+        except:
+            hazard_subtype = HazardSubtype()
+            hazard_subtype.code = row[4].strip()
+            hazard_subtype.name = row[5].strip()
+            hazard_subtype.hazard_type = hazard_type
+            hazard_subtype.save()
+        # check for hazard subtype detail. if not found create it
+        if row[6].strip() != "":
+            try:
+                hazard_subtype_detail = HazardSubtypeDetail.objects.get(code=row[6].strip())
+            except:
+                hazard_subtype_detail = HazardSubtypeDetail()
+                hazard_subtype_detail.code = row[6].strip()
+                hazard_subtype_detail.name = row[7].strip()
+                hazard_subtype_detail.hazard_subtype = hazard_subtype
+                hazard_subtype_detail.save()
 
     print("load_hazards. End.")
+
+
+def load_hazard_type_descriptions():
+    """
+    Loading of hazard_type descriptions
+    :return:
+    """
+    print("load_hazard_type_descriptions. Start.")
+    file_path = settings.BASE_DIR + "/files/" + "Hazards - HazardType Descriptions.tsv"
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    for row in data_reader:
+        # check for hazard type. if not found create it
+        try:
+            print("looking for hazard: " + row[0].strip())
+            hazard_type = HazardType.objects.get(code=row[0].strip())
+            hazard_type.description = row[1].strip()
+            hazard_type.save()
+        except:
+            print("hazard_type not found: " + row[0].strip())
+            print(sys.exc_info())
+
+    print("load_hazard_type_descriptions. End.")
+
+
+def load_hazard_subtype_explanations():
+    """
+    Loading of hazard subtype explanations
+    :return:
+    """
+    print("load_hazard_subtype_explanations. Start.")
+    file_path = settings.BASE_DIR + "/files/" + "Hazards - HazardSubtype Examples.tsv"
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    for row in data_reader:
+        # check for hazard type. if not found create it
+        try:
+            hs = HazardSubtype.objects.get(code=row[0].strip())
+            hs_fe = HazardSubtypeFurtherExplanation()
+            hs_fe.hazard_subtype = hs
+            hs_fe.description = row[1].strip()
+            hs_fe.save()
+        except:
+            print("hazard_subtype not found: " + row[0].strip())
+            print(sys.exc_info())
+
+    print("load_hazard_subtype_explanations. End.")
+
+
+def load_elements_impacted():
+    """
+    Loads the possible impacts on element systems
+    :return:
+    """
+    print("load_elements_impacted. Start.")
+    file_path = settings.BASE_DIR + "/files/" + "Hazards - Element Impacted.tsv"
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+    for row in data_reader:
+        # check for element
+        print("looking for element: " + row[0].strip())
+        sys.stdout.flush()
+        element = Element.objects.get(code=row[0].strip())
+        # create impact
+        ei = ElementImpact()
+        ei.element = element
+        ei.description = row[2].strip()
+        ei.save()
+    print("load_elements_impacted. Start.")
 
 
 def load_elements():
@@ -354,9 +449,11 @@ def load_city_id_file(file_name):
         question.multi = row[9].strip().upper() == SELECT_MULTI
         if len(row) >= 11:
             if row[10].strip() != "":
-                print("Looking for element: " + str(row[10].strip()))
-                question.element = Element.objects.get(name=row[10].strip())
-
+                try:
+                    print("Looking for element: " + str(row[10].strip()))
+                    question.element = Element.objects.get(name=row[10].strip())
+                except:
+                    print("Element not found: " + str(row[10].strip()))
         # TODO: creation of new version of assessment procedure!!
         question.version = AssessmentVersion.objects.order_by('-date_released')[0]
         question.save()
@@ -375,6 +472,7 @@ def load_indicator_components(file_name, class_name):
     for row in data_reader:
         # check for parent element
         if row[4].strip() == '' or row[4].strip() == "0":
+            # create component for layout purposes
             print("processing parent element: " + row[0].strip())
             parent_element = class_name()
             parent_element.assessment_version = assesment_version
@@ -393,13 +491,23 @@ def load_indicator_components(file_name, class_name):
             parent_element.comment = row[11].strip()
             parent_element.add_type = int(row[10].strip().upper() == YES_STR)
             parent_element.save()
+            # create element for scoring purposes
+            if not parent_element.dimension:
+                new_element = Element()
+                print("Creating parent element: " + parent_element.name)
+                new_element.order = parent_element.order
+                new_element.code = parent_element.code
+                new_element.name = parent_element.name
+                new_element.version = parent_element.assessment_version
+                new_element.save()
         else:
             try:
                 parent_element = class_name.objects.get(code=row[4].strip())
             except:
-                print("Parent element not found: " + row[4].strip())
+                print("Parent element not found: " + parent_element.name)
             # load element
             try:
+                # creation of component for layout purposes
                 print("processing element: " + row[0].strip())
                 print("with parent element: " + parent_element.name)
                 element = class_name()
@@ -420,6 +528,16 @@ def load_indicator_components(file_name, class_name):
                 element.comment = row[11].strip()
                 element.add_type = int(row[10].strip().upper() == YES_STR)
                 element.save()
+                # creation of element for scoring purposes
+                if not element.dimension:
+                    new_element = Element()
+                    print("Creating element: " + element.name)
+                    new_element.name = element.name
+                    new_element.order = element.order
+                    new_element.code = element.code
+                    new_element.version = element.assessment_version
+                    new_element.parent = Element.objects.get(code=element.parent.code)
+                    new_element.save()
             except:
                 print("Error processing element: " + row[0].strip())
                 print("With parent: " + row[4].strip())
@@ -487,9 +605,11 @@ def load_component_file(file_name):
             question.add_type = ADD_TYPE_LGJ
         # dimension
         question.dimension = Dimension.objects.get(name=row[11].strip())
-        # element column
-        if row[14].strip() != "":
-            question.element = Element.objects.get(name=row[14].strip())
+        # get element from code of component.parent, as code of questions if for layout purposes and links with
+        # component that is one level under system element
+        if component and component.parent:
+            element = Element.objects.get(code=component.parent.code)
+            question.element = element
 
         # control of mov_type
         mov_txt = row[10].strip().upper()
@@ -510,7 +630,7 @@ def load_component_file(file_name):
     print("load_component_file. End: " + file_name)
 
 
-if __name__ == "__main__":
+def load_master_data():
 
     load_users_file()
     load_entity_single_field_name("cities.tsv", City)
@@ -536,8 +656,35 @@ if __name__ == "__main__":
     load_entity_single_field_name("SC3.tsv", ChoicesSC3)
     load_entity_single_field_name("SC4.tsv", ChoicesSC4)
     load_entity_single_field_name("SC5.tsv", ChoicesSC5)
+    load_entity_single_field_name("SC6.tsv", ChoicesSC6)
+    load_entity_single_field_name("SC7.tsv", ChoicesSC7)
+    load_entity_single_field_name("SC8.tsv", ChoicesSC8)
+    load_entity_single_field_name("SC9.tsv", ChoicesSC9)
+    load_entity_single_field_name("SC11.tsv", ChoicesSC11)
+    load_entity_single_field_name("SC12.tsv", ChoicesSC12)
+    load_entity_single_field_name("SC13.tsv", ChoicesSC13)
+    load_entity_single_field_name("SC14.tsv", ChoicesSC14)
+    load_entity_single_field_name("SC15.tsv", ChoicesSC15)
+    load_entity_single_field_name("SC21.tsv", ChoicesSC21)
+
+
+if __name__ == "__main__":
+    # load master data
+    load_master_data()
+
+    # Indicators
+    load_indicator_components("Indicators - Components.tsv", Component)
+    set_next_element("Indicators - Components.tsv", Component, 5)
+
+    load_component_file("Indicators - Basic Infrastructure.tsv")
+    load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration)
+
+    # load hazards
     load_hazards()
-    load_elements()
+    load_hazard_type_descriptions()
+    load_hazard_subtype_explanations()
+    load_elements_impacted()
+
 
     # CityID
     load_city_id_sections("CityID - Sections.tsv", CityIDSection)
@@ -551,12 +698,6 @@ if __name__ == "__main__":
     load_city_id_file("CityID - Partnerships.tsv")
     load_city_id_file("CityID - Public Relations.tsv")
     load_city_id_file("CityID - Other.tsv")
-
-    # Indicators
-    load_indicator_components("Indicators - Components.tsv", Component)
-    set_next_element("Indicators - Components.tsv", Component, 5)
-    load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration)
-    load_component_file("Indicators - Basic Infrastructure.tsv")
 
 
 

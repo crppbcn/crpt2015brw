@@ -334,3 +334,11 @@ class AssessmentComponentQuestionForm(forms.ModelForm):
     class Meta:
         model = AssessmentComponentQuestion
         fields = '__all__'
+
+
+class AssessmentHazardTypeForm(forms.ModelForm):
+
+
+    class Meta:
+        model = AssessmentHazardType
+        fields = '__all__'

@@ -1,0 +1,19 @@
+CODE	HAZARD GROUP	CODE	HAZARD TYPE		HAZARD SUBTYPE		HAZARD SUBTYPE DETAIL
+HG10	Biological	HT10	Epidemic and Pandemic	HS10	Viral disease		
+HG10	Biological	HT10	Epidemic and Pandemic	HS20	Bacterial disease		
+HG10	Biological	HT10	Epidemic and Pandemic	HS30	Parasitic disease		
+HG10	Biological	HT10	Epidemic and Pandemic	HS40	Fungal disease		
+HG10	Biological	HT10	Epidemic and Pandemic	HS50	Prion Disease		
+HG10	Biological	HT20	Infestation	HS60	Insect Infestation		
+HG10	Biological	HT20	Infestation	HS70	Animal, Plant, Fungal and Pest Infestation		
+HG20	Technological	HT30	Failure of Infrastructure	HS80	Built Infrastructure Breakdown	HSD10	Built Infrastructure Collapse
+HG20	Technological	HT30	Failure of Infrastructure	HS80	Built Infrastructure Breakdown	HSD11	Housing Crisis
+HG20	Technological	HT30	Failure of Infrastructure	HS80	Built Infrastructure Breakdown	HSD12	Rapid Urbanisation
+HG20	Technological	HT30	Failure of Infrastructure	HS90	Socio-economic Infrastructure Breakdown	HSD13	Health Care Service Breakdown
+HG20	Technological	HT30	Failure of Infrastructure	HS90	Socio-economic Infrastructure Breakdown	HSD14	Education Service Breakdown
+HG20	Technological	HT30	Failure of Infrastructure	HS90	Socio-economic Infrastructure Breakdown	HSD15	Emergency and Rescue Service Breakdown
+HG20	Technological	HT30	Failure of Infrastructure	HS90	Socio-economic Infrastructure Breakdown	HSD16	Safety and Justice Services Breakdown
+HG20	Technological	HT30	Failure of Infrastructure	HS90	Socio-economic Infrastructure Breakdown	HSD17	Social Care System Breakdown
+HG20	Technological	HT30	Failure of Infrastructure	HS90	Socio-economic Infrastructure Breakdown	HSD18	Financial System Breakdown
+HG20	Technological	HT30	Failure of Infrastructure	HS90	Socio-economic Infrastructure Breakdown	HSD19	Business Logistics System Breakdown
+HG20	Technological	HT30	Failure of Infrastructure	HS100	Transport System Breakdown	HSD20	

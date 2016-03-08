@@ -110,29 +110,18 @@ class AssessmentVersion(Common):
     date_released = django.db.models.DateField(null=False, blank=False)
 
 
-class HazardCategory(BasicName):
-    """
-    Represents a Hazard Category
-    """
-
-
-class Hazard(BasicName):
-    """
-    Represents a Hazard Category
-    """
-    hazard_category = django.db.models.ForeignKey(HazardCategory)
-
-
 class Dimension(BasicName):
     """
     Represents a dimension of the urban model
     """
 
 
-class Element(BasicName):
+class Element(Common):
     """
     Represents an element of the urban model
     """
+    code = django.db.models.CharField(max_length=20)
+    name = django.db.models.CharField(max_length=250, null=True, blank=True)
     order = django.db.models.IntegerField(null=True, blank=True)
     parent = django.db.models.ForeignKey('self', null=True, blank=True)
     version = django.db.models.ForeignKey(AssessmentVersion)
@@ -188,6 +177,69 @@ class QuestionSimple(Common):
         abstract = True
 
 
+
+#######################################
+#
+# Hazards
+#
+#######################################
+
+
+class Hazard(Common):
+    """
+    Abstract class to support hazard classes
+    """
+    code = django.db.models.CharField(max_length=20, unique=True)
+    name = django.db.models.CharField(max_length=250)
+
+    class Meta:
+        abstract = True
+
+
+class HazardGroup(Hazard):
+    """
+    Represents a hazard group
+    """
+
+
+class HazardType(Hazard):
+    """
+    Represents a Hazard Type
+    """
+    hazard_group = django.db.models.ForeignKey(HazardGroup)
+    description = django.db.models.CharField(max_length=500, null=True, blank=True)
+
+
+class HazardSubtype(Hazard):
+    """
+    Represents a Hazard Subtype
+    """
+    hazard_type = django.db.models.ForeignKey(HazardType)
+
+
+class HazardSubtypeDetail(Hazard):
+    """
+    Represents a Hazard Subtype Detail
+    """
+    hazard_subtype = django.db.models.ForeignKey(HazardSubtype)
+
+
+class HazardSubtypeFurtherExplanation(Common):
+    """
+    Represents a further explanation for a hazard subtype
+    """
+    hazard_subtype = django.db.models.ForeignKey(HazardSubtype)
+    description = django.db.models.CharField(max_length=500, null=True, blank=True)
+
+
+class ElementImpact(Common):
+    """
+    Represents an impact on a system element
+    """
+    element = django.db.models.ForeignKey(Element)
+    description = django.db.models.CharField(max_length=250, null=True, blank=True)
+
+
 #######################################
 #
 # CityID
@@ -228,6 +280,65 @@ class Assessment(BasicName):
     city_id_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
 
+#######################################
+#
+# Assessment - Hazards
+#
+#######################################
+class AssessmentHazardType(Common):
+    """
+    Represents a hazard type in an assesment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+    hazard_type = django.db.models.ForeignKey(HazardType)
+    risk_assessment = django.db.models.CharField(max_length=50, null=True, blank=True)
+    contingency_plan = django.db.models.CharField(max_length=50, null=True, blank=True)
+    enabled = django.db.models.BooleanField(default=False)
+
+
+class AssessmentHazardSubtype(Common):
+    """
+    Represents a hazard subtype in an assesment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+    a_h_type = django.db.models.ForeignKey(AssessmentHazardType)
+    enabled = django.db.models.BooleanField(default=False)
+
+
+class AssessmentHazardCause(Common):
+    """
+    Represents a hazard cause in an assesment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+    a_h_type = django.db.models.ForeignKey(AssessmentHazardType)
+    enabled = django.db.models.BooleanField(default=False)
+
+
+class AssessmentHazardConsequence(Common):
+    """
+    Represents a hazard consequence in an assesment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+    a_h_type = django.db.models.ForeignKey(AssessmentHazardType)
+    enabled = django.db.models.BooleanField(default=False)
+
+
+class AssessmentElementImpact(Common):
+    """
+    Represents an impact on a system element in an assessment
+    """
+    a_h_type = django.db.models.ForeignKey(AssessmentHazardType)
+    assessment = django.db.models.ForeignKey(Assessment)
+    elem_impact = django.db.models.ForeignKey(ElementImpact)
+    enabled = django.db.models.BooleanField(default=False)
+
+
+
+#######################################
+#
+# Assessment - Element
+#
+#######################################
 class AssessmentElement(Common):
     """
     Represents an element of the urban system model in the assessment
@@ -357,7 +468,7 @@ class AssessmentComponentQuestion(ComponentQuestion):
 
     # Overriding save method to calculate score. TODO: use signals to recalculate overall score?
     def save(self, *args, **kwargs):
-        if str(self.response).strip() != "":
+        if str(self.response).strip() != "" and str(self.response).strip() != "''":
             # Scoring for questions with percentage. TODO: for now we assume all them will be with %
             if self.units == 1:
                 try:
@@ -541,6 +652,65 @@ class ChoicesSC5(BasicName):
     Represents MoV Source options
     """
 
+
+class ChoicesSC6(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC7(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC8(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC9(BasicName):
+    """
+    Represents MoV Source options
+
+    """
+
+class ChoicesSC11(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC12(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC13(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC14(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC15(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+
+class ChoicesSC21(BasicName):
+    """
+    Represents MoV Source options
+    """
 
 #######################################
 #

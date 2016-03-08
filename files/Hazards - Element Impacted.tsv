@@ -1,0 +1,43 @@
+ELEMCODE	Element	Impact
+1	Basic Infrastructure	Electricity Supply
+1	Basic Infrastructure	Fuel Supply
+1	Basic Infrastructure	Gas Supply
+1	Basic Infrastructure	Solid Waste Collection and Treatment
+1	Basic Infrastructure	Telecommunication (e.g., phone, internet, radio, etc.)
+1	Basic Infrastructure	Wastewater Collection and Treatment
+1	Basic Infrastructure	Water Supply
+2	Built Environment	Damaging/Affecting the Entire City
+2	Built Environment	Damaging/Affecting One or More Sub-Local Divisions or City's Areas
+2	Built Environment	Damage/Destruction of Residential Area(s)
+2	Built Environment	Damage/Destruction of Built-Up Area(s) (Non-Residential)
+3	Economy	Economic Losses
+3	Economy	Basic Goods and Services Price Inflation
+3	Economy	Disruption of Economic Sector(s) or Activity(ies)
+3	Economy	Disruptions on the Import/Export of Goods and Services
+3	Economy	City's Access to Financial Resources and Liquidity
+3	Economy	Damage/Degradation of Agricultural Land or Loss of Livestock
+3	Economy	Competition Over Resources (e.g., land, water, etc.)
+4	Environment	Air Quality
+4	Environment	Blue/Water Bodies (including Protected Areas)
+4	Environment	Green Spaces (including Protected Areas)
+5	Governance	Disruption of City Management Activities/Services
+5	Governance	Disruption of Supra- and Sub-Local Government Activities/Services in the City
+5	Governance	Disruption of Activities/Services of local CSOs (Including Traditional Leaders) in the City
+6	Public Services	Education
+6	Public Services	Emergency and Rescue Services
+6	Public Services	Food Provision
+6	Public Services	Health
+6	Public Services	Safety and Justice Services
+6	Public Services	Social Care
+7	Social	Disruption of Population's Daily Activities
+7	Social	Population's Access to Financial Resources and Liquidity
+7	Social	Disruption of Livelihoods(*) or Loss of Employment
+7	Social	Reduction of Population Well-Being and Quality of Life
+7	Social	Injured/Infected People
+7	Social	Displaced/Evacuated People
+7	Social	Deaths
+8	Transport	Damage/Destruction of Critical Transport Infrastructure/Facilities (e.g., port, bus station)
+8	Transport	Disruptions of population transport within the city
+8	Transport	Disruptions of goods transport within the city
+8	Transport	Disruptions of population transport in/out of the city
+8	Transport	Disruptions of goods transport in/out of the city

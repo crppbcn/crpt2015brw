@@ -1,0 +1,172 @@
+{% extends "crpt201511/hazards/left_menu.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div id="crpt-menu_page" class="col-md-10">
+    <div class="row col-md-12">
+
+        <div id="crpt-center" class="col-md-8 padding_right">
+            <div class="bs-component">
+                <div class="well bs-component">
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+                        <legend>
+                            {{ ht.name }}
+                            <a href="#" alt="Help" data-toggle="modal" data-target="#myModal"></a>&nbsp;&nbsp;
+                        </legend>
+                        <blockquote>{{ ht.description }}</blockquote>
+                        <fieldset id="fs">
+                            {% comment %} fs display {% endcomment %}
+                            {{ fs.management_form }}
+                            {% if fs.errors %}
+                            <!-- TODO: form errors treatement -->
+                            {% endif %}
+
+                            {% comment %} fs display {% endcomment %}
+                            {{ fs.management_form }}
+                                {% for form in fs %}
+                                    hello!
+                                    {%comment%}
+                                        preparing the form to be printed
+                                        need to print form.id to avoid errors in post request
+                                        rest of hidden fields
+                                    {%endcomment%}
+                                    {{form.id}}
+
+                            <!-- TODO: form fields display as a function of type of question and except MoV section -->
+                                    {% comment%} Treatment to put a single row for question with units {% endcomment %}
+                                    {% for field in form.fields %}
+
+                                        hello!
+
+                                        {{ field }}
+                                    {% endfor %}
+
+                                    {% comment %}Print hidden fields{% endcomment %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+
+                                {% endfor %}
+
+
+                            <div class="form-group" order="9999">
+                                <div class="col-md-10 col-md-offset-0">
+                                  {% comment %}
+                                  <button type="reset" class="btn btn-default">Cancel</button>
+                                  {% endcomment %}
+                                  <button type="submit" class="btn btn-danger">Save</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div> <!-- panel default -->
+            </div>
+        </div> <!-- crpt-center -->
+
+        <div id="crpt-right-column" class="col-md-4">
+
+            <div id="crpt-right-menu" class="right-menu">
+                <a id="a-considerations" class="selected" href="#" onclick="showConsiderations();">Considerations</a>
+                <br>
+                <a id="a-comments" href="#" onclick="showComments();">{%if comments|length > 0 %} ({{comments|length}}) {%endif%}Comments</a>
+            </div>
+
+
+            <div id="crpt-right-considerations" style="width:100%;">
+                <div class="panel panel-default" >
+                    <div class="panel-heading">Considerations</div>
+                    <div class="panel-body">
+                        {% if considerations and considerations|length > 0 %}
+                            {% for item in considerations %}
+                                {% if item.show_separator and forloop.counter > 1 %}
+                                <legend></legend>
+                                {% endif %}
+                                <p>{{ item.comment }}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>This section has no considerations</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="crpt-right-comments">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Your comments on this question</div>
+                        {% if comments and comments|length > 0%}
+                            {% for item in comments %}
+                                <div class="panel-body">
+                                    <p>{{ item.comment }}.</p>
+                                    <p>User:<i>{{ item.person.name }}</i>. Date:<i>{{item.date_created}}</i></p>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="panel-body">
+                                <p>This section has no comments</p>
+                            </div>
+                        {% endif %}
+                    <div class="panel-body">
+                        <form action="/add_section_comment/" method="post">{% csrf_token %}
+                            <fieldset>
+                            <div class="form-group">
+                                <div class="">
+                                    <textarea class="form-control" rows="3" id="textComments" name="textComments" placeholder="Add any comments or notes"></textarea>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="send_mail"> Send to CRPP Team
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="assessment_id" value="{{assessment.id}}"/>
+                                    {% if subsection %}
+                                        <input type="hidden" name="section_id" value="{{subsection.id}}"/>
+                                    {% else %}
+                                        <input type="hidden" name="section_id" value="{{section.id}}"/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="">
+                                    <button type="reset" class="btn btn-default">Cancel</button>
+                                    <button type="submit" class="btn btn-danger">Save</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                        </form>
+                    </div>
+                </div>
+                {% comment %} <!-- Commented not to have 2 forms in comments -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">Send comments to CRPP Team</div>
+                        <div class="panel-body">
+                            <form>
+                                <fieldset>
+                                    <div class="form-group">
+                                            <a id="a-copy" href="#" onclick="copyComments();">Copy comments</a>
+                                            <textarea class="form-control" rows="3" id="textEmail" placeholder="Send any comments or questions to CRPP Team"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="">
+                                          <button type="reset" class="btn btn-default">Cancel</button>
+                                          <button type="submit" class="btn btn-danger">Send</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endcomment %} <!-- Commented not to have 2 forms in comments -->
+            </div> <!-- right comments -->
+
+            <div style="clear:both;"></div>
+
+        </div> <!-- right col -->
+
+    </div> <!-- row -->
+
+</div> <!-- crpt-menu-page -->
+
+
+{% endblock %}
+

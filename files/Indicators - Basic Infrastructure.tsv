@@ -1,14 +1,92 @@
-Component	Short Desc	Long Desc	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION	ADD OPTION	MoV	Dimension	Units	PLUS	Element
-1.1.1	Population with access to any means of electricity supply	Population with access to any means of electricity supply			CHAR_FIELD	0				NA	Physical	Y	No	Electricity Supply
-1.1.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	50		MC1	Yes	A	Physical	0	No	Electricity Supply
-1.1.1	Population connected to the network	Population connected to the network			CHAR_FIELD	100				A	Physical	Y	No	Electricity Supply
-1.1.1	Population with alternative sources of electricity	Population with alternative sources of electricity			CHAR_FIELD	150				A	Physical	Y	No	Electricity Supply
-1.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	200		SC1		NYS	Physical	0	No	Electricity Supply
-1.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_MULTI	250		SC2		NA	Organisational	0	PLUS_1	Electricity Supply
-1.1.3	What is the average amount of disruptions per consumer per year?	What is the average amount of disruptions per consumer per year?			CHAR_FIELD	300				A	Functional	0	PLUS_1	Electricity Supply
-1.1.3	What is the average disruption time?	What is the average disruption time?			CHAR_FIELD	350				A	Functional	Y	No	Electricity Supply
-1.1.3	What is level of impact of the disruptions?	What is level of impact of the disruptions?			SELECT_MULTI	400		SC3		NYS	Functional	0	No	Electricity Supply
-1.1.3	Is there an operation and maintenance plan for the electricity supply network?	Is there an operation and maintenance plan for the electricity supply network?			SELECT_SINGLE	450		SC1		A	Functional	0	No	Electricity Supply
-1.1.4	Development Plan	Development Plan			SELECT_SINGLE	500		SC4		NS	Functional	0	No	Electricity Supply
-1.1.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	550		SC5		NS	Functional	0	No	Electricity Supply
-1.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_SINGLE	600		MC2		NA	Functional	0	No	Electricity Supply
+Parent	Short Desc	Long Desc	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION	ORDER	MoV	Dimension	Units	PLUS
+1.1.1	Population with access to any means of electricity supply	Population with access to any means of electricity supply			CHAR_FIELD	100		FF	100	NA	Physical	Yes	
+1.1.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	200		MC1	200	A	Physical	0	
+1.1.1	Population connected to the network	Population connected to the network			CHAR_FIELD	300		FF	300	A	Physical	Yes	
+1.1.1	Population with alternative sources of electricity	Population with alternative sources of electricity			CHAR_FIELD	400		FF	400	A	Physical	Yes	
+1.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	500		SC1	500	NYS	Physical	0	
+1.1.3	What is the average amount of disruptions per consumer per year?	What is the average amount of disruptions per consumer per year?			CHAR_FIELD	600		FF	600	A	Functional	0	
+1.1.3	What is the average disruption time?	What is the average disruption time?			CHAR_FIELD	700		FF	700	A	Functional	Yes	
+1.1.3	What is level of impact of the disruptions?	What is level of impact of the disruptions?			SELECT_SINGLE	800		SC3	800	NYS	Functional	0	
+1.1.3	Is there an operation and maintenance plan for the electricity supply network?	Is there an operation and maintenance plan for the electricity supply network?			SELECT_SINGLE	900		SC1	900	A	Functional	0	
+1.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	1000		MC2	1000	NA	Functional	0	
+1.2.1	Population with access to any means of fuel supply	Population with access to any means of fuel supply			CHAR_FIELD	1100		FF	1100	NA	Physical	Yes	
+1.2.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	1200		MC1	1200	A	Physical	0	
+1.2.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	1300		SC1	1300	NYS	Physical	0	
+1.2.3	For the general public	For the general public			SELECT_SINGLE	1400		SC3	1400	NYS	Functional	0	
+1.2.3	For commercial facilities	For commercial facilities			SELECT_SINGLE	1500		SC3	1500	NYS	Functional	0	
+1.2.3	For industrial facilities	For industrial facilities			SELECT_SINGLE	1600		SC3	1600	NYS	Functional	0	
+1.2.3	Is there an operation and maintenance plan for the fuel supply network?	Is there an operation and maintenance plan for the fuel supply network?			SELECT_SINGLE	1700		SC1	1700	A	Functional	0	
+1.2.3	Are regular safety inspections of the storage and distribution of fuels conducted?	Are regular safety inspections of the storage and distribution of fuels conducted?			SELECT_SINGLE	1800		SC1	1800	NYS	Functional	0	
+1.2.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	1900		MC2	1900	NS	Functional	0	
+1.3.1	Population with access to any means of gas supply	Population with access to any means of gas supply			CHAR_FIELD	2000		FF	2000	NA	Physical	Yes	
+1.3.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	2100		MC1	2100	A	Physical	0	
+1.3.1	Population connected to the network	Population connected to the network			CHAR_FIELD	2200		FF	2200	A	Physical	Yes	
+1.3.1	Industries connected to the network	Industries connected to the network			CHAR_FIELD	2300		FF	2300	A	Physical	Yes	
+1.3.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	2400		SC1	2400	NYS	Physical	0	
+1.3.3	For the general public	For the general public			SELECT_SINGLE	2500		SC3	2500	NYS	Functional	0	
+1.3.3	For commercial facilities	For commercial facilities			SELECT_SINGLE	2600		SC3	2600	NYS	Functional	0	
+1.3.3	For industrial facilities	For industrial facilities			SELECT_SINGLE	2700		SC3	2700	NYS	Functional	0	
+1.3.3	Is there an operation and maintenance plan for the gas supply network?	Is there an operation and maintenance plan for the gas supply network?			SELECT_SINGLE	2800		SC1	2800	A	Functional	0	
+1.3.3	Are regular safety inspections of the storage and distribution of gas conducted?	Are regular safety inspections of the storage and distribution of gas conducted?			SELECT_SINGLE	2900		SC1	2900	NYS	Functional	0	
+1.3.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	3000		MC2	3000	NA	Functional	0	
+1.4.1	Population covered by a waste collection system	Population covered by a waste collection system			CHAR_FIELD	3100		FF	3100	NA	Physical	Yes	
+1.4.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	3200		MC1	3200	A	Physical	0	
+1.4.2	Percentage of solid waste adequately disposed	Percentage of solid waste adequately disposed			CHAR_FIELD	3300		FF	3300	A	Physical	0	
+1.4.2	Percentage of the city’s solid waste that is disposed of in an open dump	Percentage of the city’s solid waste that is disposed of in an open dump			CHAR_FIELD	3400		FF	3400	A	Physical	0	
+1.4.2	Percentage of hazardous waste adequately disposed	Percentage of hazardous waste adequately disposed			CHAR_FIELD	3500		FF	3500	A	Physical	0	
+1.4.2	Percentage of large waste generators that are responsible for the treatment and/or disposal of their solid waste	Percentage of large waste generators that are responsible for the treatment and/or disposal of their solid waste			CHAR_FIELD	3600		FF	3600	A	Physical	0	
+1.4.2	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	3700		SC1	3700	NYS	Physical	0	
+1.4.4	What is the average number of days the solid waste collection system is out of service per year?	What is the average number of days the solid waste collection system is out of service per year?			CHAR_FIELD	3800		FF	3800	NYS	Functional	0	
+1.4.4	What is level of impact of the disruptions?	What is level of impact of the disruptions?			SELECT_SINGLE	3900		SC3	3900	NYS	Functional	0	
+1.4.4	Is there an operation and maintenance plan for the solid waste collection and disposal system?	Is there an operation and maintenance plan for the solid waste collection and disposal system?			SELECT_SINGLE	4000		SC1	4000	A	Functional	0	
+1.4.4	Does the city conduct regular safety, health and environmental inspections of the solid waste collection, treatment and/or disposal systems?	Does the city conduct regular safety, health and environmental inspections of the solid waste collection, treatment and/or disposal systems?			SELECT_SINGLE	4100		SC1	4100	NYS	Functional	0	
+1.4.6	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	4200		MC2	4200	NS	Functional	0	
+1.5.1.1	Existence of early warning system(s)	Existence of early warning system(s)			SELECT_SINGLE	4300		SC6	4300	A	Physical	0	
+1.5.1.1	Existence of general public alert mechanism(s)	Existence of general public alert mechanism(s)			SELECT_SINGLE	4400		SC6	4400	A	Physical	0	
+1.5.1.1	Existence of dedicated emergency network	Existence of dedicated emergency network			SELECT_SINGLE	4500		SC6	4500	A	Physical	0	
+1.5.2.1	Percentage of internet users	Percentage of internet users			CHAR_FIELD	4600		FF	4600	NA	Physical	0	
+1.5.2.1	If users are not 100%, please indicate reason(s)	If users are not 100%, please indicate reason(s)			SELECT_MULTI	4700		MC1	4700	A	Physical	0	
+1.5.2.1	Percentage of internet subscribers	Percentage of internet subscribers			CHAR_FIELD	4800		FF	4800	A	Physical	0	
+1.5.2.3	Average internet connection speed	Average internet connection speed			CHAR_FIELD	4900		FF	4900	A	Functional	Yes	
+1.5.2.3	Are there significant interruptions in the internet services?	Are there significant interruptions in the internet services?			SELECT_SINGLE	5000		SC1	5000	NA	Functional	0	
+1.5.2.3	If so, please indicate reason(s)	If so, please indicate reason(s)			SELECT_MULTI	5100		MC1	5100	NYS	Functional	0	
+1.5.2.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	5200		MC2	5200	NS	Functional	0	
+1.5.3.1	Landline coverage	Landline coverage			CHAR_FIELD	5300		FF	5300	A	Physical	Yes	
+1.5.3.1	Cellphone coverage	Cellphone coverage			CHAR_FIELD	5400		FF	5400	A	Physical	Yes	
+1.5.3.1	If coverages are not 100%, please indicate reason(s)	If coverages are not 100%, please indicate reason(s)			SELECT_MULTI	5500		MC1	5500	NA	Physical	0	
+1.5.3.3	Dropped-call rate	Dropped-call rate			CHAR_FIELD	5600		FF	5600	A	Functional	Yes	
+1.5.3.3	Call failure rate	Call failure rate			CHAR_FIELD	5700		FF	5700	A	Functional	Yes	
+1.5.3.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	5800		MC2	5800	NS	Functional	0	
+1.5.3.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	5900		MC2	5900	NS	Functional	0	
+1.5.4.1	Households with television	Households with television			CHAR_FIELD	6000		FF	6000	A	Physical	Yes	
+1.5.4.1	Households with radio	Households with radio			CHAR_FIELD	6100		FF	6100	A	Physical	Yes	
+1.5.4.1	If coverages are not 100%, please indicate reason(s)	If coverages are not 100%, please indicate reason(s)			SELECT_MULTI	6200		MC1	6200	NA	Physical	0	
+1.5.4.3	TV signal strenght and quality	TV signal strenght and quality			SELECT_SINGLE	6300		SC8	6300	NYS	Functional	0	
+1.5.4.3	Radio signal strenght and quality	Radio signal strenght and quality			SELECT_SINGLE	6400		SC8	6400	NYS	Functional	0	
+1.5.4.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	6500		MC2	6500	NS	Functional	0	
+1.5.4.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	6600		MC2	6600	NS	Functional	0	
+1.6.1	Population with access to improved sanitation facilities	Population with access to improved sanitation facilities			CHAR_FIELD	6700		FF	6700	NA	Physical	Yes	
+1.6.1	If access is not 100%, please indicate reason(s)	If access is not 100%, please indicate reason(s)			SELECT_MULTI	6800		MC1	6800	A	Physical	0	
+1.6.1	Population connected to the wastewater collection network	Population connected to the wastewater collection network			CHAR_FIELD	6900		FF	6900	NA	Physical	Yes	
+1.6.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	7000		SC1	7000	A	Physical	0	
+1.6.1	Population with access to on-site wastewater systems	Population with access to on-site wastewater systems			CHAR_FIELD	7100		FF	7100	A	Physical	Yes	
+1.6.2	Percentage of wastewater collected that receives no treatment	Percentage of wastewater collected that receives no treatment			CHAR_FIELD	7200		FF	7200	A	Physical	0	
+1.6.2	Percentage of large wastewater generators that are responsible for the treatment of their wastewater	Percentage of large wastewater generators that are responsible for the treatment of their wastewater			CHAR_FIELD	7300		FF	7300	A	Physical	0	
+1.6.2	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	7400		SC1	7400	NYS	Physical	0	
+1.6.4	What is the average number of disruptions per year?	What is the average number of disruptions per year?			CHAR_FIELD	7500		FF	7500	A	Functional	0	
+1.6.4	What is level of impact of the disruptions?	What is level of impact of the disruptions?			SELECT_SINGLE	7600		SC1	7600	NYS	Functional	0	
+1.6.4	Is there an operation and maintenance plan for the wastewater collection and treatment network?	Is there an operation and maintenance plan for the wastewater collection and treatment network?			SELECT_SINGLE	7700		SC1	7700	A	Functional	0	
+1.6.4	Does treated wastewater comply with applicable regulation?	Does treated wastewater comply with applicable regulation?			SELECT_SINGLE	7800		SC1	7800	A	Functional	0	
+1.6.6	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	7900		MC2	7900	NS	Functional	0	
+1.7.1	Population with access to any source of drinking water	Population with access to any source of drinking water			CHAR_FIELD	8000		FF	8000	NA	Physical	Yes	
+1.7.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	8100		MC1	8100	A	Physical	0	
+1.7.1	Population connected to the piped distribution system	Population connected to the piped distribution system			CHAR_FIELD	8200		FF	8200	A	Physical	Yes	
+1.7.1	Population with alternative sources of drinking water	Population with alternative sources of drinking water			CHAR_FIELD	8300		FF	8300	A	Physical	Yes	
+1.7.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	8400		SC1	8400	NYS	Physical	0	
+1.7.3	What is the average amount of disruptions per consumer per year?	What is the average amount of disruptions per consumer per year?			CHAR_FIELD	8500		FF	8500	A	Functional	0	
+1.7.3	What is the average disruption time?	What is the average disruption time?			CHAR_FIELD	8600		FF	8600	A	Functional	Yes	
+1.7.3	What is level of impact of the disruptions?	What is level of impact of the disruptions?			SELECT_SINGLE	8700		SC3	8700	NYS	Functional	0	
+1.7.3	Is there an operation and maintenance plan for the water supply network?	Is there an operation and maintenance plan for the water supply network?			SELECT_SINGLE	8800		SC1	8800	A	Functional	0	
+1.7.3	Does regular sampling and analysis of drinking water take place?	Does regular sampling and analysis of drinking water take place?			SELECT_SINGLE	8900		SC1	8900	NY	Functional	0	
+1.7.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	9000		MC2	9000	NS	Functional	0	
+1.7.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	9100		MC2	9100	NS	Functional	0	

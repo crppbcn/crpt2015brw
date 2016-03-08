@@ -3,14 +3,18 @@
 {% block content %}
 <div class="jumbotron col-md-12" >
     <h1 class="page-header">Urban System Elements</h1>
-    <div class="row col-md-12" style="position:relative;">
-        {% for element in elements %}
-        <div class="col-md-1">
-            <a href="{% url 'component_2' assessment_id=assessment.id component_id=element.id %}" class="btn col-md-5" style="width:100%;">
-                {{ element.name }}
-            </a>
-        </div>
-        {% endfor%}
+    {% for element in elements %}
+        {% if forloop.counter == 1 or forloop.counter == 5 %}
+            <div class="row col-md-12" style="position:relative;">
+        {% endif %}
+            <div style="width:{{element_width}}%;float:left;">
+                <a href="{% url 'component_2' assessment_id=assessment.id component_id=element.id %}" class="btn col-md-5" style="width:100%;">
+                    <img src="{% static "" %}crpt201511/img/elements_{{forloop.counter}}.png"  class="steps" style="height:100%;width:100%;"/>
+                </a>
+        {% if forloop.counter == 4 or forloop.counter == 8 %}
+            </div>
+        {% endif %}
     </div>
+    {% endfor%}
 </div>
 {% endblock %}

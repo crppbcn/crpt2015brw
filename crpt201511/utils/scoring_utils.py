@@ -79,7 +79,11 @@ def calculate_degree_of_completion(element):
             if q.response and str(q.response) != "":
                 answered_noq += 1
 
+        print("answered_noq: " + str(answered_noq))
+        print("total_noq: " + str(total_noq))
         element.degree_of_completion = answered_noq / total_noq
+        print("degree_of_completion: " + str(element.degree_of_completion))
+
 
     print("calculate_degree_of_completion. End. " + str(element.id))
     sys.stdout.flush()
@@ -180,6 +184,9 @@ def calculate_overall_assessment_scoring(assessment):
         assessment.physical_score = physical_score / elements_number
         assessment.functional_score = functional_score / elements_number
         assessment.degree_of_completion = degree_of_completion / elements_number
+        print("total_noq: " + str(elements_number))
+        print("noq_answered: " + str(degree_of_completion))
+
         # City ID - calculation
         assessment.city_id_completion = 0
         cid_questions = AssessmentCityIDQuestion.objects.filter(assessment=assessment).\
@@ -189,6 +196,7 @@ def calculate_overall_assessment_scoring(assessment):
         for question in cid_questions:
             if question.response and str(question.response).strip() != "":
                 noq_answered += 1
+
         assessment.city_id_completion = noq_answered / total_noq
         # save assessment
         assessment.save()

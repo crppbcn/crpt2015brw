@@ -1,0 +1,20 @@
+{% extends "crpt201511/common/header.html" %}
+{% load admin_static %}
+{% block content %}
+<div class="jumbotron col-md-12" >
+    <h1 class="page-header">Hazard Groups</h1>
+
+    <div class="row col-md-12" style="position:relative;">
+        {% for hg in hazard_groups%}
+            <div style="width:{{hg_width}}%;float:left;text-align:center;">
+                <a href="{% url 'hazard_types' assessment_id=assessment.id hg_id=hg.id %}" style="width:100%;">
+                    <img src="{% static "" %}crpt201511/img/{{hg.name|lower}}_group.png"  class="steps" style="height:50%;width:50%;"/>
+                </a>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+{% endblock %}

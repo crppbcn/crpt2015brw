@@ -1,10 +1,10 @@
 {% extends "crpt201511/common/header.html" %}
 {% load admin_static %}
 {% block main_menu %}
-<div id="crpt-nav-menu" class="row col-md-12">
+<div id="crpt-left-menu" class="col-md-2 padding_right">
     <div class="row col-md-12">
-
-        <div id="navbar" class="bs-component col-md-2 padding_right">
+        {% comment %} nav bar {% endcomment %}
+        <div id="navbar" class="bs-component col-md-12">
             <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
                 <a href="/" alt="Home" data-toggle="tooltip" data-placement="top" data-original-title="Home"><img src="{% static 'crpt201511/img/home.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
             </div>
@@ -17,23 +17,24 @@
             <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
                 <a href="#" alt="Help" data-toggle="tooltip" data-placement="top" data-original-title="Help"><img src="{% static 'crpt201511/img/help.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
             </div>
-
         </div>
-
-        <div class="bs-component">
-            <div id="menu" class="col-md-10">
-                {% for elem in menu_elements %}
-                    <div class="menu-horizontal" style="width:{{menu_horizontal_elem_width}}%;">
-                        {% if is_component %}
-                            <a href="/component_2/{{assessment.id}}/{{elem.parent.id}}/{{elem.id}}/" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.long_name }}" {% if section.name == elem.name %}class="selected"{% endif %}>{{ elem.name }}</a>
-                        {% else %}
-                            <a href="/city_id/{{assessment.id}}/{{elem.id}}/" data-toggle="tooltip" data-placement="top" data-original-title="{{ elem.long_name }}" {% if section.name == elem.name %}class="selected"{% endif %}>{{ elem.name }}</a>
-                        {% endif %}
-                    </div>
-                {% endfor%}
-            </div>
-        </div>
-
     </div> <!-- row -->
+
+    <div class="row col-md-12" style="height:15px;"></div>
+
+    {% comment %} left menu {% endcomment %}
+    <div class="row col-md-12">
+        <div class="list-group table-of-contents">
+
+            <a class="list-group-item {% if selected == "HT_DETAIL" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_detail' assessment_id=assessment.id ht_id=ht.id %}">Detail</a>
+            <a class="list-group-item {% if selected == "HT_INTERREL" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_interrelations' assessment_id=assessment.id ht_id=ht.id %}">Interrelations</a>
+            <a class="list-group-item {% if selected == "HT_IMPACTS" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_impacts' assessment_id=assessment.id ht_id=ht.id %}">Impacts</a>
+            {% for element in elements %}
+                <a class="list-group-item {% if selected == "HT_IMPACTS" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_impacts' assessment_id=assessment.id ht_id=ht.id element_id=element.id %}">Impacts</a>
+            {% endfor %}
+        </div>
+
+    </div>
+
 </div> <!-- crpt-nav-menu -->
 {% endblock %}

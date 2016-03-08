@@ -168,11 +168,12 @@ def test_create_new_assessment_components():
 
             # treatment of choices
             if str(question.choices).strip() == MC1:
-                for elem in ChoicesMC1.objects.all():
-                    a_cid_other_tx = AssessmentChoicesMC1()
-                    a_cid_other_tx.name = elem.name
-                    a_cid_other_tx.assessment = assessment
-                    a_cid_other_tx.save()
+                if len(AssessmentChoicesMC1.objects.all()) == 0:
+                    for elem in ChoicesMC1.objects.all():
+                        a_cid_other_tx = AssessmentChoicesMC1()
+                        a_cid_other_tx.name = elem.name
+                        a_cid_other_tx.assessment = assessment
+                        a_cid_other_tx.save()
         print("Component End: " + component.name)
 
     print("test_create_new_assessment_components. End.")
@@ -190,6 +191,55 @@ def test_get_remote_folder_name():
     print("test_get_remote_folder_name.End")
 
 
+def test_create_new_assessment_hazards():
+    print("test_create_new_assessment_hazards.Start")
+    # get assessment
+    try:
+        assessment = Assessment.objects.all()[:1].get()
+    except:
+        assessment = Assessment()
+        assessment.name = "Test Assessment"
+        assessment.city = City.objects.get(name="Test")
+        assessment.considerations = "Test Assessment"
+        assessment.focal_point_started = Person.objects.get(name="City, Test")
+        assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
+        assessment.save()
+
+    # create hazard types
+    for ht in HazardType.objects.all().order_by('id'):
+        aht = AssessmentHazardType()
+        aht.assessment = assessment
+        aht.hazard_type = ht
+        aht.save()
+    # create hazard subtypes
+    for hst in HazardSubtype.objects.all().order_by('id'):
+        ahst = AssessmentHazardSubtype()
+        ahst.assessment = assessment
+        ahst.a_h_type = AssessmentHazardType.objects.get(hazard_type=hst.hazard_type, assessment=assessment)
+        ahst.save()
+    # create hazard causes and consequences
+    for ht in HazardType.objects.all().order_by('id'):
+        cause = AssessmentHazardCause()
+        cause.assessment = assessment
+        cause.a_h_type = AssessmentHazardType.objects.get(hazard_type=ht, assessment=assessment)
+        cause.save()
+        conseq = AssessmentHazardConsequence()
+        conseq.assessment = assessment
+        conseq.a_h_type = AssessmentHazardType.objects.get(hazard_type=ht, assessment=assessment)
+        conseq.save()
+    # create hazard impacts
+    for ht in AssessmentHazardType.objects.filter(assessment=assessment).order_by('id'):
+        for ei in ElementImpact.objects.all().order_by('id'):
+            aei = AssessmentElementImpact()
+            aei.elem_impact = ei
+            aei.assessment = assessment
+            aei.a_h_type = ht
+            aei.save()
+    print("test_create_new_assessment_hazards.End")
+
+
+
+
 def test_obtain_max_selected_value():
     print("test_obtain_max_selected_value.Start")
     question = AssessmentComponentQuestion.objects.get(id=54)
@@ -204,9 +254,15 @@ def test_obtain_max_selected_value():
     print("test_obtain_max_selected_value.End")
 
 
+
 def test_simple():
     print("value: " + str(int("YES" == YES_STR)))
     print("value: " + str(int("" == YES_STR)))
+
+
+
+
+
 
 if __name__ == "__main__":
     #test_threading()
@@ -214,8 +270,10 @@ if __name__ == "__main__":
     #test_get_remote_folder_name()
     #test_multi()
     #test_obtain_max_selected_value()
+
     test_create_new_assessment_city_id()
     test_create_new_assessment_components()
+    test_create_new_assessment_hazards()
 
 
 

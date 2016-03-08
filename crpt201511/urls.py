@@ -59,9 +59,20 @@ urlpatterns = [
 
     url(r'^parent_component/(?P<assessment_id>\d+)/$', 'crpt201511.views.component_views.parent_component', name='parent_component'),
     url(r'^component_2/(?P<assessment_id>\d+)/(?P<component_id>\d+)/$', 'crpt201511.views.component_views.component_2', name='component_2'),
+    url(r'^component_2/(?P<assessment_id>\d+)/(?P<component_id>\d+)/$', 'crpt201511.views.component_views.component_2', name='component_2'),
+    url(r'^component_2/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/$', 'crpt201511.views.component_views.component_2', name='component_2'),
+    url(r'^component_2/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/(?P<third_component_id>\d+)/$', 'crpt201511.views.component_views.component_2', name='component'),
 
     # url to new question lgj
     url(r'^duplicate_question/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/(?P<third_component_id>\d+)/(?P<initial_question_id>\d+)/$', 'crpt201511.views.component_views.duplicate_question', name='duplicate_question'),
+
+    # hazards
+    url(r'^hazard_groups/(?P<assessment_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_groups', name='hazard_groups'),
+    url(r'^hazard_types/(?P<assessment_id>\d+)/(?P<hg_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_types', name='hazard_types'),
+    url(r'^hazard_type_detail/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_detail', name='hazard_type_detail'),
+    url(r'^hazard_type_interrelations/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_interrelations', name='hazard_type_interrelations'),
+    url(r'^hazard_type_impacts/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/(?P<element_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_impacts', name='hazard_type_impacts'),
+    url(r'^hazard_type_impacts/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_impacts', name='hazard_type_impacts'),
 
     # url to test page
     url(r'^test/$', 'crpt201511.views.views.test', name='test'),
