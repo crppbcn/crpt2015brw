@@ -338,6 +338,20 @@ class AssessmentComponentQuestionForm(forms.ModelForm):
 
 class AssessmentHazardTypeForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(AssessmentHazardTypeForm, self).__init__(*args, **kwargs)
+
+        # set multi and choices
+        if self.instance:
+            self.fields['r_a_year'].label = 'Year'
+            self.fields['c_p_year'].label = 'Year'
+            self.fields['risk_assessment'].label = 'Availability of specific risk assessment(s):'
+            self.fields['contingency_plan'].label = 'Availability of specific contingency plan(s):'
+            self.fields['subtypes'].label = 'Please select relevant hazard subtypes if applicable:'
+            self.fields['subtypes'].widget = \
+                forms.widgets.CheckboxSelectMultiple(
+                    choices=tuple([a.id, a.h_subtype.name] for a in
+                                  AssessmentHazardSubtype.objects.filter(a_h_type=self.instance).order_by('id')))
 
     class Meta:
         model = AssessmentHazardType

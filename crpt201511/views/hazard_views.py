@@ -122,17 +122,17 @@ def hazard_type_detail(request, assessment_id, ht_id):
                 sys.stdout.flush()
 
         else:
-            query_set = AssessmentHazardType.objects.filter(id=ht_id).order_by('order')
+            query_set = AssessmentHazardType.objects.filter(id=ht_id).order_by('id')
             f_set = fs(queryset=query_set)
 
 
 
         # return page
-        template = loader.get_template(TEMPLATE_HAZARDS_DETAIL_PAGE)
+        template = loader.get_template(TEMPLATE_HAZARDS_INTERRELATIONS_PAGE)
         context = RequestContext(request, {
             'person': person,
             'assessment': assessment,
-            'selected': "HT_DETAIL",
+            'selected': "HT_INTERRELATIONS",
             'ht': ht,
             'fs': f_set,
         })

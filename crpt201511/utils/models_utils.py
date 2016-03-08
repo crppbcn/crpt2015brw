@@ -17,3 +17,28 @@ def get_max_selected_value(response):
     finally:
         return max_selected_value
         sys.stdout.flush()
+
+
+def get_list_of_ids(response):
+    """
+    Gets a list of the selected ids for a response of multiple choice
+    :param response:
+    :return:
+    """
+    resp_length = len(str(response))
+    left = resp_length-1
+    right = resp_length
+    return_list = []
+
+    while left >= 0:
+        try:
+            id = int(str(response)[left:right])
+            return_list.append(id)
+        except:
+            print("Error retrieving ids: " + str(response)[left:right])
+            sys.stdout.flush()
+        finally:
+            left += - 1
+            right += - 1
+
+    return return_list

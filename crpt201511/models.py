@@ -292,8 +292,27 @@ class AssessmentHazardType(Common):
     assessment = django.db.models.ForeignKey(Assessment)
     hazard_type = django.db.models.ForeignKey(HazardType)
     risk_assessment = django.db.models.CharField(max_length=50, null=True, blank=True)
+    r_a_year = django.db.models.CharField(max_length=50, null=True, blank=True)
     contingency_plan = django.db.models.CharField(max_length=50, null=True, blank=True)
+    c_p_year = django.db.models.CharField(max_length=50, null=True, blank=True)
+    subtypes = django.db.models.CharField(max_length=250, null=True, blank=True)
     enabled = django.db.models.BooleanField(default=False)
+
+    # Overriding save method to calculate score. TODO: use signals to recalculate overall score?
+    def save(self, *args, **kwargs):
+        if str(self.subtypes).strip() != "" and str(self.subtypes).strip() != "''":
+            # get list of selected subtypes ids
+            st_ids = get_list_of_ids(self.subtypes)
+            for elem in st_ids:
+                try:
+                    hs = AssessmentHazardSubtype.objects.get(id=elem)
+                    hs.enabled=True
+                    hs.save()
+                except:
+                    pass
+
+        # Always call parent save method
+        super(AssessmentHazardType, self).save(*args, **kwargs)
 
 
 class AssessmentHazardSubtype(Common):
@@ -302,6 +321,7 @@ class AssessmentHazardSubtype(Common):
     """
     assessment = django.db.models.ForeignKey(Assessment)
     a_h_type = django.db.models.ForeignKey(AssessmentHazardType)
+    h_subtype = django.db.models.ForeignKey(HazardSubtype)
     enabled = django.db.models.BooleanField(default=False)
 
 

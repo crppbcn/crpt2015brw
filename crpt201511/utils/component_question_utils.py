@@ -200,5 +200,25 @@ def set_max_num_of_choices(question):
         question.choices_length = len(ChoicesSC4.objects.all())-1
     if question.choices == SC5:
         question.choices_length = len(ChoicesSC5.objects.all())-1
+    if question.choices == SC6:
+        question.choices_length = len(ChoicesSC6.objects.all())-1
+    if question.choices == SC7:
+        question.choices_length = len(ChoicesSC7.objects.all())-1
+    if question.choices == SC8:
+        question.choices_length = len(ChoicesSC8.objects.all())-1
+    if question.choices == SC9:
+        question.choices_length = len(ChoicesSC9.objects.all())-1
+    if question.choices == SC11:
+        question.choices_length = len(ChoicesSC11.objects.all())-1
+    if question.choices == SC12:
+        question.choices_length = len(ChoicesSC12.objects.all())-1
+    if question.choices == SC13:
+        question.choices_length = len(ChoicesSC13.objects.all())-1
+    if question.choices == SC14:
+        question.choices_length = len(ChoicesSC14.objects.all())-1
+    if question.choices == SC15:
+        question.choices_length = len(ChoicesSC15.objects.all())-1
+    if question.choices == SC21:
+        question.choices_length = len(ChoicesSC21.objects.all())-1
     if question.choices == MOV_SOURCE:
         question.choices_length = len(ChoicesMoVSource.objects.all())-1

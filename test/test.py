@@ -214,6 +214,7 @@ def test_create_new_assessment_hazards():
     # create hazard subtypes
     for hst in HazardSubtype.objects.all().order_by('id'):
         ahst = AssessmentHazardSubtype()
+        ahst.h_subtype = hst
         ahst.assessment = assessment
         ahst.a_h_type = AssessmentHazardType.objects.get(hazard_type=hst.hazard_type, assessment=assessment)
         ahst.save()
@@ -254,6 +255,13 @@ def test_obtain_max_selected_value():
     print("test_obtain_max_selected_value.End")
 
 
+def test_get_list_of_ids():
+    print("test_get_list_of_ids.Start")
+    response = "[u'0',u'1',u'2']"
+    lista = get_list_of_ids(response)
+    print("List of ids: " + str(lista))
+    print("test_get_list_of_ids.End")
+
 
 def test_simple():
     print("value: " + str(int("YES" == YES_STR)))
@@ -270,6 +278,7 @@ if __name__ == "__main__":
     #test_get_remote_folder_name()
     #test_multi()
     #test_obtain_max_selected_value()
+    #test_get_list_of_ids()
 
     test_create_new_assessment_city_id()
     test_create_new_assessment_components()
