@@ -1,0 +1,66 @@
+Parent	Short Desc	Long Desc	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION	MoV	Dimension	Units	[+]
+6.1.1	School enrolment	School enrolment			CHAR_FIELD	300		FF	A	Physical	Yes	No
+6.1.1	Attendance rate	Attendance rate			CHAR_FIELD	400		FF	A	Physical	Yes	No
+6.1.1	If enrolment or attendance are not 100%, please indicate reason(s)	If enrolment or attendance are not 100%, please indicate reason(s)			SELECT_MULTI	500		MC1	NA	Physical		No
+6.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	600		SC1	NYS	Physical		No
+6.1.1	Pupil/teacher ratio	Pupil/teacher ratio			CHAR_FIELD	700		FF	A	Physical		No
+6.1.1	Adult population that has attained primary education	Adult population that has attained primary education	Adult population that has attained at least primary education		CHAR_FIELD	800		FF	A	Physical	Yes	No
+6.1.1	Adult population that has attained secondary education	Adult population that has attained secondary education	Adult population that has attained at least secondary education		CHAR_FIELD	900		FF	A	Physical	Yes	No
+6.1.1	Adult population that has attained tertiary education	Adult population that has attained tertiary education	Adult population that has attained tertiary education		CHAR_FIELD	1000		FF	A	Physical	Yes	No
+6.1.1	Adult literacy rate	Adult literacy rate			CHAR_FIELD	1100		FF	A	Physical	Yes	No
+6.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	1200		SC2	NA	Organisational		Yes
+6.1.3	Number of teaching days lost in last academic year	Number of teaching days lost in last academic year			CHAR_FIELD	1400		FF	NY	Functional	Yes	No
+6.1.3	What is the level of impact of these disruptions?	What is the level of impact of these disruptions?			SELECT_SINGLE	1500		SC3	NYS	Functional		No
+6.1.4	Development Plan	Development Plan			SELECT_SINGLE	1600		SC4	NA	Functional		No
+6.1.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	1700		MC2	NS	Functional		No
+6.1.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	1800		SC5	NA	Functional		No
+6.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	1900		MC2	NS	Functional		No
+6.2.1	Number of emergency responders	Number of emergency responders			CHAR_FIELD	2200		FF	A	Physical	Yes	Yes
+6.2.1	Facilities for emergency response purposes	Facilities for emergency response purposes			CHAR_FIELD	2300		FF	A	Physical		No
+6.2.2	Local Government Jurisdiction	Local Government Jurisdiction			#N/A	2400		SC2	NA	Organisational		No
+6.2.3	Over emergency and rescue organisation(s)	Over emergency and rescue organisation(s)			SELECT_SINGLE	2500		SC2	NA	Organisational		Yes
+6.2.3	Over facilities used for emergency response purposes	Over facilities used for emergency response purposes			SELECT_SINGLE	2600		SC2	NA	Organisational		Yes
+6.2.3	Average response time for emergency calls	Average response time for emergency calls			CHAR_FIELD	2800		FF	A	Functional		No
+6.2.4	Development Plan	Development Plan			SELECT_SINGLE	2900		SC4	NA	Functional		Yes
+6.2.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	3000		MC2	NS	Functional		No
+6.2.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	3100		SC5	NA	Functional		Yes
+6.2.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	3200		MC2	NS	Functional		No
+6.3.1	Malnutrition level	Malnutrition level			CHAR_FIELD	3500		FF	A	Physical	Yes	No
+6.3.1	Urban farming land share	Urban farming land share			CHAR_FIELD	3600		FF	A	Physical	Yes	No
+6.3.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	3700		SC2	NA	Organisational		Yes
+6.3.3	Availability of products	Availability of products			SELECT_SINGLE	3900		SC11	NYS	Functional		No
+6.3.3	Food prices inflation rate	Food prices inflation rate			CHAR_FIELD	4000		FF	A	Functional		No
+6.3.4	Development Plan	Development Plan			SELECT_SINGLE	4100		SC4	NA	Functional		No
+6.3.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	4200		MC2	NS	Functional		No
+6.3.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	4300		SC5	NA	Functional		No
+6.3.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	4400		MC2	NS	Functional		No
+6.4.1	Hospital beds	Hospital beds			CHAR_FIELD	4700		FF	A	Physical	Yes	No
+6.4.1	Physicians	Physicians			CHAR_FIELD	4800		FF	A	Physical	Yes	No
+6.4.1	Nursing personnel	Nursing personnel			CHAR_FIELD	4900		FF	A	Physical	Yes	No
+6.4.1	Population covered by universal health care provision	Population covered by universal health care provision			CHAR_FIELD	5000		FF	NA	Physical	Yes	No
+6.4.1	If coverage not 100%, please specify reason(s)	If coverage not 100%, please specify reason(s)			SELECT_MULTI	5100		MC1	A	Physical		No
+6.4.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	5200		SC2	NA	Organisational		Yes
+6.4.3	What level of disruptions does the health care system face?	What level of disruptions does the health care system face?			SELECT_SINGLE	5400		SC3	NYS	Functional		No
+6.4.4	Development Plan	Development Plan			SELECT_SINGLE	5500		SC4	NA	Functional		No
+6.4.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	5600		MC2	NS	Functional		No
+6.4.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	5700		SC5	NA	Functional		No
+6.4.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	5800		MC2	NS	Functional		No
+6.5.1	Resources	Available human resources in law enforcement unit(s) in terms of number of officers.			CHAR_FIELD	6000		FF	A	Physical		Yes
+6.5.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	6100		SC2	NA	Organisational		Yes
+6.5.3	Average law enforcement response time	Average law enforcement response time			CHAR_FIELD	6300		FF	A	Functional	Yes	No
+6.5.3	Prison population	Prison population			CHAR_FIELD	6400		FF	A	Functional	Yes	No
+6.5.3	Average court case processing time	Average court case processing time			CHAR_FIELD	6500		FF	A	Functional	Yes	No
+6.5.3	Pre-trial detention	Pre-trial detention			CHAR_FIELD	6600		FF	A	Functional	Yes	No
+6.5.4	Development Plan	Development Plan			SELECT_SINGLE	6700		SC4	NA	Functional		Yes
+6.5.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	6800		MC2	NS	Functional		No
+6.5.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	6900		SC5	NA	Functional		No
+6.5.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	7000		MC2	NS	Functional		No
+6.6.1	Existence of supporting measures for the following	Existence of supporting measures for the following			SELECT_MULTI	7300		MC4	NY	Physical		No
+6.6.1	Population not covered by social security measures	Population not covered by social security measures			CHAR_FIELD	7400		FF	A	Physical	Yes	No
+6.6.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	7500		SC2	NA	Organisational		Yes
+6.6.3	Are there significant disruptions in the social care provisions?	Are there significant disruptions in the social care provisions?			SELECT_SINGLE	7700		SC1	NA	Functional		No
+6.6.3	If so, please indicate reason(s)	If so, please indicate reason(s)			SELECT_MULTI	7800		MC1	NYS	Functional		No
+6.6.4	Development Plan	Development Plan			SELECT_SINGLE	7900		SC4	NA	Functional		Yes
+6.6.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	8000		MC2	NS	Functional		No
+6.6.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	8100		SC5	NA	Functional		Yes
+6.6.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	8200		MC2	NS	Functional		No

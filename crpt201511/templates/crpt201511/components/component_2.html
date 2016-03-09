@@ -11,7 +11,18 @@
                         {% if third_component.name == elem.name %}
                             <a class="list-group-item selected" href="{% url 'component_2' assessment_id=assessment.id component_id=component.id subcomponent_id=subcomponent.id third_component_id=elem.id %}">{{ elem.name }}</a>
                             {% for item in elem.parent_element.all|dictsort:"order" %}
-                                <a class="list-group-item group_item selected2" href="{% url 'component_2' assessment_id=assessment.id component_id=component.id subcomponent_id=subcomponent.id third_component_id=elem.id %}">&nbsp;&nbsp;{{ item.name }}</a>
+                                {% if item.name == fourth_component.name %}
+                                    <a class="list-group-item group_item selected2" href="{% url 'component_2' assessment_id=assessment.id component_id=component.id subcomponent_id=subcomponent.id third_component_id=elem.id fourth_component_id=item.id %}">&nbsp;&nbsp;{{ item.name }}</a>
+                                    {% for item2 in item.parent_element.all|dictsort:"order" %}
+                                        {% if item2.name = fifth_component.name %}
+                                            <a class="list-group-item group_item selected" href="{% url 'component_2' assessment_id=assessment.id component_id=component.id subcomponent_id=subcomponent.id third_component_id=elem.id fourth_component_id=item.id fifth_component_id=item2.id %}">&nbsp;&nbsp;&nbsp;&nbsp;{{ item2.name }}</a>
+                                        {% else %}
+                                            <a class="list-group-item group_item selected3" href="{% url 'component_2' assessment_id=assessment.id component_id=component.id subcomponent_id=subcomponent.id third_component_id=elem.id fourth_component_id=item.id fifth_component_id=item2.id %}">&nbsp;&nbsp;&nbsp;&nbsp;{{ item2.name }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <a class="list-group-item group_item selected2" href="{% url 'component_2' assessment_id=assessment.id component_id=component.id subcomponent_id=subcomponent.id third_component_id=elem.id fourth_component_id=item.id %}">&nbsp;&nbsp;{{ item.name }}</a>
+                                {% endif %}
                             {% endfor %}
                         {% else %}
                             {% if elem.parent_element.all|length > 0 %}
@@ -31,10 +42,11 @@
                 <div class="well bs-component">
                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
                         <legend>
-                            {{ subcomponent.long_name }}
+                            {{ component.long_name}} - {{ subcomponent.long_name }}
                             <a href="#" alt="Help" data-toggle="modal" data-target="#myModal"></a>&nbsp;&nbsp;
                         </legend>
-                        <blockquote>{{ third_component.long_name }}</blockquote>
+                        <blockquote>{{ third_component.long_name }} {% if fourth_component %} - {{fourth_component.long_name }}{% endif %}{% if fifth_component %} - {{fifth_component.long_name }}{% endif %}
+                        </blockquote>
                         <fieldset id="fs">
                             {% comment %} fs_cf display {% endcomment %}
                             {{ fs_cf.management_form }}
@@ -77,7 +89,7 @@
                                         {% endif %}
                                         {% if form.units.value == 1 %}
                                             <div class="form-group col-md-8" order="{{ form.order.value }}">
-                                                {% if forloop.counter > 1 and form.has_mov.value  == True %}
+                                                {% if forloop.counter > 1  %}
                                                 <legend></legend>
                                                 {% endif %}
                                                 <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
@@ -151,7 +163,7 @@
                                 {% endfor %}
 
 
-                            <div class="form-group" order="9999">
+                            <div class="form-group" order="999999">
                                 <div class="col-md-10 col-md-offset-0">
                                   {% comment %}
                                   <button type="reset" class="btn btn-default">Cancel</button>

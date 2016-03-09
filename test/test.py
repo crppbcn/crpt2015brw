@@ -174,6 +174,23 @@ def test_create_new_assessment_components():
                         a_cid_other_tx.name = elem.name
                         a_cid_other_tx.assessment = assessment
                         a_cid_other_tx.save()
+            # treatment of choices
+            if str(question.choices).strip() == MC3:
+                if len(AssessmentChoicesMC3.objects.all()) == 0:
+                    for elem in ChoicesMC3.objects.all():
+                        a_cid_other_tx = AssessmentChoicesMC3()
+                        a_cid_other_tx.name = elem.name
+                        a_cid_other_tx.assessment = assessment
+                        a_cid_other_tx.save()
+            # treatment of choices
+            if str(question.choices).strip() == MC4:
+                if len(AssessmentChoicesMC4.objects.all()) == 0:
+                    for elem in ChoicesMC4.objects.all():
+                        a_cid_other_tx = AssessmentChoicesMC4()
+                        a_cid_other_tx.name = elem.name
+                        a_cid_other_tx.assessment = assessment
+                        a_cid_other_tx.save()
+
         print("Component End: " + component.name)
 
     print("test_create_new_assessment_components. End.")

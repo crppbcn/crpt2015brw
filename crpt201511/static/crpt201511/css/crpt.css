@@ -133,6 +133,14 @@ Left menu
     background-color: rgba(61,111,182,.5);
 }
 
+#crpt-left-menu .selected3 {
+    text-decoration: none;
+    //color: #3D6FB6; // blue
+    color: #EE8A00; // orange
+    //background-color: #F5F5F5;
+    background-color: rgba(61,111,182,.3);
+}
+
 #crpt-left-menu .group_item {
     #background-color: rgba(61,111,182,.3);
 }

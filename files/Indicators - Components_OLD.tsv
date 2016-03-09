@@ -113,11 +113,11 @@ Code	Short Name	Long Name (hover)	Description	Parent	Next	ORDER	Dimension	Data S
 4	Environment	Environment	#N/A		5	11200	0	#N/A	0	No	
 4.1	Air	Air	#N/A	4	4.2	11300	0	Air quality monitoring entities, environmental agencies, meteorological institutes, local government	0	No	
 4.1.1	Air Quality	Air Quality	Concentration data is usually given in μg/m3 or ppm.	4.1	4.1.1.1	11400	Functional	#N/A	0	No	
-4.1.1.1	PM10 concentration	Particulate matter (PM10) concentration	#N/A	4.1.1	4.1.1.2	11500	Functional	#N/A	0	No	
-4.1.1.2	PM2.5 concentration	Fine particulate matter (PM2.5) concentration	#N/A	4.1.1	4.1.1.3	11600	Functional	#N/A	0	No	
-4.1.1.3	NO2 concentration	Nitrogen dioxide (NO2) concentration	#N/A	4.1.1	4.1.1.4	11700	Functional	#N/A	0	No	
-4.1.1.4	SO2 concentration	Sulphur dioxide (SO2) concentration	#N/A	4.1.1	4.1.1.5	11800	Functional	#N/A	0	No	
-4.1.1.5	O3 concentration	Ground level ozone (O3) concentration	#N/A	4.1.1		11900	Functional	#N/A	0	No	
+4.1.1.1	PM10 concentration	Particulate matter (PM10) concentration	#N/A	4.1	4.1.1.2	11500	Functional	#N/A	0	No	
+4.1.1.2	PM2.5 concentration	Fine particulate matter (PM2.5) concentration	#N/A	4.1	4.1.1.3	11600	Functional	#N/A	0	No	
+4.1.1.3	NO2 concentration	Nitrogen dioxide (NO2) concentration	#N/A	4.1	4.1.1.4	11700	Functional	#N/A	0	No	
+4.1.1.4	SO2 concentration	Sulphur dioxide (SO2) concentration	#N/A	4.1	4.1.1.5	11800	Functional	#N/A	0	No	
+4.1.1.5	O3 concentration	Ground level ozone (O3) concentration	#N/A	4.1	4.1.2	11900	Functional	#N/A	0	No	
 4.1.2	Local Gov. Jurisdiction	Local Government Jurisdiction	The different levels of jurisdiction of the local government over the different components of the system can be considered separately.	4.1	4.1.3	12000	Organisational	#N/A	0	Yes	The different levels of jurisdiction of the local government over the different components of the system can be considered separately.
 4.1.3	Development Plan	Development Plan	A plan usually contains the definition of vision and objectives, roles and resources, institutional and technical arrangements and, ideally, associated financing means.	4.1	4.1.4	12100	Functional	#N/A	0	No	
 4.1.4	Contingency Plan	Contingency Plan	A contingency plan is usually drawn on a risk assessment, and defines preparedness, mitigation, response and recovery measures in case of emergencies. It commonly assigns and defines roles and responsibilities, communication strategies, technical procedures, and, ideally, includes associated financing means.	4.1		12200	Functional	#N/A	0	No	

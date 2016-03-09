@@ -256,6 +256,16 @@ class AssessmentComponentQuestionForm(forms.ModelForm):
                             forms.widgets.Select(choices=tuple([a.id, a.name] for a in
                             AssessmentChoicesMC1.objects.filter(assessment=self.instance.assessment).order_by('id')))
 
+                if self.instance.choices == MC1:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(choices=tuple([a.id, a.name] for a in
+                            AssessmentChoicesMC1.objects.filter(assessment=self.instance.assessment).order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(choices=tuple([a.id, a.name] for a in
+                            AssessmentChoicesMC1.objects.filter(assessment=self.instance.assessment).order_by('id')))
+
                     # setting initial value with some processing of stored string of selected values
                     if self.instance.response:
                         selected = literal_eval(self.instance.response)
@@ -263,7 +273,6 @@ class AssessmentComponentQuestionForm(forms.ModelForm):
 
                     # add field to input new option
                     self.fields['other'] = forms.CharField(label=LABEL_TAG_ANY_OTHER, max_length=250, required=False)
-
 
                 if self.instance.choices == MC2:
                     if self.instance.multi:
@@ -274,6 +283,42 @@ class AssessmentComponentQuestionForm(forms.ModelForm):
                         self.fields['response'].widget = \
                             forms.widgets.Select(
                                 choices=tuple([a.id, a.name] for a in ChoicesMC2.objects.all().order_by('id')))
+
+                if self.instance.choices == MC3:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(choices=tuple([a.id, a.name] for a in
+                            AssessmentChoicesMC3.objects.filter(assessment=self.instance.assessment).order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(choices=tuple([a.id, a.name] for a in
+                            AssessmentChoicesMC3.objects.filter(assessment=self.instance.assessment).order_by('id')))
+
+                    # setting initial value with some processing of stored string of selected values
+                    if self.instance.response:
+                        selected = literal_eval(self.instance.response)
+                        self.initial['response'] = selected
+
+                    # add field to input new option
+                    self.fields['other'] = forms.CharField(label=LABEL_TAG_ANY_OTHER, max_length=250, required=False)
+
+                if self.instance.choices == MC4:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(choices=tuple([a.id, a.name] for a in
+                            AssessmentChoicesMC4.objects.filter(assessment=self.instance.assessment).order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(choices=tuple([a.id, a.name] for a in
+                            AssessmentChoicesMC4.objects.filter(assessment=self.instance.assessment).order_by('id')))
+
+                    # setting initial value with some processing of stored string of selected values
+                    if self.instance.response:
+                        selected = literal_eval(self.instance.response)
+                        self.initial['response'] = selected
+
+                    # add field to input new option
+                    self.fields['other'] = forms.CharField(label=LABEL_TAG_ANY_OTHER, max_length=250, required=False)
 
                 if self.instance.choices == SC1:
                     if self.instance.multi:
@@ -324,6 +369,107 @@ class AssessmentComponentQuestionForm(forms.ModelForm):
                         self.fields['response'].widget = \
                             forms.widgets.Select(
                                 choices=tuple([a.id, a.name] for a in ChoicesSC5.objects.all().order_by('id')))
+
+                if self.instance.choices == SC6:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC6.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC6.objects.all().order_by('id')))
+
+                if self.instance.choices == SC7:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC7.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC7.objects.all().order_by('id')))
+
+                if self.instance.choices == SC8:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC8.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC8.objects.all().order_by('id')))
+
+                if self.instance.choices == SC9:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC9.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC9.objects.all().order_by('id')))
+
+                if self.instance.choices == SC11:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC11.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC11.objects.all().order_by('id')))
+
+                if self.instance.choices == SC12:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC12.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC12.objects.all().order_by('id')))
+
+                if self.instance.choices == SC13:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC13.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC13.objects.all().order_by('id')))
+
+                if self.instance.choices == SC14:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC14.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC14.objects.all().order_by('id')))
+
+                if self.instance.choices == SC15:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC15.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC15.objects.all().order_by('id')))
+
+                if self.instance.choices == SC21:
+                    if self.instance.multi:
+                        self.fields['response'].widget = \
+                            forms.widgets.CheckboxSelectMultiple(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC21.objects.all().order_by('id')))
+                    else:
+                        self.fields['response'].widget = \
+                            forms.widgets.Select(
+                                choices=tuple([a.id, a.name] for a in ChoicesSC21.objects.all().order_by('id')))
+
 
             # add checkbox field for not applicable option
             """

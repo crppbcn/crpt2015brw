@@ -529,15 +529,14 @@ def load_indicator_components(file_name, class_name):
                 element.add_type = int(row[10].strip().upper() == YES_STR)
                 element.save()
                 # creation of element for scoring purposes
-                if not element.dimension:
-                    new_element = Element()
-                    print("Creating element: " + element.name)
-                    new_element.name = element.name
-                    new_element.order = element.order
-                    new_element.code = element.code
-                    new_element.version = element.assessment_version
-                    new_element.parent = Element.objects.get(code=element.parent.code)
-                    new_element.save()
+                new_element = Element()
+                print("Creating element: " + element.name)
+                new_element.name = element.name
+                new_element.order = element.order
+                new_element.code = element.code
+                new_element.version = element.assessment_version
+                new_element.parent = Element.objects.get(code=element.parent.code)
+                new_element.save()
             except:
                 print("Error processing element: " + row[0].strip())
                 print("With parent: " + row[4].strip())
@@ -597,22 +596,23 @@ def load_component_file(file_name):
         question.help_text = row[3].strip()
         question.placeholder= row[4].strip()
         question.order = row[6].strip()
-        question.units = int(row[12].strip().upper() == YES_STR or row[12].strip().upper() == Y_STR)
+        question.units = int(row[11].strip().upper() == YES_STR or row[11].strip().upper() == Y_STR)
         question.not_applicable = row[7].strip().upper() == YES_STR
         question.mov_position = -1 # questions that are not MoV
         # control of "add" questions
-        if row[13].strip().upper() != "" and row[13].strip().upper() != NO_STR:
+        if row[12].strip().upper() != "" and row[12].strip().upper() != NO_STR:
             question.add_type = ADD_TYPE_LGJ
         # dimension
-        question.dimension = Dimension.objects.get(name=row[11].strip())
+        question.dimension = Dimension.objects.get(name=row[10].strip())
         # get element from code of component.parent, as code of questions if for layout purposes and links with
         # component that is one level under system element
         if component and component.parent:
+            print("looking for component.parent with code: " + str(component.parent.code))
             element = Element.objects.get(code=component.parent.code)
             question.element = element
 
         # control of mov_type
-        mov_txt = row[10].strip().upper()
+        mov_txt = row[9].strip().upper()
         if mov_txt == "" or mov_txt == "0":
             mov_txt = MOV_NOT
         question.mov_type = mov_txt
@@ -651,6 +651,8 @@ def load_master_data():
     load_entity_single_field_name("mov_source.tsv", ChoicesMoVSource)
     load_entity_single_field_name("MC1.tsv", ChoicesMC1)
     load_entity_single_field_name("MC2.tsv", ChoicesMC2)
+    load_entity_single_field_name("MC3.tsv", ChoicesMC3)
+    load_entity_single_field_name("MC4.tsv", ChoicesMC4)
     load_entity_single_field_name("SC1.tsv", ChoicesSC1)
     load_entity_single_field_name("SC2.tsv", ChoicesSC2)
     load_entity_single_field_name("SC3.tsv", ChoicesSC3)
@@ -677,6 +679,13 @@ if __name__ == "__main__":
     set_next_element("Indicators - Components.tsv", Component, 5)
 
     load_component_file("Indicators - Basic Infrastructure.tsv")
+    load_component_file("Indicators - Built Environment.tsv")
+    load_component_file("Indicators - Economy.tsv")
+    load_component_file("Indicators - Environment.tsv")
+    load_component_file("Indicators - Governance.tsv")
+    load_component_file("Indicators - Public Services.tsv")
+    load_component_file("Indicators - Social.tsv")
+    load_component_file("Indicators - Transport.tsv")
     load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration)
 
     # load hazards

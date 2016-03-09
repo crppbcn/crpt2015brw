@@ -123,8 +123,8 @@ def mov_treatment(question):
             new_question.order = int(question.order) + 3
             new_question.not_applicable = False
             new_question.help_text = ""  # TODO: decide which help text to assign
-            new_question.question_short = "MoV Source"
-            new_question.question_long = "MoV Source"
+            new_question.question_short = "MoV Source Type"
+            new_question.question_long = "MoV Source Type"
             new_question.multi = False
             new_question.choices = MOV_SOURCE
             new_question.version = question.version

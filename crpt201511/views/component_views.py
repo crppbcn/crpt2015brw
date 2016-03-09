@@ -345,18 +345,25 @@ def parent_component(request, assessment_id):
 
 @ensure_csrf_cookie
 @login_required
-def component_2(request, assessment_id, component_id=None, subcomponent_id=None, third_component_id=None):
+def component_2(request, assessment_id, component_id=None, subcomponent_id=None, third_component_id=None,
+                fourth_component_id=None, fifth_component_id=None):
     """
     View for component of indicators form
 
     :param request:
     :param assessment_id: assessment id
     :param component_id: component id
+    :param subcomponent_id: component id
+    :param third_component_id: component id
+    :param fourth_component_id: component id
     :return:
     """
     try:
         left_elements = None
-        """
+        third_component = None
+        fourth_component = None
+        fifth_component = None
+
         print("--INITIAL PARAMS. START --")
 
         if component_id:
@@ -365,9 +372,15 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
             print("subcomponent_id: " + str(subcomponent_id))
         if third_component_id:
             print("third_component_id: " + str(third_component_id))
+        if fourth_component_id:
+            print("fourth_component_id: " + str(fourth_component_id))
+        if fifth_component_id:
+            print("fifth_component_id: " + str(fifth_component_id))
+
+        sys.stdout.flush()
 
         print("--INITIAL PARAMS. END --")
-        """
+
         # get username from session
         person = get_person(request)
         # get assessment
@@ -411,27 +424,56 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
         if third_component_id:
             third_component = Component.objects.get(id=third_component_id)
         else:
-            try:
+            if len(left_elements) > 0:
                 third_component = left_elements[0]
-            except:
+            else:
                 third_component = None
 
-        print("Component: " + component.name)
-        print("Subcomponent: " + subcomponent.name + " - " + str(subcomponent.id))
-        if third_component:
-            print("Thirdcomponent: " + third_component.name)
-        sys.stdout.flush()
+        # in case third_component has no questions associated but is present, go for the fourth_component
+        if third_component and len(ComponentQuestion.objects.filter(component=third_component)) == 0 and \
+                not fourth_component_id:
+            try:
+                fourth_component = Component.objects.filter(parent=third_component).order_by('id')[:1].get()
+            except:
+                pass
+
+        # fourth level of hierarchy
+        if fourth_component_id:
+            fourth_component = Component.objects.get(id=fourth_component_id)
+        else:
+            try:
+                if third_component:
+                    fourth_component = Component.objects.filter(parent=third_component).order_by('id')[:1].get()
+            except:
+                fourth_component = None
 
 
-        """
+        # fifth level of hierarchy
+        if fifth_component_id:
+            fifth_component = Component.objects.get(id=fifth_component_id)
+        else:
+            try:
+                if fourth_component:
+                    fifth_component = Component.objects.filter(parent=fourth_component).order_by('id')[:1].get()
+            except:
+                fifth_component = None
+
+
+
         print("--CHECK PARAMS. START --")
 
-        print("component_id: " + str(component.id))
-        print("subcomponent_id: " + str(subcomponent.id))
-        print("thirdcomponent_id: " + str(third_component.id))
+        print("Component: " + component.name + " - " + str(component.id))
+        print("Subcomponent: " + subcomponent.name + " - " + str(subcomponent.id))
+        if third_component:
+            print("Thirdcomponent: " + third_component.name + " - " + str(third_component.id))
+        if fourth_component:
+            print("fourth_component: " + fourth_component.name + " - " + str(fourth_component.id))
+        if fifth_component:
+            print("fifth_component: " + fifth_component.name + " - " + str(fifth_component.id))
+
+        sys.stdout.flush()
 
         print("--CHECK PARAMS. END --")
-        """
 
 
         # considerations at component and subcomponent level
@@ -442,20 +484,31 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
                 order_by('id')
             if third_component:
                 considerations = considerations | ComponentConsideration.objects.filter(element=third_component)
-
+            if fourth_component:
+                considerations = considerations | ComponentConsideration.objects.filter(element=fourth_component)
+            if fifth_component:
+                considerations = considerations | ComponentConsideration.objects.filter(element=fifth_component)
 
         # comments
         # TODO: create assessment components and change coding
-        if third_component:
-            comments = AssessmentComponentComment.objects.filter(element=third_component, assessment=assessment).\
+        if fifth_component:
+            comments = AssessmentComponentComment.objects.filter(element=fifth_component, assessment=assessment).\
                 order_by('date_created')
         else:
-            if subcomponent:
-                comments = AssessmentComponentComment.objects.filter(element=subcomponent, assessment=assessment).\
-                    order_by('date_created')
+            if fourth_component:
+                    comments = AssessmentComponentComment.objects.filter(element=fourth_component,
+                                                                         assessment=assessment).order_by('date_created')
             else:
-                comments = AssessmentComponentComment.objects.filter(element=component, assessment=assessment).\
-                    order_by('date_created')
+                if third_component:
+                    comments = AssessmentComponentComment.objects.filter(element=third_component,
+                                                                         assessment=assessment).order_by('date_created')
+                else:
+                    if subcomponent:
+                        comments = AssessmentComponentComment.objects.filter(element=subcomponent,
+                                                                         assessment=assessment).order_by('date_created')
+                    else:
+                        comments = AssessmentComponentComment.objects.filter(element=component,
+                                                                         assessment=assessment).order_by('date_created')
 
         # formset definition
         fs = modelformset_factory(AssessmentComponentQuestion, max_num=0, exclude=[],
@@ -486,17 +539,15 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
 
                 # navigate to next component
                 url_to_redirect = "/component_2/" + assessment_id + SLASH
-                if third_component and third_component.next_one:
-                    url_to_redirect += str(component.id) + SLASH
+                url_to_redirect += str(component.id) + SLASH
+                if subcomponent and subcomponent.next_one:
                     url_to_redirect += str(subcomponent.id) + SLASH
+                if third_component and third_component.next_one:
                     url_to_redirect += str(third_component.next_one.id) + SLASH
-                else:
-                    if subcomponent and subcomponent.next_one:
-                        url_to_redirect += str(component.id) + SLASH
-                        url_to_redirect += str(subcomponent.next_one.id) + SLASH
-                    else:
-                        if component.next_one:
-                            url_to_redirect += str(component.next_one.id) + SLASH
+                if fourth_component and fourth_component.next_one:
+                    url_to_redirect += str(fourth_component.next_one.id) + SLASH
+                if fifth_component and fifth_component.next_one:
+                    url_to_redirect += str(fifth_component.next_one.id) + SLASH
 
 
                 return redirect(url_to_redirect, context_instance=RequestContext(request))
@@ -507,7 +558,17 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
                 sys.stdout.flush()
         else:
             # formsets
-            query_set = AssessmentComponentQuestion.objects.filter(component=third_component).order_by('order')
+            if fifth_component:
+                query_set = AssessmentComponentQuestion.objects.filter(component=fifth_component).order_by('order')
+            else:
+                if fourth_component:
+                    query_set = AssessmentComponentQuestion.objects.filter(component=fourth_component).order_by('order')
+                else:
+                    if third_component:
+                        query_set = AssessmentComponentQuestion.objects.filter(component=third_component).\
+                            order_by('order')
+                    else:
+                        query_set = AssessmentComponentQuestion.objects.filter(component=subcomponent).order_by('order')
             f_set = fs(queryset=query_set)
 
         # return page
@@ -523,6 +584,8 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
             'component': component,
             'subcomponent': subcomponent,
             'third_component': third_component,
+            'fourth_component': fourth_component,
+            'fifth_component': fifth_component,
             'comments': comments,
             'considerations': considerations,
             'is_component': 'True',

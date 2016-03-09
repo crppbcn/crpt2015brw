@@ -1,0 +1,33 @@
+Parent	Short Desc	Long Desc	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION	MoV	Dimension	Units	PLUS
+3.1.1	Employment Share	Employment Share			CHAR_FIELD	200		FF	A	Physical	Yes	No
+3.1.2	GDP Share	GDP Share			CHAR_FIELD	300		FF	A	Physical	Yes	No
+3.2.1	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	500		SC2	NA	Organisational		No
+3.2.2	Are there significant disruptions in the functioning of the sector?	Are there significant disruptions in the functioning of the sector?			SELECT_SINGLE	700		SC1	NA	Functional		No
+3.2.2	If so, please indicate reason(s)	If so, please indicate reason(s)			SELECT_MULTI	800		MC1	NYS	Functional		No
+3.2.3	Development Plan	Development Plan			SELECT_SINGLE	900		SC4	NA	Functional		No
+3.2.3	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	1000		MC2	NS	Functional		No
+3.2.4	Contingency Plan	Contingency Plan			SELECT_SINGLE	1100		SC5	NA	Functional		No
+3.2.4	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	1200		MC2	NS	Functional		No
+3.3.1	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	1400		SC2	NA	Organisational		No
+3.3.2	Are there significant disruptions in the functioning of the sector?	Are there significant disruptions in the functioning of the sector?			SELECT_SINGLE	1600		SC1	NA	Functional		No
+3.3.2	If so, please indicate reason(s)	If so, please indicate reason(s)			SELECT_MULTI	1700		MC1	NYS	Functional		No
+3.3.3	Development Plan	Development Plan			SELECT_SINGLE	1800		SC4	NA	Functional		No
+3.3.3	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	1900		MC2	NS	Functional		No
+3.3.4	Contingency Plan	Contingency Plan			SELECT_SINGLE	2000		SC5	NA	Functional		No
+3.3.4	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	2100		MC2	NS	Functional		No
+3.4.1	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	2300		SC2	NA	Organisational		No
+3.4.2	Are there significant disruptions in the functioning of the sector?	Are there significant disruptions in the functioning of the sector?			SELECT_SINGLE	2500		SC1	NA	Functional		No
+3.4.2	If so, please indicate reason(s)	If so, please indicate reason(s)			SELECT_MULTI	2600		MC1	NYS	Functional		No
+3.4.4	Development Plan	Development Plan			SELECT_SINGLE	2700		SC4	NA	Functional		No
+3.4.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	2800		MC2	NS	Functional		No
+3.4.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	2900		SC5	NA	Functional		No
+3.4.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	3000		MC2	NS	Functional		No
+3.5.1	Employment Share	Employment Share			CHAR_FIELD	3200		FF	A	Physical	Yes	No
+3.5.2	GDP Share	GDP Share			CHAR_FIELD	3300		FF	A	Physical	Yes	No
+3.5.3	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	3400		SC2	NA	Organisational		No
+3.5.4	Are there significant disruptions in the functioning of the sector?	Are there significant disruptions in the functioning of the sector?			SELECT_SINGLE	3600		SC1	NA	Functional		No
+3.5.4	If so, please indicate reason(s)	If so, please indicate reason(s)			SELECT_MULTI	3700		MC1	NYS	Functional		No
+3.5.5	Development Plan	Development Plan			SELECT_SINGLE	3800		SC4	NA	Functional		No
+3.5.5	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	3900		MC2	NS	Functional		No
+3.5.6	Contingency Plan	Contingency Plan			SELECT_SINGLE	4000		SC5	NA	Functional		No
+3.5.6	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	4100		MC2	NS	Functional		No

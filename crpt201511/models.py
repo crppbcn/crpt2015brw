@@ -163,7 +163,7 @@ class QuestionSimple(Common):
     Represents an statement (not linked to anything)
     """
     question_short = django.db.models.CharField(max_length=150)
-    question_long = django.db.models.CharField(max_length=250)
+    question_long = django.db.models.CharField(max_length=500)
     help_text = django.db.models.CharField(max_length=500, null=True, blank=True)
     placeholder = django.db.models.CharField(max_length=250, null=True, blank=True)
     version = django.db.models.ForeignKey(AssessmentVersion)
@@ -558,6 +558,20 @@ class AssessmentChoicesMC1(BasicName):
     assessment = django.db.models.ForeignKey(Assessment)
 
 
+class AssessmentChoicesMC3(BasicName):
+    """
+    Represents Other Means of Tx added by city in an assessment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+
+
+class AssessmentChoicesMC4(BasicName):
+    """
+    Represents Other Means of Tx added by city in an assessment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+
+
 #######################################
 #
 # CityID Options for select questions
@@ -632,6 +646,16 @@ class ChoicesMC1(BasicName):
 
 
 class ChoicesMC2(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+class ChoicesMC3(BasicName):
+    """
+    Represents MoV Source options
+    """
+
+class ChoicesMC4(BasicName):
     """
     Represents MoV Source options
     """

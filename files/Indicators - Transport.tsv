@@ -1,0 +1,94 @@
+Parent	Short Desc	Long Desc	Help Text	Placeholder	QTYPE	ORDER	Not Applicable	OPTION	MoV	Dimension	Units	[+]
+8.1	Passenger Modal Split	Share covered by the passenger transport modes	Share covered by each one of the passenger transport modes		TEXT_FIELD	200		FF	A	Physical	Yes	No
+8.1	Freight Modal Split	Share covered by the freight transport modes	Share covered by each one of the freight transport modes		TEXT_FIELD	300		FF	A	Physical	Yes	No
+8.2.1.1.1	Road density	Road density			CHAR_FIELD	800		FF	A	Physical	Yes	No
+8.2.1.1.1	Existence of tunnels and bridges	Existence of tunnels and bridges			SELECT_SINGLE	900		SC1	NA	Physical		No
+8.2.1.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	1000		SC2	NA	Organisational		Yes
+8.2.1.1.3	Traffic congestion duration	Traffic congestion duration			CHAR_FIELD	1200		FF	NS	Functional	Yes	No
+8.2.1.1.3	Number of traffic accidents	Number of traffic accidents			CHAR_FIELD	1300		FF	NS	Functional	Yes	No
+8.2.1.2.1	Share of the city covered by network	Share of the city covered by network			CHAR_FIELD	1600		FF	NS	Physical	Yes	No
+8.2.1.2.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	1700		MC1	NA	Physical		No
+8.2.1.2.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	1800		SC1	NYS	Physical		No
+8.2.1.2.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	1900		SC2	NA	Organisational		Yes
+8.2.1.2.3	What level of disruptions does the network face?	What level of disruptions does the network face?			SELECT_SINGLE	2100		SC3	NYS	Functional		No
+8.2.1.2.3	What is the minimum service frequency for any given route?	What is the minimum service frequency for any given route?			CHAR_FIELD	2200		FF	NYS	Functional	Yes	No
+8.2.1.2.4	Development Plan	Development Plan			SELECT_SINGLE	2300		SC4	NS	Functional		No
+8.2.1.2.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	2400		SC5	NA	Functional		No
+8.2.1.2.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	2500		MC2	NS	Functional		No
+8.2.1.3.1	Motorisation Rate	Motorisation Rate			CHAR_FIELD	2700		FF	A	Physical	Yes	No
+8.2.1.3.2	Management	Management			SELECT_SINGLE	2800		SC21	NYS	Functional		No
+8.2.1.3.3	Development Plan	Development Plan			SELECT_SINGLE	2900		SC4	NS	Functional		No
+8.2.1.4.1	Share of the city covered by network	Share of the city covered by network			CHAR_FIELD	3200		FF	NS	Physical	Yes	No
+8.2.1.4.1	If coverage is not 100%, please indicate reason(s)	If coverage is not 100%, please indicate reason(s)			SELECT_MULTI	3300		MC1	NA	Physical		No
+8.2.1.4.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	3400		SC2	NA	Organisational		Yes
+8.2.1.4.3	Management	Management			SELECT_SINGLE	3500		SC21	NYS	Functional		No
+8.2.1.4.4	Development Plan	Development Plan			SELECT_SINGLE	3600		SC4	NS	Functional		No
+8.2.1.4.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	3700		SC5	NA	Functional		No
+8.2.1.4.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	3800		MC2	NS	Functional		No
+8.2.1.5.1	Sidewalks	Sidewalks			CHAR_FIELD	4100		FF	NS	Physical	Yes	No
+8.2.1.5.1	Bicycle lanes	Bicycle lanes			CHAR_FIELD	4200		FF	NS	Physical	Yes	No
+8.2.1.5.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	4300		SC2	NA	Organisational		Yes
+8.2.1.5	Management	Management			SELECT_SINGLE	4400		SC21	NYS	Functional		No
+8.2.1.5.3	Development Plan	Development Plan			SELECT_SINGLE	4500		SC4	NA	Functional		No
+8.2.1.5.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	4600		MC2	NS	Functional		No
+8.2.2.1.1	Network coverage	Network coverage			CHAR_FIELD	5000		FF	NS	Physical	Yes	No
+8.2.2.1.1	Carrying capacity (passengers)	Carrying capacity (passengers)			CHAR_FIELD	5100		FF	NS	Physical	Yes	No
+8.2.2.1.1	Existence of tunnels and bridges	Existence of tunnels and bridges			SELECT_SINGLE	5200		SC1	NA	Physical		No
+8.2.2.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	5300		SC1	NYS	Physical		No
+8.2.2.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	5400		SC2	NA	Organisational		Yes
+8.2.2.1.3	What level of disruptions does the network face?	What level of disruptions does the network face?			SELECT_SINGLE	5600		SC3	NYS	Functional		No
+8.2.2.1.3	What is the minimum service frequency for any given route?	What is the minimum service frequency?	What is the minimum service frequency for any given route?		CHAR_FIELD	5700		FF	NYS	Functional	Yes	No
+8.2.2.1.4	Development Plan	Development Plan			SELECT_SINGLE	5800		SC4	NS	Functional		No
+8.2.2.1.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	5900		SC5	NA	Functional		No
+8.2.2.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	6000		MC2	NS	Functional		No
+8.2.2.2.1	Network coverage	Network coverage			CHAR_FIELD	6300		FF	NS	Physical	Yes	No
+8.2.2.2.1	Carrying capacity (passengers)	Carrying capacity (passengers)			CHAR_FIELD	6400		FF	NS	Physical	Yes	No
+8.2.2.2.1	Carrying capacity (goods)	Carrying capacity (goods)			CHAR_FIELD	6500		FF	NS	Physical	Yes	No
+8.2.2.2.1	Existence of tunnels and bridges	Existence of tunnels and bridges			SELECT_SINGLE	6600		SC1	NA	Physical		No
+8.2.2.2.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	6700		SC1	NYS	Physical		No
+8.2.2.2.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	6800		SC2	NA	Organisational		Yes
+8.2.2.2.3	What level of disruptions does the network face?	What level of disruptions does the network face?			SELECT_SINGLE	7000		SC3	NYS	Functional		No
+8.2.2.2.3	What is the minimum service frequency for any given route?	What is the minimum service frequency for any given route?			CHAR_FIELD	7100		FF	NYS	Functional	Yes	No
+8.2.2.2.4	Development Plan	Development Plan			SELECT_SINGLE	7200		SC4	NA	Functional		No
+8.2.2.2.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	7300		MC2	NS	Functional		No
+8.2.2.2.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	7400		SC5	NA	Functional		No
+8.2.2.2.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	7500		MC2	NS	Functional		No
+8.3.1.1	Carrying capacity for public transport (passengers)	Carrying capacity for public transport (passengers)			CHAR_FIELD	7900		FF	NS	Physical	Yes	No
+8.3.1.1	Boat ownership (except for leisure only)	Boat ownership (except for leisure only)			CHAR_FIELD	8000		FF	A	Physical	Yes	No
+8.3.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	8100		SC1	NYS	Physical		No
+8.3.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	8200		SC2	NA	Organisational		Yes
+8.3.1.3	What level of disruptions does the operation face?	What level of disruptions does the operation face?			SELECT_SINGLE	8400		SC3	NYS	Functional		No
+8.3.1.3	What is the minimum service frequency for any given route?	What is the minimum service frequency for any given route?			CHAR_FIELD	8500		FF	NYS	Functional	Yes	No
+8.3.1.4	Development Plan	Development Plan			SELECT_SINGLE	8600		SC4	NA	Functional		No
+8.3.1.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	8700		MC2	NS	Functional		No
+8.3.1.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	8800		SC5	NA	Functional		No
+8.3.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	8900		MC2	NS	Functional		No
+8.3.2.1	Passenger traffic	Passenger traffic			CHAR_FIELD	9200		FF	NS	Physical	Yes	No
+8.3.2.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	9300		SC1	NYS	Physical		No
+8.3.2.1	Freight traffic	Freight traffic			CHAR_FIELD	9400		FF	NS	Physical	Yes	No
+8.3.2.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	9500		SC1	NYS	Physical		No
+8.3.2.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	9600		SC2	NA	Organisational		Yes
+8.3.2.3	What level of disruptions does the operation face?	What level of disruptions does the operation face?			SELECT_SINGLE	9800		SC3	NYS	Functional		No
+8.3.2.4	Development Plan	Development Plan			SELECT_SINGLE	9900		SC4	NA	Functional		No
+8.3.2.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	10000		MC2	NS	Functional		No
+8.3.2.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	10100		SC5	NA	Functional		No
+8.3.2.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	10200		MC2	NS	Functional		No
+8.4.1.1	Passenger traffic	Passenger traffic			CHAR_FIELD	10600		FF	NS	Physical	Yes	No
+8.4.1.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	10700		SC1	NYS	Physical		No
+8.4.1.1	Freight traffic	Freight traffic			CHAR_FIELD	10800		FF	NS	Physical	Yes	No
+8.4.1.1.2	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	10900		SC1	NYS	Physical		No
+8.4.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	11000		SC2	NA	Organisational		Yes
+8.4.1.3	What level of disruptions does the operation face?	What level of disruptions does the operation face?			SELECT_SINGLE	11200		SC3	NYS	Functional		No
+8.4.1.4	Development Plan	Development Plan			SELECT_SINGLE	11300		SC4	NA	Functional		No
+8.4.1.4	For what spatial scale has the development plan been developed?	For what spatial scale has the development plan been developed?			SELECT_MULTI	11400		MC2	NS	Functional		No
+8.4.1.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	11500		SC5	NA	Functional		No
+8.4.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	11600		MC2	NS	Functional		No
+8.5.1.1	Carrying capacity (passengers)	Carrying capacity (passengers)			CHAR_FIELD	12000		FF	NS	Physical	Yes	No
+8.5.1.1	Number of lines and stations	Number of lines and stations			CHAR_FIELD	12100		FF	NS	Physical	Yes	No
+8.5.1.1	Spare capacity available?	Spare capacity available?			SELECT_SINGLE	12200		SC1	NYS	Physical		No
+8.5.1.2	Local Government Jurisdiction	Local Government Jurisdiction			SELECT_SINGLE	12300		SC2	NA	Organisational		Yes
+8.5.1.3	What level of disruptions does the network face?	What level of disruptions does the network face?			SELECT_SINGLE	12500		SC3	NYS	Functional		No
+8.5.1.3	What is the minimum service frequency for any given route?	What is the minimum service frequency for any given route?			CHAR_FIELD	12600		FF	NYS	Functional	Yes	No
+8.5.1.4	Development Plan	Development Plan			SELECT_SINGLE	12700		SC4	NS	Functional		No
+8.5.1.5	Contingency Plan	Contingency Plan			SELECT_SINGLE	12800		SC5	NA	Functional		No
+8.5.1.5	For what spatial scale has the contingency plan been developed?	For what spatial scale has the contingency plan been developed?			SELECT_MULTI	12900		MC2	NS	Functional		No
