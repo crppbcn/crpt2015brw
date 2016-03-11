@@ -9,124 +9,56 @@
                 <div class="well bs-component">
                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
                         <legend>
-                            {{ ht.name }}
+                            {{ht.hazard_group.name}} - {{ ht.name }}
                             <a href="#" alt="Help" data-toggle="modal" data-target="#myModal"></a>&nbsp;&nbsp;
                         </legend>
                         <blockquote>{{ ht.description }}</blockquote>
                         <fieldset id="fs">
-                            {% comment %} fs_cf display {% endcomment %}
-                            {{ fs_cf.management_form }}
-                            {% if fs_cf.errors %}
+                            {% comment %} display two formsets {% endcomment %}
+                            {{ fs_causes.management_form }}
+                            {{ fs_consequences.management_form }}
+                            {% if fs_causes.errors %}
                             <!-- TODO: form errors treatement -->
                             {% endif %}
-                            {% comment %} fs display {% endcomment %}
-                            {{ fs.management_form }}
-                            {% if fs.errors %}
+                            {% if fs_consequences.errors %}
                             <!-- TODO: form errors treatement -->
                             {% endif %}
-                                {% for form in fs %}
-                                    {%comment%}
-                                        preparing the form to be printed
-                                        need to print form.id to avoid errors in post request
-                                        rest of hidden fields
-                                    {%endcomment%}
-                                    {{form.id}}
-                                    <!-- TODO: form fields display as a function of type of question and except MoV section -->
-                                    {% comment%} Treatment to put a single row for question with units {% endcomment %}
-
-                                    {% if form.mov_position.value == -1 %}
-                                        {% if form.units.value == 0 %}
-                                            <div class="form-group col-md-12" order="{{ form.order.value }}">
-                                                {% if forloop.counter > 1 and form.has_mov.value  == True %}
-                                                <legend></legend>
-                                                {% endif %}
-                                                {% if form.question_long.value == "MoV Source" %}
-                                                    <label class="col-md-12 control-label padding_right" style="font-style:italic;text-align:left;">{{ form.question_long.value }}
-                                                {% else %}
-                                                    <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}
-                                                {% endif %}
-                                                {% if form.add_type.value == 1 %}
-                                                    {%comment%}
-                                                    <a href="{% url 'duplicate_question' assessment_id=assessment.id component_id=section.id subcomponent_id=subsection.id third_component_id=third_component.id initial_question_id=form.instance.id %}">[+]</a>
-                                                    {%endcomment%}
-                                                {% endif %}
-                                                </label>
-                                                <div id="crpt-select-form" class="col-md-12">
-                                        {% endif %}
-                                        {% if form.units.value == 1 %}
-                                            <div class="form-group col-md-8" order="{{ form.order.value }}">
-                                                {% if forloop.counter > 1 and form.has_mov.value  == True %}
-                                                <legend></legend>
-                                                {% endif %}
-                                                <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
-                                                <div id="crpt-select-form" class="col-md-12">
-                                        {% endif %}
-                                        {% if form.units.value == 2 %}
-                                            <div class="form-group col-md-4" order="{{ form.order.value }}">
-                                                {% if forloop.counter > 2 and form.has_mov.value  == True %}
-                                                <legend></legend>
-                                                {% endif %}
-                                                <label class="col-md-12 control-label padding_right" style="text-align:left;">{{ form.question_long.value }}</label>
-                                                <div id="crpt-select-form" class="col-md-12">
-                                        {% endif %}
-                                    {% endif %}
-
-                                    {% if form.units.value == -1 %}
-                                            <div class="form-group col-md-4" order="{{ form.order.value }}">
-                                                {% if forloop.counter > 1 and form.has_mov.value  == True %}
-                                                <legend></legend>
-                                                {% endif %}
-                                                <label class="col-md-12 control-label padding_right" style="font-style:italic;text-align:left;">{{ form.question_long.value }}</label>
-                                                <div id="crpt-select-form" class="col-md-12">
-                                    {% endif %}
-                                    {% if form.show_short_name.value == True %}
-                                        {% render_field form.question_short class+="form-control" %}
-                                    {% else %}
-                                        {{ form.question_short.as_hidden }}
-                                    {% endif %}
-                                    {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
-                                    {% if form.multi.value = True %}
-                                        {% render_field form.response class+="" placeholder=form.placeholder.value rows=3 %}
-                                    {% else %}
-                                        {% render_field form.response class+="form-control" placeholder=form.placeholder.value rows=3 %}
-                                    {% endif %}
-                                    {% if form.other %} {{ form.other.label_tag }} {% endif %}
-                                    {% render_field form.other class+="form-control" %}
-                                    {% if form.help_text and form.help_text.value != '' %}
-                                        <span class="help-block">{{ form.help_text.value }}</span>
-                                    {% endif %}
-
-                                    {% comment %}Print hidden fields{% endcomment %}
-                                    {{ form.question_long.as_hidden }}
-                                    {{ form.help_text.as_hidden }}
-                                    {{ form.order.as_hidden }}
-                                    {{ form.placeholder.as_hidden }}
-                                    {{ form.version.as_hidden }}
-                                    {{ form.section.as_hidden }}
-                                    {{ form.assessment.as_hidden }}
-                                    {{ form.multi.as_hidden }}
-                                    {{ form.choices.as_hidden }}
-                                    {{ form.not_applicable.as_hidden }}
-                                    {{ form.has_mov.as_hidden }}
-                                    {{ form.units.as_hidden }}
-                                    {{ form.mov_position.as_hidden }}
-                                    {{ form.component.as_hidden }}
-                                    {{ form.add_type.as_hidden  }}
-                                    {{ form.question_type.as_hidden  }}
-                                    {{ form.mov_type.as_hidden  }}
-                                    {{ form.choices_length.as_hidden  }}
-                                    {{ form.assessment_element.as_hidden  }}
-                                    {{ form.scorable.as_hidden  }}
-                                    {{ form.element.as_hidden  }}
-                                    {{ form.dimension.as_hidden  }}
-                                    {{ form.weight.as_hidden  }}
-                                    {{ form.score.as_hidden  }}
-                                    {% for hidden in form.hidden_fields %}
-                                        {{ hidden }}
+                            <div class="form-group row col-md-12">
+                                <div class="col-md-6">
+                                    <legend>Causes</legend>
+                                    {% comment %}Print causes fields{% endcomment %}
+                                    {% for form in fs_causes %}
+                                        {{form.id}}
+                                        <div class="row">
+                                            {{form.enabled}} {{form.instance.a_h_type_cause.hazard_type.name}}
+                                            {{form.a_h_type.as_hidden}}
+                                            {{form.assessment.as_hidden}}
+                                            {{form.a_h_type_cause.as_hidden}}
+                                            {% comment %}Print hidden fields{% endcomment %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        </div>
                                     {% endfor %}
-                                    </div>
-                                    </div>
-                                {% endfor %}
+                                </div>
+                                <div class="col-md-6">
+                                    <legend>Consequences</legend>
+                                    {% comment %}Print consequences fields{% endcomment %}
+                                    {% for form in fs_consequences %}
+                                        {{form.id}}
+                                        <div class="row">
+                                            {{form.enabled}} {{form.instance.a_h_type_consequence.hazard_type.name}}
+                                            {{form.a_h_type.as_hidden}}
+                                            {{form.a_h_type_consequence.as_hidden}}
+                                            {{form.assessment.as_hidden}}
+                                            {% comment %}Print hidden fields{% endcomment %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
 
 
                             <div class="form-group" order="9999">
@@ -162,7 +94,7 @@
                                 {% if item.show_separator and forloop.counter > 1 %}
                                 <legend></legend>
                                 {% endif %}
-                                <p>{{ item.comment }}</p>
+                                <p>{{ item }}</p>
                             {% endfor %}
                         {% else %}
                             <p>This section has no considerations</p>

@@ -70,7 +70,7 @@
                                             </div>
                                         {% else %}
                                         <div id="crpt-select-form" class="col-md-12">
-                                            {% if form.help_text and form.help_text.value != '' %}
+                                            {% if form.choices.value != "" and form.help_text and form.help_text.value != '' %}
                                                 <span class="help-block">{{ form.help_text.value }}</span>
                                             {% endif %}
                                             {% if form.n_a %} {{ form.n_a }} Select if not applicable {% endif %}
@@ -79,6 +79,10 @@
                                             {% else %}
                                                 {% render_field form.response class+="form-control" placeholder=form.placeholder.value rows=3 %}
                                             {% endif %}
+                                            {% if form.choices.value == "" and form.help_text and form.help_text.value != '' %}
+                                                <span class="help-block">{{ form.help_text.value }}</span>
+                                            {% endif %}
+
                                             {{ form.other.label_tag }}
                                             {% render_field form.other class+="form-control" %}
                                         </div>

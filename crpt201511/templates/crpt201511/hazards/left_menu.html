@@ -27,7 +27,7 @@
         <div class="list-group table-of-contents">
 
             <a class="list-group-item {% if selected == "HT_DETAIL" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_detail' assessment_id=assessment.id ht_id=ht.id %}">Detail</a>
-            <a class="list-group-item {% if selected == "HT_INTERREL" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_interrelations' assessment_id=assessment.id ht_id=ht.id %}">Interrelations</a>
+            <a class="list-group-item {% if selected == "HT_INTERRELATIONS" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_interrelations' assessment_id=assessment.id ht_id=ht.id %}">Interrelations</a>
             <a class="list-group-item {% if selected == "HT_IMPACTS" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_impacts' assessment_id=assessment.id ht_id=ht.id %}">Impacts</a>
             {% for element in elements %}
                 <a class="list-group-item {% if selected == "HT_IMPACTS" %}selected{% else %}selected2{% endif %}" href="{% url 'hazard_type_impacts' assessment_id=assessment.id ht_id=ht.id element_id=element.id %}">Impacts</a>

@@ -237,14 +237,17 @@ def test_create_new_assessment_hazards():
         ahst.save()
     # create hazard causes and consequences
     for ht in HazardType.objects.all().order_by('id'):
-        cause = AssessmentHazardCause()
-        cause.assessment = assessment
-        cause.a_h_type = AssessmentHazardType.objects.get(hazard_type=ht, assessment=assessment)
-        cause.save()
-        conseq = AssessmentHazardConsequence()
-        conseq.assessment = assessment
-        conseq.a_h_type = AssessmentHazardType.objects.get(hazard_type=ht, assessment=assessment)
-        conseq.save()
+        for a_h_t in AssessmentHazardType.objects.all().order_by('id'):
+            cause = AssessmentHazardCause()
+            cause.assessment = assessment
+            cause.a_h_type = AssessmentHazardType.objects.get(hazard_type=ht, assessment=assessment)
+            cause.a_h_type_cause = a_h_t
+            cause.save()
+            conseq = AssessmentHazardConsequence()
+            conseq.assessment = assessment
+            conseq.a_h_type = AssessmentHazardType.objects.get(hazard_type=ht, assessment=assessment)
+            conseq.a_h_type_consequence = a_h_t
+            conseq.save()
     # create hazard impacts
     for ht in AssessmentHazardType.objects.filter(assessment=assessment).order_by('id'):
         for ei in ElementImpact.objects.all().order_by('id'):

@@ -206,6 +206,7 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
             'subsection': subsection,
             'comments': comments,
             'considerations': considerations,
+            'is_city_id': True,
         })
         return HttpResponse(template.render(context))
     except:

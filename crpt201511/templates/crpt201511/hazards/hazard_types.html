@@ -5,12 +5,32 @@
     <h1 class="page-header">Hazard Types</h1>
 
     <div class="row col-md-12" style="position:relative;">
+
+
         {% for ht in hazard_types %}
-            <div style="width:{{ht_width}}%;float:left;text-align:center;">
-                <a href="{% url 'hazard_type_detail' assessment_id=assessment.id ht_id=ht.id %}" style="width:100%;">
-                    <img src="{% static "" %}crpt201511/img/{{ht.name|lower}}.png"  style="height:80%;width:80%;"/>
-                </a>
-            </div>
+            {% if forloop.counter == 1 or forloop.counter == 6 or forloop.counter == 11 %}
+                <div class="row col-md-12" style="position:relative;margin-bottom:20px;text-align:center;">
+            {% endif %}
+                {% if hazard_types|length >= 5%}
+                <div style="width:20%;float:left;text-align:center;">
+                {% else %}
+                <div style="width:{{ht_width}}%;float:left;text-align:center;">
+                {% endif%}
+                    <a href="{% url 'hazard_type_detail' assessment_id=assessment.id ht_id=ht.id %}" style="width:100%;">
+                        {% if hazard_types|length >= 5 %}
+                            <img src="{% static "" %}crpt201511/img/{{ht.underscored_name|lower}}.png"  style="height:90%;width:90%;"/>
+                        {% else %}
+                            {% if hazard_types|length >= 2 %}
+                                <img src="{% static "" %}crpt201511/img/{{ht.underscored_name|lower}}.png"  style="height:70%;width:70%;"/>
+                            {% else %}
+                                <img src="{% static "" %}crpt201511/img/{{ht.underscored_name|lower}}.png"  style="height:20%;width:20%;"/>
+                            {% endif %}
+                        {% endif %}
+                    </a>
+                </div>
+            {% if forloop.counter|divisibleby:"5" %}
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 </div>

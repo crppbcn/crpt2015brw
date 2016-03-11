@@ -459,23 +459,6 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
                 fifth_component = None
 
 
-
-        print("--CHECK PARAMS. START --")
-
-        print("Component: " + component.name + " - " + str(component.id))
-        print("Subcomponent: " + subcomponent.name + " - " + str(subcomponent.id))
-        if third_component:
-            print("Thirdcomponent: " + third_component.name + " - " + str(third_component.id))
-        if fourth_component:
-            print("fourth_component: " + fourth_component.name + " - " + str(fourth_component.id))
-        if fifth_component:
-            print("fifth_component: " + fifth_component.name + " - " + str(fifth_component.id))
-
-        sys.stdout.flush()
-
-        print("--CHECK PARAMS. END --")
-
-
         # considerations at component and subcomponent level
         considerations = ComponentConsideration.objects.filter(element=component).order_by('id')
         if subcomponent:
@@ -538,16 +521,87 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
                 recalculate_element_score.send(sender=a_element, element=a_element)
 
                 # navigate to next component
-                url_to_redirect = "/component_2/" + assessment_id + SLASH
-                url_to_redirect += str(component.id) + SLASH
-                if subcomponent and subcomponent.next_one:
-                    url_to_redirect += str(subcomponent.id) + SLASH
-                if third_component and third_component.next_one:
-                    url_to_redirect += str(third_component.next_one.id) + SLASH
-                if fourth_component and fourth_component.next_one:
-                    url_to_redirect += str(fourth_component.next_one.id) + SLASH
-                if fifth_component and fifth_component.next_one:
-                    url_to_redirect += str(fifth_component.next_one.id) + SLASH
+                url_base = "/component_2/" + assessment_id + SLASH
+                url_base_component = url_base + str(component.id) + SLASH
+                if subcomponent:
+                    url_base_subcomponent = url_base_component +  str(subcomponent.id) + SLASH
+                if third_component:
+                    url_base_third_component = url_base_subcomponent +  str(third_component.id) + SLASH
+                if fourth_component:
+                    url_base_fourth_component = url_base_third_component + str(fourth_component.id) + SLASH
+
+                # url to redirect
+                if fifth_component:
+                    if fifth_component.next_one:
+                        url_to_redirect = url_base_fourth_component + str(fifth_component.next_one.id) + SLASH
+                    else:
+                        if fourth_component.next_one:
+                            url_to_redirect = url_base_third_component + str(fourth_component.next_one.id) + SLASH
+                        else:
+                            if third_component.next_one:
+                                url_to_redirect = url_base_subcomponent + str(third_component.next_one.id) + SLASH
+                            else:
+                                if subcomponent.next_one:
+                                    url_to_redirect = url_base_component + str(subcomponent.next_one.id) + SLASH
+                                else:
+                                    if component.next_one:
+                                        url_to_redirect = url_base + str(component.next_one.id) + SLASH
+                else:
+                    if fourth_component:
+                        if fourth_component.next_one:
+                            url_to_redirect = url_base_third_component + str(fourth_component.next_one.id) + SLASH
+                        else:
+                            if third_component.next_one:
+                                url_to_redirect = url_base_subcomponent + str(third_component.next_one.id) + SLASH
+                            else:
+                                if subcomponent.next_one:
+                                    url_to_redirect = url_base_component + str(subcomponent.next_one.id) + SLASH
+                                else:
+                                    if component.next_one:
+                                        url_to_redirect = url_base + str(component.next_one.id) + SLASH
+                    else:
+                        if third_component:
+                            if third_component.next_one:
+                                url_to_redirect = url_base_subcomponent + str(third_component.next_one.id) + SLASH
+                            else:
+                                if subcomponent.next_one:
+                                    url_to_redirect = url_base_component + str(subcomponent.next_one.id) + SLASH
+                                else:
+                                    if component.next_one:
+                                        url_to_redirect = url_base + str(component.next_one.id) + SLASH
+                        else:
+                            if subcomponent:
+                                if subcomponent.next_one:
+                                    url_to_redirect = url_base_component + str(subcomponent.next_one.id) + SLASH
+                                else:
+                                    if component.next_one:
+                                        url_to_redirect = url_base + str(component.next_one.id) + SLASH
+                            else:
+                                if component:
+                                    if component.next_one:
+                                        url_to_redirect = url_base + str(component.next_one.id) + SLASH
+                                else:
+                                    url_to_redirect = url_base
+
+
+
+                print("--CHECK PARAMS. START --")
+
+                print("Component: " + component.name + " - " + str(component.id))
+                print("Subcomponent: " + subcomponent.name + " - " + str(subcomponent.id))
+                if third_component:
+                    print("Thirdcomponent: " + third_component.name + " - " + str(third_component.id))
+                if fourth_component:
+                    print("fourth_component: " + fourth_component.name + " - " + str(fourth_component.id))
+                if fifth_component:
+                    print("fifth_component: " + fifth_component.name + " - " + str(fifth_component.id))
+
+                sys.stdout.flush()
+
+                print("--CHECK PARAMS. END --")
+
+                print("url_to_redirect: " + str(url_to_redirect))
+                sys.stdout.flush()
 
 
                 return redirect(url_to_redirect, context_instance=RequestContext(request))

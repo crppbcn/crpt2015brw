@@ -34,7 +34,7 @@ def hazard_groups(request, assessment_id):
 
         hazard_groups = HazardGroup.objects.all().order_by('id')
         nohg = len(hazard_groups)
-        hg_width = 100 / nohg
+        hg_width = 100 / nohg*2
 
         template = loader.get_template(TEMPLATE_HAZARDS_GROUPS_PAGE)
         context = RequestContext(request, {
@@ -73,13 +73,13 @@ def hazard_types(request, assessment_id, hg_id):
         hazard_types = HazardType.objects.filter(hazard_group_id=hg_id).order_by('id')
         nohg = len(hazard_types)
         ht_width = 100 / nohg
-
         template = loader.get_template(TEMPLATE_HAZARDS_TYPES_PAGE)
         context = RequestContext(request, {
             'person': person,
             'assessment': assessment,
             'hazard_types': hazard_types,
             'ht_width': ht_width,
+            'is_hazard_type':True,
         })
         return HttpResponse(template.render(context))
     except:
@@ -107,7 +107,15 @@ def hazard_type_detail(request, assessment_id, ht_id):
             print("assessment: " + assessment.name)
             raise Exception('User has no permission to access this assessment')
 
+        # get hazard type, description and examples
         ht = HazardType.objects.get(id=ht_id)
+
+        considerations = []
+        considerations.append(ht.description)
+
+        comments = []
+        for hts in HazardSubtype.objects.filter(hazard_type=ht).order_by('id'):
+            comments.append(HazardSubtypeFurtherExplanation.objects.filter(hazard_subtype=hts))
 
         # formset definition
         fs = modelformset_factory(AssessmentHazardType, max_num=0, exclude=[], form=AssessmentHazardTypeForm)
@@ -117,24 +125,32 @@ def hazard_type_detail(request, assessment_id, ht_id):
             f_set = fs(request.POST, request.FILES)
             if f_set and f_set.is_valid():
                 f_set.save()
+
+                # redirect to next page
+                url_to_redirect = '/hazard_type_interrelations/' + assessment_id + SLASH + ht_id
+                return redirect(url_to_redirect, context_instance=RequestContext(request))
+
             else:
                 print(str(f_set.errors))
                 sys.stdout.flush()
 
         else:
-            query_set = AssessmentHazardType.objects.filter(id=ht_id).order_by('id')
+            query_set = AssessmentHazardType.objects.filter(hazard_type=ht).order_by('id')
             f_set = fs(queryset=query_set)
 
 
 
         # return page
-        template = loader.get_template(TEMPLATE_HAZARDS_INTERRELATIONS_PAGE)
+        template = loader.get_template(TEMPLATE_HAZARDS_DETAIL_PAGE)
         context = RequestContext(request, {
             'person': person,
             'assessment': assessment,
-            'selected': "HT_INTERRELATIONS",
+            'selected': "HT_DETAIL",
             'ht': ht,
             'fs': f_set,
+            'considerations': considerations,
+            'comments': comments,
+            'is_hazard_detail':True,
         })
         return HttpResponse(template.render(context))
     except:
@@ -162,17 +178,61 @@ def hazard_type_interrelations(request, assessment_id, ht_id):
             print("assessment: " + assessment.name)
             raise Exception('User has no permission to access this assessment')
 
+        # get hazard type, description and examples
         ht = HazardType.objects.get(id=ht_id)
+        aht = AssessmentHazardType.objects.get(assessment=assessment, hazard_type=ht)
+
+        considerations = []
+        considerations.append(ht.description)
+
+        comments = []
+        for hts in HazardSubtype.objects.filter(hazard_type=ht).order_by('id'):
+            comments.append(HazardSubtypeFurtherExplanation.objects.filter(hazard_subtype=hts))
 
 
+        # formset definition
+        fs_factory_causes = modelformset_factory(AssessmentHazardCause, max_num=0, exclude=[])
+        fs_factory_consequences = modelformset_factory(AssessmentHazardConsequence, max_num=0, exclude=[])
 
+        if request.method == 'POST':
+
+            fs_causes = fs_factory_causes(request.POST, request.FILES, prefix='fs_causes')
+            fs_consequences = fs_factory_consequences(request.POST, request.FILES, prefix='fs_consequences')
+
+            if fs_causes and fs_causes.is_valid() and fs_consequences and fs_consequences.is_valid():
+                fs_causes.save()
+                fs_consequences.save()
+
+                # redirect to next page
+                url_to_redirect = '/hazard_type_impacts/' + assessment_id + SLASH + ht_id
+                return redirect(url_to_redirect, context_instance=RequestContext(request))
+
+            else:
+                if fs_causes.errors:
+                    print(str(fs_causes.errors))
+                if fs_consequences.errors:
+                    print(str(fs_consequences.errors))
+                sys.stdout.flush()
+
+        else:
+            query_set = AssessmentHazardCause.objects.filter(a_h_type=aht).order_by('id')
+            fs_causes = fs_factory_causes(queryset=query_set, prefix='fs_causes')
+            query_set = AssessmentHazardConsequence.objects.filter(a_h_type=aht).order_by('id')
+            fs_consequences = fs_factory_consequences(queryset=query_set, prefix='fs_consequences')
+
+        # return page
         template = loader.get_template(TEMPLATE_HAZARDS_INTERRELATIONS_PAGE)
         context = RequestContext(request, {
             'person': person,
             'assessment': assessment,
-            'selected': "HT_DETAIL",
+            'selected': "HT_INTERRELATIONS",
             'ht': ht,
-        })
+            'fs_causes': fs_causes,
+            'fs_consequences': fs_consequences,
+            'considerations': considerations,
+            'comments': comments,
+            'is_hazard_detail': True,
+            })
         return HttpResponse(template.render(context))
     except:
         if debug_is_on():
@@ -199,16 +259,44 @@ def hazard_type_impacts(request, assessment_id, ht_id, element_id=None):
             print("assessment: " + assessment.name)
             raise Exception('User has no permission to access this assessment')
 
+        # get hazard type, description and examples
         ht = HazardType.objects.get(id=ht_id)
+        aht = AssessmentHazardType.objects.get(assessment=assessment, hazard_type=ht)
 
+        considerations = []
+        for hts in HazardSubtype.objects.filter(hazard_type=ht).order_by('id'):
+            for hstfe in HazardSubtypeFurtherExplanation.objects.filter(hazard_subtype=hts):
+                considerations.append(str(hstfe.description))
 
+        # formset definition
+        fs = modelformset_factory(AssessmentElementImpact, max_num=0, exclude=[])
+
+        if request.method == 'POST':
+
+            f_set = fs(request.POST, request.FILES)
+            if f_set and f_set.is_valid():
+                f_set.save()
+
+                # redirect to next page
+                url_to_redirect = '/hazard_type_detail/' + assessment_id + SLASH + ht_id
+                return redirect(url_to_redirect, context_instance=RequestContext(request))
+
+            else:
+                print(str(f_set.errors))
+                sys.stdout.flush()
+
+        else:
+            query_set = AssessmentElementImpact.objects.filter(a_h_type=aht, assessment=assessment).order_by('id')
+            f_set = fs(queryset=query_set)
 
         template = loader.get_template(TEMPLATE_HAZARDS_IMPACTS_PAGE)
         context = RequestContext(request, {
             'person': person,
             'assessment': assessment,
-            'selected': "HT_DETAIL",
+            'fs': f_set,
+            'selected': "HT_IMPACTS",
             'ht': ht,
+            'considerations': considerations,
         })
         return HttpResponse(template.render(context))
     except:

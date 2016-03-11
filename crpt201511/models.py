@@ -22,6 +22,11 @@ class Common(django.db.models.Model):
     Abstract base class
     """
     # ...
+    def underscored_name(self):
+        ret = ""
+        if self.name:
+            ret = self.name.replace(' ','_').replace('/','_')
+        return ret
 
     class Meta:
         abstract = True
@@ -162,8 +167,8 @@ class QuestionSimple(Common):
     """
     Represents an statement (not linked to anything)
     """
-    question_short = django.db.models.CharField(max_length=150)
-    question_long = django.db.models.CharField(max_length=500)
+    question_short = django.db.models.CharField(max_length=150, null=True, blank=True)
+    question_long = django.db.models.CharField(max_length=500, null=True, blank=True)
     help_text = django.db.models.CharField(max_length=500, null=True, blank=True)
     placeholder = django.db.models.CharField(max_length=250, null=True, blank=True)
     version = django.db.models.ForeignKey(AssessmentVersion)
@@ -207,7 +212,7 @@ class HazardType(Hazard):
     Represents a Hazard Type
     """
     hazard_group = django.db.models.ForeignKey(HazardGroup)
-    description = django.db.models.CharField(max_length=500, null=True, blank=True)
+    description = django.db.models.CharField(max_length=800, null=True, blank=True)
 
 
 class HazardSubtype(Hazard):
@@ -229,7 +234,7 @@ class HazardSubtypeFurtherExplanation(Common):
     Represents a further explanation for a hazard subtype
     """
     hazard_subtype = django.db.models.ForeignKey(HazardSubtype)
-    description = django.db.models.CharField(max_length=500, null=True, blank=True)
+    description = django.db.models.CharField(max_length=800, null=True, blank=True)
 
 
 class ElementImpact(Common):
@@ -331,6 +336,7 @@ class AssessmentHazardCause(Common):
     """
     assessment = django.db.models.ForeignKey(Assessment)
     a_h_type = django.db.models.ForeignKey(AssessmentHazardType)
+    a_h_type_cause = django.db.models.ForeignKey(AssessmentHazardType, related_name="ht_cause")
     enabled = django.db.models.BooleanField(default=False)
 
 
@@ -340,6 +346,7 @@ class AssessmentHazardConsequence(Common):
     """
     assessment = django.db.models.ForeignKey(Assessment)
     a_h_type = django.db.models.ForeignKey(AssessmentHazardType)
+    a_h_type_consequence = django.db.models.ForeignKey(AssessmentHazardType, related_name="ht_consequence")
     enabled = django.db.models.BooleanField(default=False)
 
 

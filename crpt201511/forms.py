@@ -191,7 +191,11 @@ class AssessmentCityIDQuestionForm(forms.ModelForm):
                     # add field to input new option
                     self.fields['other'] = forms.CharField(label=LABEL_TAG_ANY_OTHER, max_length=250, required=False)
 
-        # set multi and choices
+        # treatment for text fields - set widget
+        if self.instance and self.instance.question_type == TEXT_FIELD:
+            self.fields['response'].widget = forms.widgets.Textarea()
+
+        # treatment for upload fields
         if self.instance and \
                 (self.instance.question_type == UPLOAD_FIELD):
 
@@ -470,6 +474,9 @@ class AssessmentComponentQuestionForm(forms.ModelForm):
                             forms.widgets.Select(
                                 choices=tuple([a.id, a.name] for a in ChoicesSC21.objects.all().order_by('id')))
 
+            # treatment for text fields - set widget
+            if self.instance.question_type == TEXT_FIELD:
+                self.fields['response'].widget = forms.widgets.Textarea()
 
             # add checkbox field for not applicable option
             """
@@ -492,7 +499,12 @@ class AssessmentHazardTypeForm(forms.ModelForm):
             self.fields['r_a_year'].label = 'Year'
             self.fields['c_p_year'].label = 'Year'
             self.fields['risk_assessment'].label = 'Availability of specific risk assessment(s):'
+            self.fields['risk_assessment'].widget=forms.widgets.Select(
+                                    choices=tuple([a.id, a.name] for a in ChoicesSC1.objects.all().order_by('id')))
             self.fields['contingency_plan'].label = 'Availability of specific contingency plan(s):'
+            self.fields['contingency_plan'].widget=forms.widgets.Select(
+                                    choices=tuple([a.id, a.name] for a in ChoicesSC1.objects.all().order_by('id')))
+
             self.fields['subtypes'].label = 'Please select relevant hazard subtypes if applicable:'
             self.fields['subtypes'].widget = \
                 forms.widgets.CheckboxSelectMultiple(
