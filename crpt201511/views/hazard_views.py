@@ -70,7 +70,8 @@ def hazard_types(request, assessment_id, hg_id):
             print("assessment: " + assessment.name)
             raise Exception('User has no permission to access this assessment')
 
-        hazard_types = HazardType.objects.filter(hazard_group_id=hg_id).order_by('id')
+        hazard_group = HazardGroup.objects.get(id=hg_id)
+        hazard_types = HazardType.objects.filter(hazard_group=hazard_group).order_by('id')
         nohg = len(hazard_types)
         ht_width = 100 / nohg
         template = loader.get_template(TEMPLATE_HAZARDS_TYPES_PAGE)
@@ -79,7 +80,8 @@ def hazard_types(request, assessment_id, hg_id):
             'assessment': assessment,
             'hazard_types': hazard_types,
             'ht_width': ht_width,
-            'is_hazard_type':True,
+            'is_hazard_type': True,
+            'hazard_group': hazard_group,
         })
         return HttpResponse(template.render(context))
     except:
@@ -110,12 +112,8 @@ def hazard_type_detail(request, assessment_id, ht_id):
         # get hazard type, description and examples
         ht = HazardType.objects.get(id=ht_id)
 
-        considerations = []
-        considerations.append(ht.description)
-
-        comments = []
-        for hts in HazardSubtype.objects.filter(hazard_type=ht).order_by('id'):
-            comments.append(HazardSubtypeFurtherExplanation.objects.filter(hazard_subtype=hts))
+        # considerations as list of subtypes. listed in template for each subtype
+        considerations = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
 
         # formset definition
         fs = modelformset_factory(AssessmentHazardType, max_num=0, exclude=[], form=AssessmentHazardTypeForm)
@@ -149,7 +147,6 @@ def hazard_type_detail(request, assessment_id, ht_id):
             'ht': ht,
             'fs': f_set,
             'considerations': considerations,
-            'comments': comments,
             'is_hazard_detail':True,
         })
         return HttpResponse(template.render(context))
@@ -182,13 +179,8 @@ def hazard_type_interrelations(request, assessment_id, ht_id):
         ht = HazardType.objects.get(id=ht_id)
         aht = AssessmentHazardType.objects.get(assessment=assessment, hazard_type=ht)
 
-        considerations = []
-        considerations.append(ht.description)
-
-        comments = []
-        for hts in HazardSubtype.objects.filter(hazard_type=ht).order_by('id'):
-            comments.append(HazardSubtypeFurtherExplanation.objects.filter(hazard_subtype=hts))
-
+        # considerations as list of subtypes. listed in template for each subtype
+        considerations = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
 
         # formset definition
         fs_factory_causes = modelformset_factory(AssessmentHazardCause, max_num=0, exclude=[])
@@ -230,7 +222,6 @@ def hazard_type_interrelations(request, assessment_id, ht_id):
             'fs_causes': fs_causes,
             'fs_consequences': fs_consequences,
             'considerations': considerations,
-            'comments': comments,
             'is_hazard_detail': True,
             })
         return HttpResponse(template.render(context))
@@ -263,10 +254,8 @@ def hazard_type_impacts(request, assessment_id, ht_id, element_id=None):
         ht = HazardType.objects.get(id=ht_id)
         aht = AssessmentHazardType.objects.get(assessment=assessment, hazard_type=ht)
 
-        considerations = []
-        for hts in HazardSubtype.objects.filter(hazard_type=ht).order_by('id'):
-            for hstfe in HazardSubtypeFurtherExplanation.objects.filter(hazard_subtype=hts):
-                considerations.append(str(hstfe.description))
+        # considerations as list of subtypes. listed in template for each subtype
+        considerations = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
 
         # formset definition
         fs = modelformset_factory(AssessmentElementImpact, max_num=0, exclude=[])
@@ -297,6 +286,7 @@ def hazard_type_impacts(request, assessment_id, ht_id, element_id=None):
             'selected': "HT_IMPACTS",
             'ht': ht,
             'considerations': considerations,
+            'is_hazard_detail': True,
         })
         return HttpResponse(template.render(context))
     except:

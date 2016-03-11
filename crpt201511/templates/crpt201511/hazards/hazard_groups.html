@@ -9,9 +9,9 @@
         {% if forloop.counter == 1 or forloop.counter == 4 %}
             <div class="row col-md-12" style="position:relative;margin-bottom:20px;">
         {% endif %}
-            <div style="width:{{hg_width}}%;float:left;">
+            <div style="width:{{hg_width}}%;float:left;text-align:center;">
                 <a href="{% url 'hazard_types' assessment_id=assessment.id hg_id=hg.id %}" style="width:100%;">
-                    <img src="{% static "" %}crpt201511/img/{{hg.underscored_name|lower}}_group.png"  class="steps" style="height:80%;width:80%;"/>
+                    <img src="{% static "" %}crpt201511/img/{{hg.underscored_name|lower}}_group.png"  class="steps" style="height:60%;width:60%;"/>
                 </a>
         {% if forloop.counter == 3 or forloop.counter == 6 %}
             </div>
@@ -20,8 +20,16 @@
 
         {% endfor %}
 
+
     </div>
+    <div class="row col-md-12" style="position:relative;">
+    <div class="col-md-1" style="padding-left:70px;margin-top:15px;">
+        <a href="{% url 'steps' assessment_id=assessment.id %}" class="btn btn-danger">Steps</a>
+    </div>
+    <div class="row col-md-12" style="position:relative;">
+
 </div>
+
 
 
 {% endblock %}

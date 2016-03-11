@@ -80,10 +80,15 @@
                     <div class="panel-body">
                         {% if considerations and considerations|length > 0 %}
                             {% for item in considerations %}
-                                {% if item.show_separator and forloop.counter > 1 %}
-                                <legend></legend>
+                                {% if item.hazardsubtypefurtherexplanation_set.all|length > 0 %}
+                                    <p style="font-style:italic;">{{ item.name }}</p>
+                                    {% for item2 in item.hazardsubtypefurtherexplanation_set.all %}
+                                        <p>{{ item2.description }}</p>
+                                    {% endfor %}
                                 {% endif %}
-                                <p>{{ item }}</p>
+                                {% if not forloop.last %}
+                                    <legend></legend>
+                                {% endif %}
                             {% endfor %}
                         {% else %}
                             <p>This section has no considerations</p>
@@ -91,7 +96,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div id="crpt-right-comments">
                 <div class="panel panel-default">

@@ -39,7 +39,7 @@ urlpatterns = [
 
     # url to welcome page
     url(r'^welcome/$', 'crpt201511.views.views.welcome', name='welcome'),
-
+    url(r'^welcome/(?P<assessment_id>\d+)/$', 'crpt201511.views.views.welcome', name='welcome'),
     # url to steps page
     url(r'^steps/(?P<assessment_id>\d+)/$', 'crpt201511.views.views.steps', name='steps'),
 

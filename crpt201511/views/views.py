@@ -64,7 +64,7 @@ def my_copyright(request):
 
 @ensure_csrf_cookie
 @login_required
-def welcome(request):
+def welcome(request, assessment_id=None):
     """
     View for the welcome page
 
@@ -74,8 +74,11 @@ def welcome(request):
     try:
         person = get_person(request)
         # try:
-        # get the latest assessment from the city. TODO: get the right assessment
-        assessment = Assessment.objects.order_by('-date_started')[0]
+        # get the latest assessment from the city.
+        if assessment_id:
+            assessment = Assessment.objects.get(id=assessment_id)
+        else:
+            assessment = Assessment.objects.order_by('-date_started')[0]
         # except:
             # raise Exception('The City does not have any open assessment')
         template = loader.get_template(TEMPLATE_WELCOME)

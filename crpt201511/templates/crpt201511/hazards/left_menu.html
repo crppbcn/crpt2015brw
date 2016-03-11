@@ -12,7 +12,11 @@
                 <a href="/steps/{{assessment.id}}" alt="Steps" data-toggle="tooltip" data-placement="top" data-original-title="Steps"><img src="{% static 'crpt201511/img/steps.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
             </div>
             <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
-                <a href="#" alt="Back" data-toggle="tooltip" data-placement="top" data-original-title="Back"><img src="{% static 'crpt201511/img/back.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            {% if is_hazard_detail %}
+                <a href="/hazard_types/{{assessment.id}}/{{ht.hazard_group.id}}/" alt="Back" data-toggle="tooltip" data-placement="top" data-original-title="Back"><img src="{% static 'crpt201511/img/back.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            {% else %}
+                <a href="/hazard_groups/{{assessment.id}}/" alt="Back" data-toggle="tooltip" data-placement="top" data-original-title="Back"><img src="{% static 'crpt201511/img/back.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            {% endif %}
             </div>
             <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
                 <a href="#" alt="Help" data-toggle="tooltip" data-placement="top" data-original-title="Help"><img src="{% static 'crpt201511/img/help.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
