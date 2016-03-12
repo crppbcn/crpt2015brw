@@ -13,6 +13,7 @@ from crpt201511.utils.env_utils import *
 from crpt201511.utils.assessment_utils import *
 from crpt201511.settings import CRPT_URL
 from crpt201511.forms import AssessmentHazardTypeForm
+from crpt201511.utils.hazard_utils import *
 
 
 @ensure_csrf_cookie
@@ -278,6 +279,7 @@ def hazard_type_impacts(request, assessment_id, ht_id, element_id=None):
             query_set = AssessmentElementImpact.objects.filter(a_h_type=aht, assessment=assessment).order_by('id')
             f_set = fs(queryset=query_set)
 
+        # return page
         template = loader.get_template(TEMPLATE_HAZARDS_IMPACTS_PAGE)
         context = RequestContext(request, {
             'person': person,
@@ -287,6 +289,84 @@ def hazard_type_impacts(request, assessment_id, ht_id, element_id=None):
             'ht': ht,
             'considerations': considerations,
             'is_hazard_detail': True,
+        })
+        return HttpResponse(template.render(context))
+    except:
+        if debug_is_on():
+            raise
+        else:
+            return render_to_response(TEMPLATE_ERROR,
+                                      {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
+                                      context_instance=RequestContext(request))
+
+
+def hazards_selected(request, assessment_id):
+    """
+    View for hazards selected diagram
+    :param request:
+    :param assessment_id:
+    :return:
+    """
+    try:
+        person = get_person(request)
+        assessment = Assessment.objects.get(id=assessment_id)
+        # check person has rights for the assessment. TODO: Constants
+        if not check_person_access_to_assessment(assessment, person):
+            print("assessment: " + assessment.name)
+            raise Exception('User has no permission to access this assessment')
+
+        # get hazards selected
+        hs_list = get_hazards_selected(assessment)
+
+        # get hazard groups selected
+        hg_list = get_hazard_groups_selected(hs_list)
+
+        print("hazards_selected length: " + str(len(hs_list)))
+        sys.stdout.flush()
+
+        # return page
+        template = loader.get_template(TEMPLATE_HAZARDS_SELECTED_PAGE)
+        context = RequestContext(request, {
+            'person': person,
+            'assessment': assessment,
+            'selected': "HAZARDS_SELECTED",
+            'hazard_selected': hs_list,
+        })
+        return HttpResponse(template.render(context))
+    except:
+        if debug_is_on():
+            raise
+        else:
+            return render_to_response(TEMPLATE_ERROR,
+                                      {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
+                                      context_instance=RequestContext(request))
+
+
+def hazards_relations(request, assessment_id):
+    """
+    View for hazards selected diagram
+    :param request:
+    :param assessment_id:
+    :return:
+    """
+    try:
+        person = get_person(request)
+        assessment = Assessment.objects.get(id=assessment_id)
+        # check person has rights for the assessment. TODO: Constants
+        if not check_person_access_to_assessment(assessment, person):
+            print("assessment: " + assessment.name)
+            raise Exception('User has no permission to access this assessment')
+
+        # get hazards selected
+        hazards_selected = get_hazards_selected(assessment)
+
+        # return page
+        template = loader.get_template(TEMPLATE_HAZARDS_SELECTED_PAGE)
+        context = RequestContext(request, {
+            'person': person,
+            'assessment': assessment,
+            'selected': "HAZARDS_SELECTED",
+            'hazard_selected': hazards_selected,
         })
         return HttpResponse(template.render(context))
     except:

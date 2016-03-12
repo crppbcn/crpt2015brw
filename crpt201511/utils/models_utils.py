@@ -19,6 +19,21 @@ def get_max_selected_value(response):
         sys.stdout.flush()
 
 
+def get_int_value(response):
+    """
+    Gets the integer value if any, if not zero
+    :param response:
+    :return:
+    """
+    value = 0
+    try:
+        value = int(str(response))
+    except:
+        pass
+    finally:
+        return value
+
+
 def get_list_of_ids(response):
     """
     Gets a list of the selected ids for a response of multiple choice

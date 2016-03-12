@@ -74,6 +74,8 @@ urlpatterns = [
     url(r'^hazard_type_interrelations/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_interrelations', name='hazard_type_interrelations'),
     url(r'^hazard_type_impacts/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/(?P<element_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_impacts', name='hazard_type_impacts'),
     url(r'^hazard_type_impacts/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_impacts', name='hazard_type_impacts'),
+    url(r'^hazards_selected/(?P<assessment_id>\d+)/$', 'crpt201511.views.hazard_views.hazards_selected', name='hazards_selected'),
+    url(r'^hazards_relations/(?P<assessment_id>\d+)/$', 'crpt201511.views.hazard_views.hazards_relations', name='hazards_relations'),
 
     # stakeholders
     url(r'^stakeholder_groups/(?P<assessment_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholder_groups', name='stakeholder_groups'),

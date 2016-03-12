@@ -18,6 +18,7 @@ from crpt201511.models import *
 from crpt201511.constants import *
 from crpt201511.utils.assessment_utils import get_remote_folder_name
 from crpt201511.utils.component_question_utils import *
+from crpt201511.utils.hazard_utils import *
 
 
 def test_threading():
@@ -309,6 +310,9 @@ def test_simple():
     print("value: " + str(int("" == YES_STR)))
 
 
+def test_hazards_selected():
+    assessment = Assessment.objects.all()[:1].get()
+    return get_hazards_selected(assessment)
 
 
 
@@ -320,11 +324,13 @@ if __name__ == "__main__":
     #test_multi()
     #test_obtain_max_selected_value()
     #test_get_list_of_ids()
+    #test_hazards_selected()
+
 
     #test_create_new_assessment_city_id()
     #test_create_new_assessment_components()
     #test_create_new_assessment_hazards()
-    test_create_new_assessment_stakeholders()
+    #test_create_new_assessment_stakeholders()
 
 
 

@@ -27,6 +27,105 @@
     <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="{% static 'crpt201511/js/crpt-charts.js' %}"></script>
 
+
+    <!-- script for hazards selected -->
+    <script>
+        $(function () {
+
+            alert({{hazards_selected|length}});
+
+            var colors = Highcharts.getOptions().colors,
+                categories = [{% for key, value in hazard_selected.items %}'{{key}}'{% if not forloop.last %},{% endif %}{% endfor %}],
+                data = [{% for key, value in hazard_selected.items %}{
+                        y:{% for k, v in value.items %}{{v}}{%if not forloop.last%}+{% endif %}{% endfor %},
+                        color: colors[{{forloop.counter|add:'-1'}}],
+                        drilldown: {
+                            name: '{{key}}',
+                            categories: [{% for k, v in value.items %}'{{k}}'{% if not forloop.last %},{% endif %}{% endfor %}],
+                            data:[{% for k, v in value.items %}{{v}}{% if not forloop.last %},{% endif %}{% endfor %}],
+                            color: colors[{{forloop.counter|add:'-1'}}]
+                        }}{% if not forloop.last %},{% endif %}{% endfor %}],
+                browserData = [],
+                versionsData = [],
+                i,
+                j,
+                dataLen = data.length,
+                drillDataLen,
+                brightness;
+
+
+            // Build the data arrays
+            for (i = 0; i < dataLen; i += 1) {
+
+                // add browser data
+                browserData.push({
+                    name: categories[i],
+                    y: data[i].y,
+                    color: data[i].color
+                });
+
+                // add version data
+                drillDataLen = data[i].drilldown.data.length;
+                for (j = 0; j < drillDataLen; j += 1) {
+                    brightness = 0.2 - (j / drillDataLen) / 5;
+                    versionsData.push({
+                        name: data[i].drilldown.categories[j],
+                        y: data[i].drilldown.data[j],
+                        color: Highcharts.Color(data[i].color).brighten(brightness).get()
+                    });
+                }
+            }
+
+            // Create the chart
+            $('#hazards_selected').highcharts({
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Hazards selected in this assessment'
+                },
+                credits: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                plotOptions: {
+                    pie: {
+                        shadow: false,
+                        center: ['50%', '50%']
+                    }
+                },
+                tooltip: {
+                    valueSuffix: '%'
+                },
+                series: [{
+                    name: 'Hazard Groups',
+                    data: browserData,
+                    size: '60%',
+                    dataLabels: {
+                        formatter: function () {
+                            return this.y > 5 ? this.point.name : null;
+                        },
+                        color: '#ffffff',
+                        distance: -30
+                    }
+                }, {
+                    name: 'Hazard Types',
+                    data: versionsData,
+                    size: '80%',
+                    innerSize: '60%',
+                    dataLabels: {
+                        formatter: function () {
+                            // display only if larger than 1
+                            return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + this.y + '%' : null;
+                        }
+                    }
+                }]
+            });
+        });
+    </script>
+
     <script>
         $(function () {
 
@@ -119,7 +218,7 @@
                         innerRadius: '88%',
                         backgroundColor: Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.3).get(),
                         borderWidth: 0
-                    } /*, { // Track for City ID
+                    } , { // Track for City ID
                         outerRadius: '87%',
                         innerRadius: '63%',
                         backgroundColor: Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.3).get(),
@@ -129,7 +228,13 @@
                         innerRadius: '38%',
                         backgroundColor: Highcharts.Color(Highcharts.getOptions().colors[2]).setOpacity(0.3).get(),
                         borderWidth: 0
-                    }*/ ]
+                    }, { // Track for Stakeholders
+                        outerRadius: '37%',
+                        innerRadius: '13%',
+                        backgroundColor: Highcharts.Color(Highcharts.getOptions().colors[3]).setOpacity(0.3).get(),
+                        borderWidth: 0
+                    } ]
+
                 },
 
                 yAxis: {
@@ -154,30 +259,39 @@
                     name: 'Elements',
                     borderColor: Highcharts.getOptions().colors[0],
                     data: [{
-                        color: Highcharts.getOptions().colors[0],
+                        color: Highcharts.getOptions().colors[1],
                         radius: '100%',
                         innerRadius: '100%',
                         y: {{filled_percen}}
                     }]
-                } /* ,  {
+                } ,  {
                     name: 'City ID',
                     borderColor: Highcharts.getOptions().colors[1],
                     data: [{
                         color: Highcharts.getOptions().colors[1],
                         radius: '75%',
                         innerRadius: '75%',
-                        y: 65
+                        y: {{ city_id_percen }}
                     }]
                 }, {
                     name: 'Hazards',
                     borderColor: Highcharts.getOptions().colors[2],
                     data: [{
-                        color: Highcharts.getOptions().colors[2],
+                        color: Highcharts.getOptions().colors[1],
                         radius: '50%',
                         innerRadius: '50%',
-                        y: 50
+                        y: {{ hazards_percen }}
                     }]
-                } */]
+                }, {
+                    name: 'Stakeholders',
+                    borderColor: Highcharts.getOptions().colors[3],
+                    data: [{
+                        color: Highcharts.getOptions().colors[1],
+                        radius: '25%',
+                        innerRadius: '25%',
+                        y: {{ stakeholders_percen }}
+                    }]
+                } ]
             },
 
             /**
@@ -195,12 +309,12 @@
                         'stroke-width': 2,
                         'zIndex': 10
                     })
-                    .translate(190, 26)
+                    .translate(170, 26)
                     .add(this.series[0].group);
 
                 // City ID icon
-                /*
-                this.renderer.path(['M', -8, 0, 'L', 8, 0, 'M', 0, -8, 'L', 8, 0, 0, 8, 'M', 8, -8, 'L', 16, 0, 8, 8])
+
+                this.renderer.path(['M', -8, 0, 'L', 8, 0, 'M', 0, -8, 'L', 8, 0, 0, 8])
                     .attr({
                         'stroke': '#303030',
                         'stroke-linecap': 'round',
@@ -208,12 +322,12 @@
                         'stroke-width': 2,
                         'zIndex': 10
                     })
-                    .translate(190, 61)
-                    .add(this.series[2].group);
-                */
+                    .translate(170, 61)
+                    .add(this.series[1].group);
+
                 // Hazards icon
-                /*
-                this.renderer.path(['M', 0, 8, 'L', 0, -8, 'M', -8, 0, 'L', 0, -8, 8, 0])
+
+                this.renderer.path(['M', -8, 0, 'L', 8, 0, 'M', 0, -8, 'L', 8, 0, 0, 8])
                     .attr({
                         'stroke': '#303030',
                         'stroke-linecap': 'round',
@@ -221,9 +335,23 @@
                         'stroke-width': 2,
                         'zIndex': 10
                     })
-                    .translate(190, 96)
+                    .translate(170, 96)
                     .add(this.series[2].group);
-                */
+
+                // Stakeholders icon
+
+                this.renderer.path(['M', -8, 0, 'L', 8, 0, 'M', 0, -8, 'L', 8, 0, 0, 8])
+                    .attr({
+                        'stroke': '#303030',
+                        'stroke-linecap': 'round',
+                        'stroke-linejoin': 'round',
+                        'stroke-width': 2,
+                        'zIndex': 10
+                    })
+                    .translate(170, 129)
+                    .add(this.series[3].group);
+
+
             });
 
 
@@ -317,10 +445,6 @@
                     data: [{{ mov_official_document }}]
                 }]
             });
-
-
-
-
         });
 
     </script>

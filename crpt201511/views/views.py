@@ -94,12 +94,16 @@ def welcome(request, assessment_id=None):
             'assessment': assessment,
             'filled_percen': str(assessment.degree_of_completion),
             'not_filled_percen': str(float(100-assessment.degree_of_completion)),
+            'city_id_percen': str(assessment.city_id_completion),
+            'hazards_percen': str(assessment.hazards_completion),
+            'stakeholders_percen': str(assessment.stakeholders_completion),
             'organisational_score': str(assessment.organizational_score),
             'physical_score': str(assessment.physical_score),
             'functional_score': str(assessment.functional_score),
             'mov_public_knowledge': str(assessment.mov_public_knowledge_noq),
             'mov_media': str(assessment.mov_media_noq),
             'mov_official_document': str(assessment.mov_official_document_noq),
+
         })
         return HttpResponse(template.render(context))
     except:

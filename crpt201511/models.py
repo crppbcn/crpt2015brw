@@ -393,6 +393,13 @@ class AssessmentHazardType(Common):
         # Always call parent save method
         super(AssessmentHazardType, self).save(*args, **kwargs)
 
+    # consideration of selected to include it in results
+    def is_selected(self):
+        if get_int_value(self.contingency_plan) > 0 or get_int_value(self.risk_assessment) > 0:
+            return True
+        else:
+            return False
+
 
 class AssessmentHazardSubtype(Common):
     """

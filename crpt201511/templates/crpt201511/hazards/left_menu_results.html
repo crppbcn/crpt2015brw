@@ -1,0 +1,40 @@
+{% extends "crpt201511/common/header.html" %}
+{% load admin_static %}
+{% block main_menu %}
+<div id="crpt-left-menu" class="col-md-2 padding_right">
+    <div class="row col-md-12">
+        {% comment %} nav bar {% endcomment %}
+        <div id="navbar" class="bs-component col-md-12">
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="/" alt="Home" data-toggle="tooltip" data-placement="top" data-original-title="Home"><img src="{% static 'crpt201511/img/home.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            </div>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="/steps/{{assessment.id}}" alt="Steps" data-toggle="tooltip" data-placement="top" data-original-title="Steps"><img src="{% static 'crpt201511/img/steps.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            </div>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="/hazard_groups/{{assessment.id}}/" alt="Back" data-toggle="tooltip" data-placement="top" data-original-title="Back"><img src="{% static 'crpt201511/img/back.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            </div>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="#" alt="Help" data-toggle="tooltip" data-placement="top" data-original-title="Help"><img src="{% static 'crpt201511/img/help.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            </div>
+        </div>
+    </div> <!-- row -->
+
+    <div class="row col-md-12" style="height:15px;"></div>
+
+    {% comment %} left menu {% endcomment %}
+    <div class="row col-md-12">
+        <div class="list-group table-of-contents">
+            {% if selected == "HAZARDS_SELECTED" %}
+                <a class="list-group-item selected" href="{% url 'hazards_selected' assessment_id=assessment.id %}">Hazards</a>
+                <a class="list-group-item selected2" href="{% url 'hazards_relations' assessment_id=assessment.id %}">Relations</a>
+            {% else %}
+                <a class="list-group-item selected2" href="{% url 'hazards_selected' assessment_id=assessment.id %}">Hazards</a>
+                <a class="list-group-item selected" href="{% url 'hazards_relations' assessment_id=assessment.id %}">Relations</a>
+
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
