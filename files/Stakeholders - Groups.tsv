@@ -1,0 +1,5 @@
+CODE	NAME	DESCRIPION	NEXT
+SG101	Government Entities	Level of engagement of the local government with supra-local and sub-local government entities, and vice-versa, regarding the decision-making process.	SG102
+SG102	Private Sector Entities	Level of engagement of local government with the private sector, and vice-versa, regarding the decision-making process.	SG103
+SG103	Civil Society Entities	Level of engagement of local government with civil society entities, such as civil society organisations and local leaders, and vice-versa, regarding the decision-making process.	SG104
+SG104	Other Major Institutions	Level of engagement of the local government with other major institutions, and vice-versa, regarding the decision-making process.	

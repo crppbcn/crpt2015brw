@@ -514,3 +514,25 @@ class AssessmentHazardTypeForm(forms.ModelForm):
     class Meta:
         model = AssessmentHazardType
         fields = '__all__'
+
+
+class AssessmentStakeholderForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AssessmentStakeholderForm, self).__init__(*args, **kwargs)
+
+        self.fields['engagement_from_local_gov'].label = \
+            'Engagement of the local government with the institution/entity'
+        self.fields['engagement_from_local_gov'].widget = \
+            forms.widgets.Select(
+                choices=tuple([a.id, a.name] for a in ChoicesStakeholders.objects.all().order_by('id')))
+
+        self.fields['engagement_to_local_gov'].label = 'Engagement of the institution/entity with the local government'
+        self.fields['engagement_to_local_gov'].widget = \
+            forms.widgets.Select(
+                choices=tuple([a.id, a.name] for a in ChoicesStakeholders.objects.all().order_by('id')))
+
+
+    class Meta:
+        model = AssessmentStakeholder
+        fields = '__all__'

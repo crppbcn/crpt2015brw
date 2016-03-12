@@ -75,6 +75,12 @@ urlpatterns = [
     url(r'^hazard_type_impacts/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/(?P<element_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_impacts', name='hazard_type_impacts'),
     url(r'^hazard_type_impacts/(?P<assessment_id>\d+)/(?P<ht_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_type_impacts', name='hazard_type_impacts'),
 
+    # stakeholders
+    url(r'^stakeholder_groups/(?P<assessment_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholder_groups', name='stakeholder_groups'),
+    url(r'^stakeholders/(?P<assessment_id>\d+)/(?P<sg_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholders', name='stakeholders'),
+    url(r'^stakeholders/(?P<assessment_id>\d+)/(?P<sg_id>\d+)/(?P<st_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholders', name='stakeholders'),
+    url(r'^stakeholders/(?P<assessment_id>\d+)/(?P<sg_id>\d+)/(?P<st_id>\d+)/(?P<s_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholders', name='stakeholders'),
+
     # url to test page
     url(r'^test/$', 'crpt201511.views.views.test', name='test'),
 ]

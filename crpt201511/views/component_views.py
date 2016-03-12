@@ -524,9 +524,9 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
                 url_base = "/component_2/" + assessment_id + SLASH
                 url_base_component = url_base + str(component.id) + SLASH
                 if subcomponent:
-                    url_base_subcomponent = url_base_component +  str(subcomponent.id) + SLASH
+                    url_base_subcomponent = url_base_component + str(subcomponent.id) + SLASH
                 if third_component:
-                    url_base_third_component = url_base_subcomponent +  str(third_component.id) + SLASH
+                    url_base_third_component = url_base_subcomponent + str(third_component.id) + SLASH
                 if fourth_component:
                     url_base_fourth_component = url_base_third_component + str(fourth_component.id) + SLASH
 

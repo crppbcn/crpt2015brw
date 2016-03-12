@@ -157,6 +157,7 @@ class ValueType(BasicName):
     Represents a value type for answers of the assessment
     """
 
+
 class MoVType(BasicName):
     """
     Represents a type for MoV
@@ -247,6 +248,58 @@ class ElementImpact(Common):
 
 #######################################
 #
+# Stakeholders
+#
+#######################################
+
+
+class AbstractStakeholder(Common):
+    """
+    Abstract class to support hazard classes
+    """
+    code = django.db.models.CharField(max_length=250, unique=True)
+    name = django.db.models.CharField(max_length=250)
+
+    class Meta:
+        abstract = True
+
+
+class StakeholderGroup(AbstractStakeholder):
+    """
+    Represents Stakeholders groups
+    """
+    description = django.db.models.CharField(max_length=500, null=True, blank=True)
+    next_one = django.db.models.ForeignKey('self', null=True, blank=True)
+
+
+class StakeholderGroupConsideration(Common):
+    """
+    Represents considerations and examples for an Stakeholder Group
+    """
+    stakeholder_group = django.db.models.ForeignKey(StakeholderGroup)
+    description = django.db.models.TextField(null=True, blank=True)
+
+
+class StakeholderType(AbstractStakeholder):
+    """
+    Represents Stakeholder types
+    """
+    stakeholder_group = django.db.models.ForeignKey(StakeholderGroup)
+    help_text = django.db.models.CharField(max_length=250, null=True, blank=True)
+    next_one = django.db.models.ForeignKey('self', null=True, blank=True)
+
+
+class Stakeholder(AbstractStakeholder):
+    """
+    Represents Stakeholders
+    """
+    stakeholder_type = django.db.models.ForeignKey(StakeholderType)
+    help_text = django.db.models.CharField(max_length=250, null=True, blank=True)
+    next_one = django.db.models.ForeignKey('self', null=True, blank=True)
+
+
+#######################################
+#
 # CityID
 #
 #######################################
@@ -283,6 +336,25 @@ class Assessment(BasicName):
     mov_official_document_noq = django.db.models.IntegerField(default=0)
     degree_of_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
     city_id_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    stakeholders_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    hazards_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+
+
+#######################################
+#
+# Assessment - Stakeholders
+#
+#######################################
+
+
+class AssessmentStakeholder(Common):
+    """
+    Represents Stakeholder in an assessment
+    """
+    assessment = django.db.models.ForeignKey(Assessment)
+    stakeholder = django.db.models.ForeignKey(Stakeholder)
+    engagement_from_local_gov = django.db.models.CharField(max_length=100, null=True, blank=True)
+    engagement_to_local_gov = django.db.models.CharField(max_length=100, null=True, blank=True)
 
 
 #######################################
@@ -290,6 +362,8 @@ class Assessment(BasicName):
 # Assessment - Hazards
 #
 #######################################
+
+
 class AssessmentHazardType(Common):
     """
     Represents a hazard type in an assesment
@@ -366,6 +440,8 @@ class AssessmentElementImpact(Common):
 # Assessment - Element
 #
 #######################################
+
+
 class AssessmentElement(Common):
     """
     Represents an element of the urban system model in the assessment
@@ -389,6 +465,8 @@ class AssessmentElement(Common):
 # Assessment - City ID
 #
 #######################################
+
+
 class AssessmentCityIDQuestion(CityIDQuestion):
 
     assessment = django.db.models.ForeignKey(Assessment)
@@ -674,12 +752,6 @@ class ChoicesSC1(BasicName):
     """
 
 
-class ChoicesSC1(BasicName):
-    """
-    Represents MoV Source options
-    """
-
-
 class ChoicesSC2(BasicName):
     """
     Represents MoV Source options
@@ -761,6 +833,11 @@ class ChoicesSC15(BasicName):
 class ChoicesSC21(BasicName):
     """
     Represents MoV Source options
+    """
+
+class ChoicesStakeholders(BasicName):
+    """
+    Represents Stakeholders options
     """
 
 #######################################

@@ -259,7 +259,28 @@ def test_create_new_assessment_hazards():
     print("test_create_new_assessment_hazards.End")
 
 
+def test_create_new_assessment_stakeholders():
+    print("test_create_new_assessment_stakeholders.Start")
+    # get assessment
+    try:
+        assessment = Assessment.objects.all()[:1].get()
+    except:
+        assessment = Assessment()
+        assessment.name = "Test Assessment"
+        assessment.city = City.objects.get(name="Test")
+        assessment.considerations = "Test Assessment"
+        assessment.focal_point_started = Person.objects.get(name="City, Test")
+        assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
+        assessment.save()
 
+    # create assessment stakeholders
+    for s in Stakeholder.objects.all().order_by('id'):
+        a_s = AssessmentStakeholder()
+        a_s.stakeholder = s
+        a_s.assessment = assessment
+        a_s.save()
+
+    print("test_create_new_assessment_stakeholders.End")
 
 def test_obtain_max_selected_value():
     print("test_obtain_max_selected_value.Start")
@@ -300,9 +321,10 @@ if __name__ == "__main__":
     #test_obtain_max_selected_value()
     #test_get_list_of_ids()
 
-    test_create_new_assessment_city_id()
-    test_create_new_assessment_components()
-    test_create_new_assessment_hazards()
+    #test_create_new_assessment_city_id()
+    #test_create_new_assessment_components()
+    #test_create_new_assessment_hazards()
+    test_create_new_assessment_stakeholders()
 
 
 

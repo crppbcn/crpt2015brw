@@ -295,6 +295,125 @@ def load_elements_impacted():
     print("load_elements_impacted. Start.")
 
 
+def load_stakeholder_groups():
+    """
+    Loads the stakeholder groups
+    :return:
+    """
+    print("load_stakeholder_groups. Start.")
+    file_path = settings.BASE_DIR + "/files/" + "Stakeholders - Groups.tsv"
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    for row in data_reader:
+        hg = StakeholderGroup()
+        hg.code = row[0].strip()
+        hg.name = row[1].strip()
+        hg.description = row[2].strip()
+        hg.save()
+    print("load_stakeholder_groups. End.")
+
+
+def set_next_stakeholder_group():
+    """
+    Sets next stakeholder group
+    :return:
+    """
+    print("set_next_stakeholder_group. Start.")
+    file_path = settings.BASE_DIR + "/files/" + "Stakeholders - Groups.tsv"
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    for row in data_reader:
+
+        if row[3].strip() != "":
+            print("looking for stakeholdergroup: " + row[3].strip())
+            sg = StakeholderGroup.objects.get(code=row[0].strip())
+            sg.next_one = StakeholderGroup.objects.get(code=row[3].strip())
+            sg.save()
+    print("set_next_stakeholder_group. End.")
+
+
+def load_stakeholder_considerations():
+    """
+    Loads stakeholder considerations
+    :return:
+    """
+    print("load_stakeholder_considerations. Start.")
+    file_path = settings.BASE_DIR + "/files/" + "Stakeholders - Considerations.tsv"
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    for row in data_reader:
+        hg = StakeholderGroup.objects.get(code=row[0].strip())
+
+        hgc = StakeholderGroupConsideration()
+        hgc.stakeholder_group = hg
+        hgc.description = row[1].strip()
+        hgc.save()
+
+    print("load_stakeholder_considerations. End.")
+
+
+def load_stakeholder_types():
+    """
+    Loads stakeholder types and subtypes
+    :return:
+    """
+    print("load_stakeholder_types. Start.")
+    file_path = settings.BASE_DIR + "/files/" + "Stakeholders - Types.tsv"
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    for row in data_reader:
+        sg = StakeholderGroup.objects.get(code=row[0].strip())
+        try:
+            st = StakeholderType.objects.get(code=row[1].strip())
+        except:
+            st = StakeholderType()
+            st.stakeholder_group = sg
+            st.code = row[1].strip()
+            st.name = row[3].strip()
+            st.help_text = row[4].strip()
+            st.save()
+        s = Stakeholder()
+        s.stakeholder_type = st
+        s.code = row[5].strip()
+        s.stakeholder_type = st
+        s.name = row[6].strip()
+        s.help_text = row[7].strip()
+        s.save()
+
+    print("load_stakeholder_types. End.")
+
+
+def set_stakeholder_next():
+    """
+    Sets next for stakeholders
+    :return:
+    """
+    print("set_stakeholder_next. Start.")
+    file_path = settings.BASE_DIR + "/files/" + "Stakeholders - Types.tsv"
+    data_reader = csv.reader(open(file_path), dialect='excel-tab')
+    data_reader.next()  # to skip headers row
+
+    for row in data_reader:
+
+        if row[2].strip() != "":
+            st = StakeholderType.objects.get(code=row[1].strip())
+            st.next_one = StakeholderType.objects.get(code=row[1].strip())
+            st.save()
+
+        if row[8].strip() != "":
+            s = Stakeholder.objects.get(code=row[5].strip())
+            next_one = Stakeholder.objects.get(code=row[8].strip())
+            s.next_one = next_one
+            s.save()
+
+    print("set_stakeholder_next. End.")
+
+
+
 def load_elements():
     """
     Load elements file
@@ -668,9 +787,11 @@ def load_master_data():
     load_entity_single_field_name("SC14.tsv", ChoicesSC14)
     load_entity_single_field_name("SC15.tsv", ChoicesSC15)
     load_entity_single_field_name("SC21.tsv", ChoicesSC21)
+    load_entity_single_field_name("StakeholderOptions.tsv", ChoicesStakeholders)
 
 
 if __name__ == "__main__":
+    """
     # load master data
     load_master_data()
 
@@ -694,7 +815,6 @@ if __name__ == "__main__":
     load_hazard_subtype_explanations()
     load_elements_impacted()
 
-
     # CityID
     load_city_id_sections("CityID - Sections.tsv", CityIDSection)
     set_next_element("CityID - Sections.tsv", CityIDSection, 4)
@@ -707,8 +827,13 @@ if __name__ == "__main__":
     load_city_id_file("CityID - Partnerships.tsv")
     load_city_id_file("CityID - Public Relations.tsv")
     load_city_id_file("CityID - Other.tsv")
-
-
+    """
+    # load_stakeholders
+    load_stakeholder_groups()
+    set_next_stakeholder_group()
+    load_stakeholder_considerations()
+    load_stakeholder_types()
+    set_stakeholder_next()
 
 
 

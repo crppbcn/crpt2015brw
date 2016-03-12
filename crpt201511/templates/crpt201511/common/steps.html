@@ -11,7 +11,7 @@
             </a>
         </div>
         <div class="col-md-3">
-            <a href="{% url 'city_id' assessment_id=assessment.id %}" class="btn col-md-5" style="width:100%;">
+            <a href="{% url 'stakeholder_groups' assessment_id=assessment.id %}" class="btn col-md-5" style="width:100%;">
                 <img src="{% static 'crpt201511/img/step2.png' %}" class="steps" style="height:100%;width:100%;"/>
             </a>
         </div>
@@ -22,12 +22,6 @@
         </div>
 
         <div class="col-md-3">
-            <!--
-            <a href="{% url 'component' assessment_id=assessment.id %}" class="btn col-md-5" style="width:100%;">
-                <img src="{% static 'crpt201511/img/step4.png' %}" class="steps" style="height:100%;width:100%;"/>
-            </a>
-            -->
-
             <a href="{% url 'parent_component' assessment_id=assessment.id %}" class="btn col-md-5" style="width:100%;">
                 <img src="{% static 'crpt201511/img/step4.png' %}" class="steps" style="height:100%;width:100%;"/>
             </a>

@@ -1,0 +1,28 @@
+{% extends "crpt201511/common/header.html" %}
+{% load admin_static %}
+{% block content %}
+<div class="jumbotron col-md-12" >
+    <h1 class="page-header">Stakeholder Groups</h1>
+
+        <div class="row col-md-12" style="position:relative;margin-bottom:20px;">
+        {% for sg in stakeholder_groups%}
+
+            <div style="width:25%;float:left;text-align:center;">
+                <a href="{% url 'stakeholders' assessment_id=assessment.id sg_id=sg.id %}" style="width:100%;">
+                    <img src="{% static "" %}crpt201511/img/stakeholders/{{sg.underscored_name|lower}}.png"  class="steps" style="height:60%;width:60%;"/>
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="col-md-1" style="padding-left:110px;margin-top:15px;">
+        <a href="{% url 'steps' assessment_id=assessment.id %}" class="btn btn-danger">Steps</a>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

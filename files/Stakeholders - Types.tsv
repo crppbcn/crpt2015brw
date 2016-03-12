@@ -1,0 +1,38 @@
+Group	Type Code	Type Next	Type	Type Help Text	Stakeholder Code	Stakeholder	Stakeholder Help Text	Next
+SG101	ST101	ST102	Sub-Local Government		S101	Sub-Local Government		S102
+SG101	ST102	ST103	Local Government		S102	Local Government		S103
+SG101	ST103	ST104	Supra-Local Government		S103	Supra-Local Government		S104
+SG101	ST104	ST105	National Government		S104	National Government		S105
+SG101	ST105		Other Government Entities or Departments		S105	Other Government Entities or Departments		
+SG102	ST106	ST107	Private Service Providers	(e.g., health care and education)	S106	Private Service Providers	(e.g., health care and education)	S107
+SG102	ST107	ST108	Private Suppliers	(e.g., water, energy and gas)	S107	Private Suppliers	(e.g., water, energy and gas)	S108
+SG102	ST108	ST109	Enterprises and Associations		S108	Farming, Fishing and Livestock		S109
+SG102	ST108	ST109	Enterprises and Associations		S109	Mining and Quarrying		S110
+SG102	ST108	ST109	Enterprises and Associations		S110	Industrial		S111
+SG102	ST108	ST109	Enterprises and Associations		S111	Construction Companies		S112
+SG102	ST108	ST109	Enterprises and Associations		S112	Commerce and Trade		S113
+SG102	ST108	ST109	Enterprises and Associations		S113	Tourism		S114
+SG102	ST109	ST110	Private Research Institutions		S114	Private Research Institutions		S115
+SG102	ST110	ST111	Local Associations and Cooperatives	(e.g., urban farmers cooperatives)	S115	Local Associations and Cooperatives		S116
+SG102	ST111	ST112	International Private Corporations		S116	International Private Corporations		S117
+SG102	ST112	ST113	Private Sector Consortia and Coalitions	(e.g., cross-industry multi-issue groups, cross industry issue-specific initiatives, industry-focused initiatives)	S117	Private Sector Consortia and Coalitions		S118
+SG102	ST113	ST114	Private Financial Institutions	(e.g., banks)	S118	Private Financial Institutions		S119
+SG102	ST114		Other Private Businesses, Companies, Enterprises or Networks		S119	Other Private Businesses, Companies, Enterprises or Networks		
+SG103	ST115	ST116	Traditional Leaders and Councils		S120	Traditional Leaders and Councils		S121
+SG103	ST116	ST117	Community Leaders and Councils		S121	Community Leaders and Councils		S122
+SG103	ST117	ST118	Neighbourhood and Local Associations		S122	Neighbourhood and Local Associations		S123
+SG103	ST118	ST119	Indigenous Groups and Associations		S123	Indigenous Groups and Associations		S124
+SG103	ST119	ST120	Religious and Cultural Groups and Associations		S124	Religious and Cultural Groups and Associations		S125
+SG103	ST120	ST121	Charitable Organisations		S125	Charitable Organisations		S126
+SG103	ST121	ST122	Environmental Organisations		S126	Environmental Organisations		S127
+SG103	ST122	ST123	Local Non-Governmental Organisations		S127	Local Non-Governmental Organisations		S128
+SG103	ST123		Other Non-Profit Groups, Associations, CSOs, Platforms or Networks		S128	Other Non-Profit Groups, Associations, CSOs, Platforms or Networks		
+SG104	ST124	ST124	National and International Non-Governmental Organisations		S129	National and International Non-Governmental Organisations		S130
+SG104	ST125	ST125	National and International Financial Institutions		S130	National and International Financial Institutions		S131
+SG104	ST126	ST126	National and International Research Institutions		S131	National and International Research Institutions		S132
+SG104	ST127	ST127	Bilateral Organisations		S132	Bilateral Organisations		S133
+SG104	ST128	ST128	Multilateral Organisations		S133	Multilateral Organisations		S134
+SG104	ST129	ST129	International Government Unions	(e.g., European Union)	S134	International Government Unions		S135
+SG104	ST130	ST130	Other Supra-National Associations or Communities	(e.g., African Union, Association of Southeast Asian Nations)	S135	Other Supra-National Associations or Communities		S136
+SG104	ST131	ST131	Foundations		S136	Foundations		S137
+SG104	ST132		Academia		S137	Academia		
