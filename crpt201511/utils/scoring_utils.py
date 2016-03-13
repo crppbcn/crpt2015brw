@@ -2,7 +2,7 @@ from __future__ import division
 
 import sys
 
-from crpt201511.models import AssessmentComponentQuestion, Dimension, AssessmentElement, AssessmentCityIDQuestion
+from crpt201511.models import *
 from crpt201511.constants import *
 
 
@@ -25,7 +25,8 @@ def calculate_dimension_element_scoring(element, dimension):
             print("score: " + str(question.score))
             total_score += float(question.score)
 
-        ret = total_score / scorable_questions_length
+        ret = float("{0:.2f}".format(total_score / scorable_questions_length))
+
 
     print("calculate_dimension_element_scoring. End. " + str(element.id) + " -  Dimension: " + dimension.name)
     sys.stdout.flush()
@@ -54,6 +55,8 @@ def calculate_degree_of_certainty(element):
             element.mov_media_noq += 1
         if q.score == 3:
             element.mov_official_document_noq += 1
+    element.save()
+
     print("calculate_degree_of_certainty. End. " + str(element.id))
     sys.stdout.flush()
 
@@ -81,7 +84,8 @@ def calculate_degree_of_completion(element):
 
         print("answered_noq: " + str(answered_noq))
         print("total_noq: " + str(total_noq))
-        element.degree_of_completion = answered_noq / total_noq
+        element.degree_of_completion = float("{0:.2f}".format(answered_noq * 100 / total_noq))
+        element.save()
         print("degree_of_completion: " + str(element.degree_of_completion))
 
 
@@ -107,26 +111,30 @@ def aggregate_scoring_element(element):
         physical_score = 0
         functional_score = 0
         degree_of_completion = 0
-        element.mov_public_knowledge_noq = 0
-        element.mov_media_noq = 0
-        element.mov_official_document_noq = 0
         # go for elements
         for elem in elements:
             organizational_score += float(elem.organizational_score)
             spatial_score += float(elem.spatial_score)
             physical_score += float(elem.physical_score)
             functional_score += float(elem.functional_score)
-            element.mov_public_knowledge_noq += int(elem.mov_public_knowledge_noq)
-            element.mov_media_noq += int(elem.mov_media_noq)
-            element.mov_official_document_noq += int(elem.mov_official_document_noq)
             degree_of_completion += float(elem.degree_of_completion)
         # final calculation
-        element.organizational_score = organizational_score / elements_number
-        element.spatial_score = spatial_score / elements_number
-        element.physical_score = physical_score / elements_number
-        element.functional_score = functional_score / elements_number
-        element.degree_of_completion = degree_of_completion / elements_number
+        element.organizational_score = float("{0:.2f}".format(organizational_score / elements_number))
+        element.spatial_score = float("{0:.2f}".format(spatial_score / elements_number))
+        element.physical_score = float("{0:.2f}".format(physical_score / elements_number))
+        element.functional_score = float("{0:.2f}".format(functional_score / elements_number))
+        element.degree_of_completion = float("{0:.2f}".format(degree_of_completion / elements_number))
         # save
+
+        print("------------ aggregate_scoring_element ------------")
+        print("Element: " + element.element.name)
+        print("organizational_score: " + str(element.organizational_score))
+        print("physical_score: " + str(element.physical_score))
+        print("functional_score: " + str(element.functional_score))
+        print("degree_of_completion: " + str(element.degree_of_completion))
+        print("------------ aggregate_scoring_element ------------")
+
+
         element.save()
     # return parent to continue recursively
     print("aggregate_scoring_element. End. " + str(element.id))
@@ -165,43 +173,93 @@ def calculate_overall_assessment_scoring(assessment):
         physical_score = 0
         functional_score = 0
         degree_of_completion = 0
-        assessment.mov_public_knowledge_noq = 0
-        assessment.mov_media_noq = 0
-        assessment.mov_official_document_noq = 0
         # go for elements
         for elem in elements:
             organizational_score += float(elem.organizational_score)
             spatial_score += float(elem.spatial_score)
             physical_score += float(elem.physical_score)
             functional_score += float(elem.functional_score)
-            assessment.mov_public_knowledge_noq += int(elem.mov_public_knowledge_noq)
-            assessment.mov_media_noq += int(elem.mov_media_noq)
-            assessment.mov_official_document_noq += int(elem.mov_official_document_noq)
             degree_of_completion += float(elem.degree_of_completion)
         # Elements - final calculation
-        assessment.organizational_score = organizational_score / elements_number
-        assessment.spatial_score = spatial_score / elements_number
-        assessment.physical_score = physical_score / elements_number
-        assessment.functional_score = functional_score / elements_number
-        assessment.degree_of_completion = degree_of_completion / elements_number
-        print("total_noq: " + str(elements_number))
-        print("noq_answered: " + str(degree_of_completion))
+        assessment.organizational_score = float("{0:.2f}".format(organizational_score / elements_number))
+        assessment.spatial_score = float("{0:.2f}".format(spatial_score / elements_number))
+        assessment.physical_score = float("{0:.2f}".format(physical_score / elements_number))
+        assessment.functional_score = float("{0:.2f}".format(functional_score / elements_number))
 
-        # City ID - calculation
-        assessment.city_id_completion = 0
-        cid_questions = AssessmentCityIDQuestion.objects.filter(assessment=assessment).\
-            exclude(question_type=UPLOAD_FIELD)
-        total_noq = len(cid_questions)
-        noq_answered = 0
-        for question in cid_questions:
-            if question.response and str(question.response).strip() != "":
-                noq_answered += 1
-
-        assessment.city_id_completion = noq_answered / total_noq
         # save assessment
         assessment.save()
     print("calculate_overall_assessment_scoring. End. " + str(assessment.id))
     sys.stdout.flush()
+
+
+
+def calculate_city_id_completion(assessment):
+    """
+    Recalculates city id degree of copmpletion
+    :param assessment:
+    :return:
+    """
+    print("recalculate_city_id_completion.Start.")
+
+    cidqs_total = len(AssessmentCityIDQuestion.objects.filter(assessment=assessment))
+    cidqs_answered = 0
+    for cidq in AssessmentCityIDQuestion.objects.filter(assessment=assessment):
+        if str(cidq.response).strip() != "":
+            cidqs_answered += 1
+
+    assessment.city_id_completion = float("{0:.2f}".format(cidqs_answered * 100 / cidqs_total))
+    assessment.save()
+
+    print("recalculate_city_id_completion.End.")
+
+
+def calculate_hazards_completion(assessment):
+    """
+    Recalculate hazards completion
+    :param assessment:
+    :return:
+    """
+    print("recalculate_hazards_completion.Start.")
+
+    ahts = AssessmentHazardType.objects.filter(assessment=assessment, risk_assessment__in=["1","2"])
+    ahts_total = len(ahts)
+    ahts_answered_ok = 0
+    for aht in ahts:
+        hs_answered = len(AssessmentHazardSubtype.objects.filter(assessment=assessment, a_h_type=aht, enabled=True)) > 0
+        h_causes = len(AssessmentHazardCause.objects.filter(assessment=assessment, a_h_type=aht, enabled=True)) > 0
+        h_conseq = len(AssessmentHazardConsequence.objects.filter(assessment=assessment, a_h_type=aht, enabled=True)) > 0
+        if hs_answered and h_causes and h_conseq:
+            ahts_answered_ok += 1
+    assessment.hazards_completion = float("{0:.2f}".format(ahts_answered_ok / ahts_total * 100))
+    assessment.save()
+
+    print("recalculate_hazards_completion.End.")
+
+
+def calculate_stakeholders_completion(assessment):
+    """
+    Recalculates stakeholders completion
+    :param assessment:
+    :return:
+    """
+    print("recalculate_stakeholders_completion.Start.")
+
+    total = len(AssessmentStakeholder.objects.all())
+    answered = len(AssessmentStakeholder.objects.filter(assessment=assessment, engagement_from_local_gov__in=["1","2","3"]))
+    assessment.stakeholders_completion = float("{0:.2f}".format(answered / total * 100))
+    assessment.save()
+
+    print("recalculate_stakeholders_completion.End.")
+
+
+def calculate_mov(assessment):
+    assessment.mov_public_knowledge_noq = \
+        len(AssessmentComponentQuestion.objects.filter(assessment=assessment, choices=MOV_SOURCE, response="1"))
+    assessment.mov_media_noq = \
+        len(AssessmentComponentQuestion.objects.filter(assessment=assessment, choices=MOV_SOURCE, response="2"))
+    assessment.mov_official_document_noq = \
+        len(AssessmentComponentQuestion.objects.filter(assessment=assessment, choices=MOV_SOURCE, response="3"))
+    assessment.save()
 
 
 def calculate_overall_element_scoring(element):
@@ -221,15 +279,73 @@ def calculate_overall_element_scoring(element):
     element.physical_score = calculate_dimension_element_scoring(element, dimension)
     dimension = Dimension.objects.get(name=FUNCTIONAL)
     element.functional_score = calculate_dimension_element_scoring(element, dimension)
-    # calculation of MoV degree of certainty
-    calculate_degree_of_certainty(element)
-    # calculation of degree of completion
-    calculate_degree_of_completion(element)
     # save
     element.save()
+
+    print("------------ Overall element scoring ------------")
+    print("Element: " + element.element.name)
+    print("organizational_score: " + str(element.organizational_score))
+    print("physical_score: " + str(element.physical_score))
+    print("functional_score: " + str(element.functional_score))
+    print("degree_of_completion: " + str(element.degree_of_completion))
+    print("------------ Overall element scoring ------------")
+
+
     # throw overall calculation of parent elements
     calculate_overall_parent_element(element)
     # throw overall calculation for assessment
     calculate_overall_assessment_scoring(element.assessment)
+    # calculate degree of completion for each section
+    calculate_degree_of_completion(element)
+    calculate_city_id_completion(element.assessment)
+    calculate_hazards_completion(element.assessment)
+    calculate_stakeholders_completion(element.assessment)
+    # calculate mov
+    calculate_mov(element.assessment)
+
     print("calculate_overall_element_scoring. End. " + str(element.id))
     sys.stdout.flush()
+
+
+def calculate_overall_assessment_scoring2(assessment):
+    # organizational
+    dimension = Dimension.objects.get(name=ORGANIZATIONAL)
+    questions_org = AssessmentComponentQuestion.objects.filter(assessment=assessment, dimension=dimension, scorable=True).exclude(units=2)
+    noq_org = len(questions_org)
+    score_org = 0
+    for q in questions_org:
+        score_org += q.score
+    print("Organizational Dimension:")
+    print("noq: " + str(noq_org))
+    print("score qs" + str(score_org))
+    print("score dimension: " + str(float("{0:.2f}".format(score_org / noq_org))))
+
+    assessment.organizational_score = float("{0:.2f}".format(score_org / noq_org))
+
+    # functional
+    dimension = Dimension.objects.get(name=FUNCTIONAL)
+    questions_org = AssessmentComponentQuestion.objects.filter(assessment=assessment, dimension=dimension, scorable=True).exclude(units=2)
+    noq_org = len(questions_org)
+    score_org = 0
+    for q in questions_org:
+        score_org += q.score
+    assessment.functional_score = float("{0:.2f}".format(score_org / noq_org))
+    print("Functional Dimension:")
+    print("noq: " + str(noq_org))
+    print("score qs" + str(score_org))
+    print("score dimension: " + str(float("{0:.2f}".format(score_org / noq_org))))
+
+    # Physical
+    dimension = Dimension.objects.get(name=PHYSICAL)
+    questions_org = AssessmentComponentQuestion.objects.filter(assessment=assessment, dimension=dimension, scorable=True).exclude(units=2)
+    noq_org = len(questions_org)
+    score_org = 0
+    for q in questions_org:
+        score_org += q.score
+    print("Physical Dimension:")
+    print("noq: " + str(noq_org))
+    print("score qs" + str(score_org))
+    print("score dimension: " + str(float("{0:.2f}".format(score_org / noq_org))))
+    assessment.physical_score = float("{0:.2f}".format(score_org / noq_org))
+    # save
+    assessment.save()

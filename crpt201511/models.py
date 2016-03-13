@@ -585,7 +585,7 @@ class AssessmentComponentQuestion(ComponentQuestion):
             if self.units == 1:
                 try:
                     try:
-                        int_response = int(self.response)
+                        int_response = float(self.response)
                     except:
                         int_response = 0
                     self.score = float(int_response / 10)
@@ -603,12 +603,16 @@ class AssessmentComponentQuestion(ComponentQuestion):
                     sys.stdout.flush()
 
                     int_response = 1
+
                 # if MoV Source only counting source types
                 if self.choices == MOV_SOURCE:
                     self.score = (int_response - 1)
                 else:
                     # response -1 to range from 0 to 10 as options selected begin in 1
-                    self.score = (10 / self.choices_length) * (int_response - 1)
+                    if self.response > 0:
+                        self.score = (10 / self.choices_length) * (int_response - 1)
+                    else:
+                        self.score = 0
             # Scoring for Select Multiple choices questions
             if self.choices_length > 0 and self.question_type == SELECT_MULTI:
                 try:

@@ -104,9 +104,9 @@
                                     {% for item2 in item.hazardsubtypefurtherexplanation_set.all %}
                                         <p>{{ item2.description }}</p>
                                     {% endfor %}
-                                {% endif %}
-                                {% if not forloop.last %}
-                                    <legend></legend>
+                                    {% if not forloop.last %}
+                                        <legend></legend>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         {% else %}

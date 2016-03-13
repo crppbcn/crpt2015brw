@@ -318,9 +318,6 @@ def hazards_selected(request, assessment_id):
         # get hazards selected
         hs_list = get_hazards_selected(assessment)
 
-        # get hazard groups selected
-        hg_list = get_hazard_groups_selected(hs_list)
-
         print("hazards_selected length: " + str(len(hs_list)))
         sys.stdout.flush()
 
@@ -344,7 +341,7 @@ def hazards_selected(request, assessment_id):
 
 def hazards_relations(request, assessment_id):
     """
-    View for hazards selected diagram
+    View for hazards relations diagram
     :param request:
     :param assessment_id:
     :return:
@@ -358,15 +355,38 @@ def hazards_relations(request, assessment_id):
             raise Exception('User has no permission to access this assessment')
 
         # get hazards selected
-        hazards_selected = get_hazards_selected(assessment)
+        str_causes_all = ''
+        for hs in AssessmentHazardType.objects.filter(assessment=assessment):
+
+            causes = AssessmentHazardCause.objects.filter(a_h_type=hs)
+            consequences = AssessmentHazardConsequence.objects.filter(a_h_type=hs, enabled=True)
+
+            str_causes_base = '{"name":"'+hs.hazard_type.hazard_group.name+'.'+hs.hazard_type.name+\
+                     '","children":{"size":1200,"imports":['
+            str_causes = ''
+            for c in causes:
+                str_causes += '"'+c.a_h_type_cause.hazard_type.hazard_group.name+'.'+c.a_h_type_cause.hazard_type.name+'",'
+
+            str_causes = str_causes[:len(str_causes)-1]
+            str_causes_hs = str_causes_base + str_causes + ']}}'
+
+            str_causes_all += str_causes_hs + ','
+
+        #if str_causes_all[len(str_causes_all)-1:len(str_causes_all)] == ',':
+        #    str_causes_all = str_causes_all[:len(str_causes_all)-1]
+        str_causes_all = str('[' + str_causes_all + ']')
+
+        print("str_causes_all: " + str(str_causes_all))
+        sys.stdout.flush()
+
 
         # return page
-        template = loader.get_template(TEMPLATE_HAZARDS_SELECTED_PAGE)
+        template = loader.get_template(TEMPLATE_HAZARDS_RELATIONS_PAGE)
         context = RequestContext(request, {
             'person': person,
             'assessment': assessment,
-            'selected': "HAZARDS_SELECTED",
-            'hazard_selected': hazards_selected,
+            'selected': "HAZARDS_RELATIONS",
+            'str_causes_all':str_causes_all,
         })
         return HttpResponse(template.render(context))
     except:

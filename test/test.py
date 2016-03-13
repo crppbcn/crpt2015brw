@@ -318,6 +318,7 @@ def test_hazards_selected():
 
 
 if __name__ == "__main__":
+
     #test_threading()
     #test_version_selected()
     #test_get_remote_folder_name()
@@ -330,7 +331,7 @@ if __name__ == "__main__":
     #test_create_new_assessment_city_id()
     #test_create_new_assessment_components()
     #test_create_new_assessment_hazards()
-    #test_create_new_assessment_stakeholders()
+    test_create_new_assessment_stakeholders()
 
 
 
