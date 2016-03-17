@@ -23,7 +23,8 @@ from crpt201511.trace import *
 from crpt201511.utils.env_utils import *
 from crpt201511.forms import *
 from crpt201511.utils.form_utils import *
-from crpt201511.my_ftp import MyFTP
+from crpt201511.utils.my_ftp import MyFTP
+from crpt201511.utils.document_utils import *
 
 
 # ###############################################
@@ -147,6 +148,37 @@ def steps(request, assessment_id):
                                       context_instance=RequestContext(request))
 
 
+@ensure_csrf_cookie
+@login_required
+def retrieve_file(request, remote_folder, remote_file):
+    """
+    retrieve_file
+    :param request:
+    :param expert_request_id:
+    :return:
+    """
+    try:
+        # check ftp
+        if ftp_is_off():
+            return render_to_response("crppdmt/error.html",
+                                      {"error_description": "Service temporary unavailable.",},
+                                      context_instance=RequestContext(request))
+        # get the file
+        file_content = get_ftp_file_content(remote_folder, remote_file)
+        if file_content is None:
+            raise Exception("file_content is null!!")
+        else:
+            # return the file
+            response = HttpResponse(file_content, content_type='application/pdf')
+            response['Content-Disposition'] = 'inline;filename=' + remote_file
+            return response
+    except:
+        if debug_is_on():
+            raise
+        else:
+            return render_to_response("crppdmt/error.html",
+                                      {"error_description": sys.exc_info(),},
+                                      context_instance=RequestContext(request))
 
 
 # ###############################################

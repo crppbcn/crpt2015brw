@@ -74,7 +74,7 @@ def test_create_new_assessment_city_id():
     # new City ID. For each section create AssessmentCityIDStatements and correspondent responses
     cid_sections = CityIDSection.objects.all()
     for section in cid_sections:
-        print("CtyID Section Start: " + section.name)
+        print("CtyID Section Start: " + str(section.name))
         # CharField
         cid_questions = CityIDQuestion.objects.filter(section=section)
         for cid_question in cid_questions:
@@ -104,7 +104,7 @@ def test_create_new_assessment_city_id():
                     a_cid_other_tx.save()
             a_cid_question.save()
 
-        print("CityID Section End: " + section.name)
+        print("CityID Section End: " + str(section.name))
     print("create_new_asessment_city_id. End.")
 
 
@@ -328,10 +328,13 @@ if __name__ == "__main__":
     #test_hazards_selected()
 
 
-    #test_create_new_assessment_city_id()
-    #test_create_new_assessment_components()
-    #test_create_new_assessment_hazards()
+    test_create_new_assessment_city_id()
+    test_create_new_assessment_components()
+    test_create_new_assessment_hazards()
     test_create_new_assessment_stakeholders()
+
+
+
 
 
 

@@ -244,8 +244,8 @@ def calculate_stakeholders_completion(assessment):
     """
     print("recalculate_stakeholders_completion.Start.")
 
-    total = len(AssessmentStakeholder.objects.all())
-    answered = len(AssessmentStakeholder.objects.filter(assessment=assessment, engagement_from_local_gov__in=["1","2","3"]))
+    total = len(AssessmentStakeholder.objects.filter(assessment=assessment))
+    answered = len(AssessmentStakeholder.objects.filter(assessment=assessment, engagement_from_local_gov__in=["1","2","3","4"]))
     assessment.stakeholders_completion = float("{0:.2f}".format(answered / total * 100))
     assessment.save()
 
@@ -303,6 +303,8 @@ def calculate_overall_element_scoring(element):
     # calculate mov
     calculate_mov(element.assessment)
 
+    calculate_overall_assessment_scoring2(element.assessment)
+
     print("calculate_overall_element_scoring. End. " + str(element.id))
     sys.stdout.flush()
 
@@ -325,27 +327,40 @@ def calculate_overall_assessment_scoring2(assessment):
     # functional
     dimension = Dimension.objects.get(name=FUNCTIONAL)
     questions_org = AssessmentComponentQuestion.objects.filter(assessment=assessment, dimension=dimension, scorable=True).exclude(units=2)
-    noq_org = len(questions_org)
-    score_org = 0
+    noq_func = len(questions_org)
+    score_func = 0
     for q in questions_org:
-        score_org += q.score
-    assessment.functional_score = float("{0:.2f}".format(score_org / noq_org))
+        score_func += q.score
+    assessment.functional_score = float("{0:.2f}".format(score_func / noq_func))
     print("Functional Dimension:")
-    print("noq: " + str(noq_org))
-    print("score qs" + str(score_org))
-    print("score dimension: " + str(float("{0:.2f}".format(score_org / noq_org))))
+    print("noq: " + str(noq_func))
+    print("score qs" + str(score_func))
+    print("score dimension: " + str(float("{0:.2f}".format(score_func / noq_func))))
 
     # Physical
     dimension = Dimension.objects.get(name=PHYSICAL)
     questions_org = AssessmentComponentQuestion.objects.filter(assessment=assessment, dimension=dimension, scorable=True).exclude(units=2)
-    noq_org = len(questions_org)
-    score_org = 0
+    noq_phys = len(questions_org)
+    score_phys = 0
     for q in questions_org:
-        score_org += q.score
+        score_phys += q.score
     print("Physical Dimension:")
-    print("noq: " + str(noq_org))
-    print("score qs" + str(score_org))
-    print("score dimension: " + str(float("{0:.2f}".format(score_org / noq_org))))
-    assessment.physical_score = float("{0:.2f}".format(score_org / noq_org))
+    print("noq: " + str(noq_phys))
+    print("score qs" + str(score_phys))
+    print("score dimension: " + str(float("{0:.2f}".format(score_phys / noq_phys))))
+    assessment.physical_score = float("{0:.2f}".format(score_phys / noq_phys))
+
+    # achievement
+
+    answered_qs = len(AssessmentComponentQuestion.objects.filter(assessment=assessment, scorable=True, score__gt = 0).exclude(units=2))
+    total_qs = len(AssessmentComponentQuestion.objects.filter(assessment=assessment, scorable=True).exclude(units=2))
+
+    assessment.degree_of_completion = float("{0:.2f}".format(answered_qs / total_qs * 100))
+    print("total_qs: " + str(total_qs))
+    print("qs_answered" + str(answered_qs))
+    print("achievement: " + str(float("{0:.2f}".format(answered_qs / total_qs * 100))))
+
+
     # save
     assessment.save()
+

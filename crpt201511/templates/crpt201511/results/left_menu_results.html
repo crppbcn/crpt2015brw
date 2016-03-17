@@ -1,0 +1,90 @@
+{% extends "crpt201511/common/header.html" %}
+{% load admin_static %}
+{% block main_menu %}
+<div id="crpt-left-menu" class="col-md-2 padding_right">
+    <div class="row col-md-12">
+        {% comment %} nav bar {% endcomment %}
+        <div id="navbar" class="bs-component col-md-12">
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="/" alt="Home" data-toggle="tooltip" data-placement="top" data-original-title="Home"><img src="{% static 'crpt201511/img/home.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            </div>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="/steps/{{assessment.id}}" alt="Steps" data-toggle="tooltip" data-placement="top" data-original-title="Steps"><img src="{% static 'crpt201511/img/steps.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            </div>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="/hazard_groups/{{assessment.id}}/" alt="Back" data-toggle="tooltip" data-placement="top" data-original-title="Back"><img src="{% static 'crpt201511/img/back.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            </div>
+            <div style="width:25%;height:20px;text-align:center;background-color:#73797C;float:left;">
+                <a href="#" alt="Help" data-toggle="tooltip" data-placement="top" data-original-title="Help"><img src="{% static 'crpt201511/img/help.png' %}" style="vertical-align:top;width:42px;height:18px;"/></a>
+            </div>
+        </div>
+    </div> <!-- row -->
+
+    <div class="row col-md-12" style="height:15px;"></div>
+
+    {% comment %} left menu {% endcomment %}
+    <div class="row col-md-12">
+        <div class="list-group table-of-contents">
+            {% if selected_main == "RESULTS_OVERALL" %}
+                <a class="list-group-item selected" href="{% url 'results_overall' assessment_id=assessment.id %}">Overall</a>
+            {% else %}
+                <a class="list-group-item selected3" href="{% url 'results_overall' assessment_id=assessment.id %}">Overall</a>
+            {% endif %}
+            {% if selected_main == "RESULTS_DASHBOARD" %}
+                <a class="list-group-item selected" href="{% url 'results_dashboard_bcn' assessment_id=assessment.id %}">Dashboard</a>
+                {% if selected_detail == "RESULTS_DASHBOARD_BCN" %}
+                    <a class="list-group-item selected2" href="{% url 'results_dashboard_bcn' assessment_id=assessment.id %}">&nbsp;&nbsp;Barcelona</a>
+                {% else %}
+                    <a class="list-group-item selected3" href="{% url 'results_dashboard_bcn' assessment_id=assessment.id %}">&nbsp;&nbsp;Barcelona</a>
+                {% endif %}
+                {% if selected_detail == "RESULTS_DASHBOARD_CAGAYAN" %}
+                    <a class="list-group-item selected" href="{% url 'results_dashboard_cagayan' assessment_id=assessment.id %}">&nbsp;&nbsp;Cagayan de Oro</a>
+                {% else %}
+                    <a class="list-group-item selected3" href="{% url 'results_dashboard_cagayan' assessment_id=assessment.id %}">&nbsp;&nbsp;Cagayan de Oro</a>
+                {% endif %}
+                {% if selected_detail == "RESULTS_DASHBOARD_LOKOJA" %}
+                    <a class="list-group-item selected" href="{% url 'results_dashboard_lokoja' assessment_id=assessment.id %}">&nbsp;&nbsp;Lokoja</a>
+                {% else %}
+                    <a class="list-group-item selected3" href="{% url 'results_dashboard_lokoja' assessment_id=assessment.id %}">&nbsp;&nbsp;Lokoja</a>
+                {% endif %}
+                {% if selected_detail == "RESULTS_DASHBOARD_TEHRAN" %}
+                    <a class="list-group-item selected" href="{% url 'results_dashboard_tehran' assessment_id=assessment.id %}">&nbsp;&nbsp;Tehran</a>
+                {% else %}
+                    <a class="list-group-item selected3" href="{% url 'results_dashboard_tehran' assessment_id=assessment.id %}">&nbsp;&nbsp;Tehran</a>
+                {% endif %}
+            {% else %}
+                <a class="list-group-item selected3" href="{% url 'results_dashboard_bcn' assessment_id=assessment.id %}">Dashboard</a>
+            {% endif %}
+            {% if selected_main == "RESULTS_GIS" %}
+                <a class="list-group-item selected" href="{% url 'results_gis_no_base' assessment_id=assessment.id %}">GIS</a>
+{% comment %}
+                {% if selected_detail == "RESULTS_GIS_NO_BASE" %}
+                    <a class="list-group-item selected2" href="{% url 'results_gis_no_base' assessment_id=assessment.id %}">&nbsp;&nbsp;No GEO Base</a>
+                {% else %}
+                    <a class="list-group-item selected3" href="{% url 'results_gis_no_base' assessment_id=assessment.id %}">&nbsp;&nbsp;No GEO Base</a>
+                {% endif %}
+{% endcomment %}
+                {% if selected_detail == "RESULTS_GIS_GOOGLE" %}
+                    <a class="list-group-item selected2" href="{% url 'results_gis_google' assessment_id=assessment.id %}">&nbsp;&nbsp;Google</a>
+                {% else %}
+                    <a class="list-group-item selected3" href="{% url 'results_gis_google' assessment_id=assessment.id %}">&nbsp;&nbsp;Google</a>
+                {% endif %}
+            {% else %}
+                <a class="list-group-item selected3" href="{% url 'results_gis_no_base' assessment_id=assessment.id %}">GIS</a>
+            {% endif %}
+            {% if selected_main == "HAZARDS_SELECTED" %}
+                <a class="list-group-item selected" href="{% url 'results_hazards' assessment_id=assessment.id %}">Hazards</a>
+            {% else %}
+                <a class="list-group-item selected3" href="{% url 'results_hazards' assessment_id=assessment.id %}">Hazards</a>
+            {% endif %}
+{% comment %}
+            {% if selected_main == "REPORT" %}
+                <a class="list-group-item selected" href="{% url 'retrieve_file' remote_folder='CRPT Documents' remote_file='201512-LokojaReport.pdf' %}">Profile Report</a>
+            {% else %}
+                <a class="list-group-item selected3" href="{% url 'retrieve_file' remote_folder='CRPT Documents' remote_file='201512-LokojaReport.pdf' %}">Profile Report</a>
+            {% endif %}
+{% endcomment %}
+        </div>
+    </div>
+</div>
+{% endblock %}

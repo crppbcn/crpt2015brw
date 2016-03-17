@@ -83,6 +83,19 @@ urlpatterns = [
     url(r'^stakeholders/(?P<assessment_id>\d+)/(?P<sg_id>\d+)/(?P<st_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholders', name='stakeholders'),
     url(r'^stakeholders/(?P<assessment_id>\d+)/(?P<sg_id>\d+)/(?P<st_id>\d+)/(?P<s_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholders', name='stakeholders'),
 
+    # results
+    url(r'^results_overall/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_overall', name='results_overall'),
+    url(r'^results_dashboard_bcn/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_dashboard_bcn', name='results_dashboard_bcn'),
+    url(r'^results_dashboard_cagayan/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_dashboard_cagayan', name='results_dashboard_cagayan'),
+    url(r'^results_dashboard_lokoja/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_dashboard_lokoja', name='results_dashboard_lokoja'),
+    url(r'^results_dashboard_tehran/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_dashboard_tehran', name='results_dashboard_tehran'),
+    url(r'^results_hazards/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_hazards', name='results_hazards'),
+    url(r'^results_gis_no_base/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_gis_no_base', name='results_gis_no_base'),
+    url(r'^results_gis_google/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_gis_google', name='results_gis_google'),
+
+    # retrieve file
+    url(r'^retrieve_file/(?P<remote_folder>[^/]+)/(?P<remote_file>[^/]+)/', 'crpt201511.views.views.retrieve_file', name='retrieve_file'),
+
     # url to test page
     url(r'^test/$', 'crpt201511.views.views.test', name='test'),
 ]

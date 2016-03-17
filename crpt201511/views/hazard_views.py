@@ -299,7 +299,8 @@ def hazard_type_impacts(request, assessment_id, ht_id, element_id=None):
                                       {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
                                       context_instance=RequestContext(request))
 
-
+@ensure_csrf_cookie
+@login_required
 def hazards_selected(request, assessment_id):
     """
     View for hazards selected diagram
@@ -338,7 +339,8 @@ def hazards_selected(request, assessment_id):
                                       {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
                                       context_instance=RequestContext(request))
 
-
+@ensure_csrf_cookie
+@login_required
 def hazards_relations(request, assessment_id):
     """
     View for hazards relations diagram

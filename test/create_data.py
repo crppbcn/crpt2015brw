@@ -109,6 +109,8 @@ def create_data_city_id(assessment):
     questions = AssessmentCityIDQuestion.objects.filter(assessment=assessment, question_type=CHAR_FIELD)
     for q in questions:
         q.response = "Test Data"
+        if q.id % 3001 == 0:
+            q.response = ""
         q.save()
 
     print("create_data_city_id.End.")
@@ -155,12 +157,17 @@ def create_data_stakeholders(assessment):
     print("create_data_stakeholders.Start.")
 
     for s in AssessmentStakeholder.objects.filter(assessment=assessment).order_by('id'):
-        if s.id % 3 == 0:
+
+
+
+        s.engagement_from_local_gov == "1"
+        if s.id % 2 == 0:
             s.engagement_from_local_gov == "1"
-        if s.id % 5 == 0:
+        if s.id % 3 == 0:
             s.engagement_from_local_gov == "2"
         if s.id % 7 == 0:
-            s.engagement_from_local_gov == "3"
+            s.engagement_from_local_gov == ""
+
         s.save()
 
     print("create_data_stakeholders.End.")
@@ -174,10 +181,11 @@ def get_assessment_element_children(assessment_element):
 if __name__ == "__main__":
     assessment = Assessment.objects.all()[:1].get()
 
-    create_data_elements(assessment)
-    create_data_city_id(assessment)
+    #create_data_elements(assessment)
+    #create_data_city_id(assessment)
     #create_data_hazards(assessment)
-    #create_data_stakeholders(assessment)
-    #recalculate_scoring(assessment)  # includes recalculation of completion for each section
-    calculate_city_id_completion(assessment)
-    calculate_overall_assessment_scoring2(assessment)
+    create_data_stakeholders(assessment)
+    #calculate_city_id_completion(assessment)
+    #calculate_hazards_completion(assessment)
+    #calculate_stakeholders_completion(assessment)
+    #calculate_overall_assessment_scoring2(assessment)

@@ -791,7 +791,7 @@ def load_master_data():
 
 
 if __name__ == "__main__":
-    """
+
     # load master data
     load_master_data()
 
@@ -827,7 +827,7 @@ if __name__ == "__main__":
     load_city_id_file("CityID - Partnerships.tsv")
     load_city_id_file("CityID - Public Relations.tsv")
     load_city_id_file("CityID - Other.tsv")
-    """
+
     # load_stakeholders
     load_stakeholder_groups()
     set_next_stakeholder_group()
