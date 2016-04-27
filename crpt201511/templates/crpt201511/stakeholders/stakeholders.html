@@ -95,7 +95,7 @@
                                 {% endif %}
                             {% endfor %}
                         {% else %}
-                            <p>This section has no considerations</p>
+                            <p>There is no additional information for this section</p>
                         {% endif %}
                     </div>
                 </div>
@@ -114,11 +114,11 @@
                             {% endfor %}
                         {% else %}
                             <div class="panel-body">
-                                <p>This section has no comments</p>
+                                <p>Add your comments and/or notes</p>
                             </div>
                         {% endif %}
                     <div class="panel-body">
-                        <form action="/add_section_comment/" method="post">{% csrf_token %}
+                        <form action="/add_stakeholder_comment/" method="post">{% csrf_token %}
                             <fieldset>
                             <div class="form-group">
                                 <div class="">
@@ -129,11 +129,9 @@
                                         </label>
                                     </div>
                                     <input type="hidden" name="assessment_id" value="{{assessment.id}}"/>
-                                    {% if subsection %}
-                                        <input type="hidden" name="section_id" value="{{subsection.id}}"/>
-                                    {% else %}
-                                        <input type="hidden" name="section_id" value="{{section.id}}"/>
-                                    {% endif %}
+                                    <input type="hidden" name="stakeholder_group_id" value="{{stakeholder_group.id}}"/>
+                                    <input type="hidden" name="stakeholder_type_id" value="{{stakeholder_type.id}}"/>
+                                    <input type="hidden" name="stakeholder_id" value="{{stakeholder.id}}"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -146,28 +144,7 @@
                         </form>
                     </div>
                 </div>
-                {% comment %} <!-- Commented not to have 2 forms in comments -->
-                <div class="panel panel-default">
-                    <div class="panel-heading">Send comments to CRPP Team</div>
-                        <div class="panel-body">
-                            <form>
-                                <fieldset>
-                                    <div class="form-group">
-                                            <a id="a-copy" href="#" onclick="copyComments();">Copy comments</a>
-                                            <textarea class="form-control" rows="3" id="textEmail" placeholder="Send any comments or questions to CRPP Team"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="">
-                                          <button type="reset" class="btn btn-default">Cancel</button>
-                                          <button type="submit" class="btn btn-danger">Send</button>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                {% endcomment %} <!-- Commented not to have 2 forms in comments -->
+
             </div> <!-- right comments -->
 
             <div style="clear:both;"></div>

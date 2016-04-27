@@ -123,6 +123,7 @@
 
         <div id="crpt-right-column" class="col-md-4">
 
+            {% comment %} No considerations on this step
             <div id="crpt-right-menu" class="right-menu">
                 <a id="a-considerations" class="selected" href="#" onclick="showConsiderations();">Considerations</a>
                 <br>
@@ -139,11 +140,12 @@
                                 <p>{{ item.comment }}</p>
                             {% endfor %}
                         {% else %}
-                            <p>This section has no considerations</p>
+                            <p>There is no additional information for this section</p>
                         {% endif %}
                     </div>
                 </div>
             </div>
+            {% endcomment %}
 
 
             <div id="crpt-right-comments">
@@ -158,7 +160,7 @@
                             {% endfor %}
                         {% else %}
                             <div class="panel-body">
-                                <p>This section has no comments</p>
+                                <p>Add your comments and/or notes</p>
                             </div>
                         {% endif %}
                     <div class="panel-body">

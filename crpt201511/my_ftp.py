@@ -61,7 +61,6 @@ class MyFTP():
         finally:
             if f:
                 f.close()
-            #TODO: remove local files
             return ret
 
 

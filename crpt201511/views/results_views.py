@@ -28,7 +28,7 @@ def results_hazards(request, assessment_id):
     try:
         person = get_person(request)
         assessment = Assessment.objects.get(id=assessment_id)
-        # check person has rights for the assessment. TODO: Constants
+        # check person has rights for the assessment.
         if not check_person_access_to_assessment(assessment, person):
             print("assessment: " + assessment.name)
             raise Exception('User has no permission to access this assessment')

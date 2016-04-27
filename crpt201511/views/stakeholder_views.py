@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render_to_response
 from django.http import HttpResponse
 from django.forms.models import modelformset_factory
 
+from threading import Thread
 
 from crpt201511.utils.user_utils import *
 from crpt201511.models import *
@@ -13,7 +14,8 @@ from crpt201511.utils.env_utils import *
 from crpt201511.utils.assessment_utils import *
 from crpt201511.settings import CRPT_URL
 from crpt201511.forms import AssessmentStakeholderForm
-
+from crpt201511.trace import *
+from crpt201511.utils.mail_utils import *
 
 @ensure_csrf_cookie
 @login_required
@@ -26,7 +28,7 @@ def stakeholder_groups(request, assessment_id):
     try:
         person = get_person(request)
         assessment = Assessment.objects.get(id=assessment_id)
-        # check person has rights for the assessment. TODO: Constants
+        # check person has rights for the assessment.
         if not check_person_access_to_assessment(assessment, person):
             print("assessment: " + assessment.name)
             raise Exception('User has no permission to access this assessment')
@@ -65,7 +67,7 @@ def stakeholders(request, assessment_id, sg_id, st_id=None, s_id=None):
     try:
         person = get_person(request)
         assessment = Assessment.objects.get(id=assessment_id)
-        # check person has rights for the assessment. TODO: Constants
+        # check person has rights for the assessment.
         if not check_person_access_to_assessment(assessment, person):
             print("assessment: " + assessment.name)
             raise Exception('User has no permission to access this assessment')
@@ -85,8 +87,14 @@ def stakeholders(request, assessment_id, sg_id, st_id=None, s_id=None):
         else:
             s = Stakeholder.objects.filter(stakeholder_type=st).order_by('id')[:1].get()
 
+        # AssessmentStakeHolders
+        assessment_stakeholders = AssessmentStakeholder.objects.filter(assessment=assessment, stakeholder=s).order_by('id')
+
         # get considerations
         considerations = StakeholderGroupConsideration.objects.filter(stakeholder_group=sg).order_by('id')
+
+        # comments
+        comments = AssessmentStakeholderComment.objects.filter(assessment_stakeholder__in=assessment_stakeholders)
 
         # formset
         fs = modelformset_factory(AssessmentStakeholder, max_num=0, exclude=[], form=AssessmentStakeholderForm)
@@ -120,7 +128,7 @@ def stakeholders(request, assessment_id, sg_id, st_id=None, s_id=None):
                 sys.stdout.flush()
 
         else:
-            query_set = AssessmentStakeholder.objects.filter(assessment=assessment, stakeholder=s).order_by('id')
+            query_set = assessment_stakeholders
             f_set = fs(queryset=query_set)
 
         # return page
@@ -134,6 +142,7 @@ def stakeholders(request, assessment_id, sg_id, st_id=None, s_id=None):
             'stakeholder_type': st,
             'stakeholder': s,
             'considerations': considerations,
+            'comments': comments,
         })
         return HttpResponse(template.render(context))
     except:
@@ -146,205 +155,65 @@ def stakeholders(request, assessment_id, sg_id, st_id=None, s_id=None):
 
 @ensure_csrf_cookie
 @login_required
-def hazard_type_detail(request, assessment_id, ht_id):
+def add_stakeholder_comment(request):
     """
-    View for the hazard type detail page
+    View to add comment to a stakeholder
 
     :param request:
     :return:
     """
     try:
         person = get_person(request)
-        assessment = Assessment.objects.get(id=assessment_id)
-        # check person has rights for the assessment. TODO: Constants
-        if not check_person_access_to_assessment(assessment, person):
-            print("assessment: " + assessment.name)
-            raise Exception('User has no permission to access this assessment')
 
-        # get hazard type, description and examples
-        ht = HazardType.objects.get(id=ht_id)
+        if request.method == "POST":
+            # get values from form
+            assessment_id = request.POST['assessment_id']
+            try:
+                stakeholder_group_id = request.POST['stakeholder_group_id']
+            except:
+                stakeholder_group_id = None
+            try:
+                stakeholder_type_id = request.POST['stakeholder_type_id']
+            except:
+                stakeholder_type_id = None
+            try:
+                stakeholder_id = request.POST['stakeholder_id']
+            except:
+                stakeholder_id = None
+            comment = request.POST['textComments']
 
-        # considerations as list of subtypes. listed in template for each subtype
-        considerations = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
+            # get section and assessment
+            stakeholder = AssessmentStakeholder.objects.get(id=stakeholder_id)
+            # create comment
+            my_comment = AssessmentStakeholderComment()
+            my_comment.assessment_stakeholder = stakeholder
+            my_comment.comment = comment
+            my_comment.person = person
+            my_comment.save()
 
-        # formset definition
-        fs = modelformset_factory(AssessmentHazardType, max_num=0, exclude=[], form=AssessmentHazardTypeForm)
+            # trace action
+            trace_action(TRACE_COMMENT, person, "User added comment in assessment_stakeholder: " + stakeholder.name)
 
-        if request.method == 'POST':
+            # send mail
+            try:
+                send_mail = request.POST['send_mail']
+                t = Thread(target=send_comments_email, args=(my_comment.comment, "Stakeholder: " + stakeholder.name, person))
+                t.start()
+                # send_comments_email(my_comment.comment, section, person)
+            except:
+                # checkbox not set
+                pass
 
-            f_set = fs(request.POST, request.FILES)
-            if f_set and f_set.is_valid():
-                f_set.save()
+            # redirect to hazard_type page
+            url_to_redirect = "/stakeholders/" + str(assessment_id) + SLASH + str(stakeholder_group_id) + SLASH + \
+                              str(stakeholder_type_id) + SLASH + str(stakeholder.id) + SLASH
 
-                # redirect to next page
-                url_to_redirect = '/hazard_type_interrelations/' + assessment_id + SLASH + ht_id
-                return redirect(url_to_redirect, context_instance=RequestContext(request))
-
-            else:
-                print(str(f_set.errors))
-                sys.stdout.flush()
-
+            return redirect(url_to_redirect, context_instance=RequestContext(request))
         else:
-            query_set = AssessmentHazardType.objects.filter(hazard_type=ht).order_by('id')
-            f_set = fs(queryset=query_set)
-
-
-
-        # return page
-        template = loader.get_template(TEMPLATE_HAZARDS_DETAIL_PAGE)
-        context = RequestContext(request, {
-            'person': person,
-            'assessment': assessment,
-            'selected': "HT_DETAIL",
-            'ht': ht,
-            'fs': f_set,
-            'considerations': considerations,
-            'is_hazard_detail':True,
-        })
-        return HttpResponse(template.render(context))
+            raise Exception("GET call to add new section comment")
     except:
         if debug_is_on():
             raise
         else:
-            return render_to_response(TEMPLATE_ERROR,
-                                      {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
-                                      context_instance=RequestContext(request))
-
-@ensure_csrf_cookie
-@login_required
-def hazard_type_interrelations(request, assessment_id, ht_id):
-    """
-    View for the hazard type interrelations page
-
-    :param request:
-    :return:
-    """
-    try:
-        person = get_person(request)
-        assessment = Assessment.objects.get(id=assessment_id)
-        # check person has rights for the assessment. TODO: Constants
-        if not check_person_access_to_assessment(assessment, person):
-            print("assessment: " + assessment.name)
-            raise Exception('User has no permission to access this assessment')
-
-        # get hazard type, description and examples
-        ht = HazardType.objects.get(id=ht_id)
-        aht = AssessmentHazardType.objects.get(assessment=assessment, hazard_type=ht)
-
-        # considerations as list of subtypes. listed in template for each subtype
-        considerations = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
-
-        # formset definition
-        fs_factory_causes = modelformset_factory(AssessmentHazardCause, max_num=0, exclude=[])
-        fs_factory_consequences = modelformset_factory(AssessmentHazardConsequence, max_num=0, exclude=[])
-
-        if request.method == 'POST':
-
-            fs_causes = fs_factory_causes(request.POST, request.FILES, prefix='fs_causes')
-            fs_consequences = fs_factory_consequences(request.POST, request.FILES, prefix='fs_consequences')
-
-            if fs_causes and fs_causes.is_valid() and fs_consequences and fs_consequences.is_valid():
-                fs_causes.save()
-                fs_consequences.save()
-
-                # redirect to next page
-                url_to_redirect = '/hazard_type_impacts/' + assessment_id + SLASH + ht_id
-                return redirect(url_to_redirect, context_instance=RequestContext(request))
-
-            else:
-                if fs_causes.errors:
-                    print(str(fs_causes.errors))
-                if fs_consequences.errors:
-                    print(str(fs_consequences.errors))
-                sys.stdout.flush()
-
-        else:
-            query_set = AssessmentHazardCause.objects.filter(a_h_type=aht).order_by('id')
-            fs_causes = fs_factory_causes(queryset=query_set, prefix='fs_causes')
-            query_set = AssessmentHazardConsequence.objects.filter(a_h_type=aht).order_by('id')
-            fs_consequences = fs_factory_consequences(queryset=query_set, prefix='fs_consequences')
-
-        # return page
-        template = loader.get_template(TEMPLATE_HAZARDS_INTERRELATIONS_PAGE)
-        context = RequestContext(request, {
-            'person': person,
-            'assessment': assessment,
-            'selected': "HT_INTERRELATIONS",
-            'ht': ht,
-            'fs_causes': fs_causes,
-            'fs_consequences': fs_consequences,
-            'considerations': considerations,
-            'is_hazard_detail': True,
-            })
-        return HttpResponse(template.render(context))
-    except:
-        if debug_is_on():
-            raise
-        else:
-            return render_to_response(TEMPLATE_ERROR,
-                                      {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
-                                      context_instance=RequestContext(request))
-
-@ensure_csrf_cookie
-@login_required
-def hazard_type_impacts(request, assessment_id, ht_id, element_id=None):
-    """
-    View for the hazard type interrelations page
-
-    :param request:
-    :return:
-    """
-    try:
-        person = get_person(request)
-        assessment = Assessment.objects.get(id=assessment_id)
-        # check person has rights for the assessment. TODO: Constants
-        if not check_person_access_to_assessment(assessment, person):
-            print("assessment: " + assessment.name)
-            raise Exception('User has no permission to access this assessment')
-
-        # get hazard type, description and examples
-        ht = HazardType.objects.get(id=ht_id)
-        aht = AssessmentHazardType.objects.get(assessment=assessment, hazard_type=ht)
-
-        # considerations as list of subtypes. listed in template for each subtype
-        considerations = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
-
-        # formset definition
-        fs = modelformset_factory(AssessmentElementImpact, max_num=0, exclude=[])
-
-        if request.method == 'POST':
-
-            f_set = fs(request.POST, request.FILES)
-            if f_set and f_set.is_valid():
-                f_set.save()
-
-                # redirect to next page
-                url_to_redirect = '/hazard_type_detail/' + assessment_id + SLASH + ht_id
-                return redirect(url_to_redirect, context_instance=RequestContext(request))
-
-            else:
-                print(str(f_set.errors))
-                sys.stdout.flush()
-
-        else:
-            query_set = AssessmentElementImpact.objects.filter(a_h_type=aht, assessment=assessment).order_by('id')
-            f_set = fs(queryset=query_set)
-
-        template = loader.get_template(TEMPLATE_HAZARDS_IMPACTS_PAGE)
-        context = RequestContext(request, {
-            'person': person,
-            'assessment': assessment,
-            'fs': f_set,
-            'selected': "HT_IMPACTS",
-            'ht': ht,
-            'considerations': considerations,
-            'is_hazard_detail': True,
-        })
-        return HttpResponse(template.render(context))
-    except:
-        if debug_is_on():
-            raise
-        else:
-            return render_to_response(TEMPLATE_ERROR,
-                                      {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
+            return render_to_response(TEMPLATE_ERROR, {"error_description": sys.exc_info(), "crpt_url": CRPT_URL},
                                       context_instance=RequestContext(request))

@@ -13,7 +13,9 @@ function showComments() {
 }
 
 $(document).ready(function () {
-    $('#crpt-right-comments').hide();
+    if ($('#crpt-right-considerations').length){
+        $('#crpt-right-comments').hide();
+    }
     $("#divMoVOther").hide();
     $('#select2').change(function(){
         $("#select2 option:selected").each(function() {

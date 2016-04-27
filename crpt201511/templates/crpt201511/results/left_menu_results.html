@@ -56,7 +56,7 @@
                 <a class="list-group-item selected3" href="{% url 'results_dashboard_bcn' assessment_id=assessment.id %}">Dashboard</a>
             {% endif %}
             {% if selected_main == "RESULTS_GIS" %}
-                <a class="list-group-item selected" href="{% url 'results_gis_no_base' assessment_id=assessment.id %}">GIS</a>
+                <a class="list-group-item selected" href="{% url 'results_gis_google' assessment_id=assessment.id %}">GIS</a>
 {% comment %}
                 {% if selected_detail == "RESULTS_GIS_NO_BASE" %}
                     <a class="list-group-item selected2" href="{% url 'results_gis_no_base' assessment_id=assessment.id %}">&nbsp;&nbsp;No GEO Base</a>

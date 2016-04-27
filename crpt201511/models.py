@@ -338,6 +338,7 @@ class Assessment(BasicName):
     city_id_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
     stakeholders_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
     hazards_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    last_url = django.db.models.CharField(max_length=250, null=True, blank=True)
 
 
 #######################################
@@ -351,10 +352,21 @@ class AssessmentStakeholder(Common):
     """
     Represents Stakeholder in an assessment
     """
+    name = django.db.models.CharField(max_length=250)
     assessment = django.db.models.ForeignKey(Assessment)
     stakeholder = django.db.models.ForeignKey(Stakeholder)
     engagement_from_local_gov = django.db.models.CharField(max_length=100, null=True, blank=True)
     engagement_to_local_gov = django.db.models.CharField(max_length=100, null=True, blank=True)
+
+
+class AssessmentStakeholderComment(Common):
+    """
+    Represents Stakeholder comments
+    """
+    assessment_stakeholder = django.db.models.ForeignKey(AssessmentStakeholder)
+    comment = django.db.models.CharField(max_length=500)
+    person = django.db.models.ForeignKey(Person)
+    date_created = django.db.models.DateTimeField(auto_now=True)
 
 
 #######################################
@@ -439,6 +451,17 @@ class AssessmentElementImpact(Common):
     assessment = django.db.models.ForeignKey(Assessment)
     elem_impact = django.db.models.ForeignKey(ElementImpact)
     enabled = django.db.models.BooleanField(default=False)
+
+
+class AssessmentHazardComment(Common):
+    """
+    Represents Hazard Type Comment
+    """
+    assessment_hazard_type = django.db.models.ForeignKey(AssessmentHazardType)
+    comment = django.db.models.CharField(max_length=500)
+    person = django.db.models.ForeignKey(Person)
+    date_created = django.db.models.DateTimeField(auto_now=True)
+
 
 
 

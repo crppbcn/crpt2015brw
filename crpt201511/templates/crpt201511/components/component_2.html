@@ -201,7 +201,7 @@
                                 <p>{{ item.comment }}</p>
                             {% endfor %}
                         {% else %}
-                            <p>This section has no considerations</p>
+                            <p>There is no additional information for this section</p>
                         {% endif %}
                     </div>
                 </div>
@@ -220,11 +220,11 @@
                             {% endfor %}
                         {% else %}
                             <div class="panel-body">
-                                <p>This section has no comments</p>
+                                <p>Add your comments and/or notes</p>
                             </div>
                         {% endif %}
                     <div class="panel-body">
-                        <form action="/add_section_comment/" method="post">{% csrf_token %}
+                        <form action="/add_component_comment/" method="post">{% csrf_token %}
                             <fieldset>
                             <div class="form-group">
                                 <div class="">
@@ -235,10 +235,20 @@
                                         </label>
                                     </div>
                                     <input type="hidden" name="assessment_id" value="{{assessment.id}}"/>
-                                    {% if subsection %}
-                                        <input type="hidden" name="section_id" value="{{subsection.id}}"/>
-                                    {% else %}
-                                        <input type="hidden" name="section_id" value="{{section.id}}"/>
+                                    {% if fifth_component %}
+                                        <input type="hidden" name="fifth_component_id" value="{{fifth_component.id}}"/>
+                                    {% endif %}
+                                    {% if fourth_component %}
+                                        <input type="hidden" name="fourth_component_id" value="{{fourth_component.id}}"/>
+                                    {% endif %}
+                                    {% if third_component %}
+                                        <input type="hidden" name="third_component_id" value="{{third_component.id}}"/>
+                                    {% endif %}
+                                    {% if subcomponent %}
+                                        <input type="hidden" name="subcomponent_id" value="{{subcomponent.id}}"/>
+                                    {% endif %}
+                                    {% if component %}
+                                        <input type="hidden" name="component_id" value="{{component.id}}"/>
                                     {% endif %}
                                 </div>
                             </div>
@@ -252,28 +262,6 @@
                         </form>
                     </div>
                 </div>
-                {% comment %} <!-- Commented not to have 2 forms in comments -->
-                <div class="panel panel-default">
-                    <div class="panel-heading">Send comments to CRPP Team</div>
-                        <div class="panel-body">
-                            <form>
-                                <fieldset>
-                                    <div class="form-group">
-                                            <a id="a-copy" href="#" onclick="copyComments();">Copy comments</a>
-                                            <textarea class="form-control" rows="3" id="textEmail" placeholder="Send any comments or questions to CRPP Team"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="">
-                                          <button type="reset" class="btn btn-default">Cancel</button>
-                                          <button type="submit" class="btn btn-danger">Send</button>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                {% endcomment %} <!-- Commented not to have 2 forms in comments -->
             </div> <!-- right comments -->
 
             <div style="clear:both;"></div>

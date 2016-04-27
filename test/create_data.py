@@ -181,11 +181,11 @@ def get_assessment_element_children(assessment_element):
 if __name__ == "__main__":
     assessment = Assessment.objects.all()[:1].get()
 
-    #create_data_elements(assessment)
-    #create_data_city_id(assessment)
-    #create_data_hazards(assessment)
+    create_data_elements(assessment)
+    create_data_city_id(assessment)
+    create_data_hazards(assessment)
     create_data_stakeholders(assessment)
-    #calculate_city_id_completion(assessment)
-    #calculate_hazards_completion(assessment)
-    #calculate_stakeholders_completion(assessment)
+    calculate_city_id_completion(assessment)
+    calculate_hazards_completion(assessment)
+    calculate_stakeholders_completion(assessment)
     #calculate_overall_assessment_scoring2(assessment)

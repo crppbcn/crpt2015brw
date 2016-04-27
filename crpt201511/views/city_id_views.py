@@ -252,7 +252,7 @@ def add_section_comment(request):
             # send mail
             try:
                 send_mail = request.POST['send_mail']
-                t = Thread(target=send_comments_email, args=(my_comment.comment, section, person))
+                t = Thread(target=send_comments_email, args=(my_comment.comment, "CityID Section: " + section.name, person))
                 t.start()
                 # send_comments_email(my_comment.comment, section, person)
             except:

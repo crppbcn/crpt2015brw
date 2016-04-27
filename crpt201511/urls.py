@@ -67,6 +67,11 @@ urlpatterns = [
     # url to new question lgj
     url(r'^duplicate_question/(?P<assessment_id>\d+)/(?P<component_id>\d+)/(?P<subcomponent_id>\d+)/(?P<third_component_id>\d+)/(?P<initial_question_id>\d+)/$', 'crpt201511.views.component_views.duplicate_question', name='duplicate_question'),
 
+    # url to add comment to a component
+    url(r'^add_component_comment/$', 'crpt201511.views.component_views.add_component_comment', name='add_component_comment'),
+
+
+
     # hazards
     url(r'^hazard_groups/(?P<assessment_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_groups', name='hazard_groups'),
     url(r'^hazard_types/(?P<assessment_id>\d+)/(?P<hg_id>\d+)/$', 'crpt201511.views.hazard_views.hazard_types', name='hazard_types'),
@@ -77,11 +82,18 @@ urlpatterns = [
     url(r'^hazards_selected/(?P<assessment_id>\d+)/$', 'crpt201511.views.hazard_views.hazards_selected', name='hazards_selected'),
     url(r'^hazards_relations/(?P<assessment_id>\d+)/$', 'crpt201511.views.hazard_views.hazards_relations', name='hazards_relations'),
 
+    # url to add comment to a hazard type
+    url(r'^add_hazard_type_comment/$', 'crpt201511.views.hazard_views.add_hazard_type_comment', name='add_hazard_type_comment'),
+
+
     # stakeholders
     url(r'^stakeholder_groups/(?P<assessment_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholder_groups', name='stakeholder_groups'),
     url(r'^stakeholders/(?P<assessment_id>\d+)/(?P<sg_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholders', name='stakeholders'),
     url(r'^stakeholders/(?P<assessment_id>\d+)/(?P<sg_id>\d+)/(?P<st_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholders', name='stakeholders'),
     url(r'^stakeholders/(?P<assessment_id>\d+)/(?P<sg_id>\d+)/(?P<st_id>\d+)/(?P<s_id>\d+)/$', 'crpt201511.views.stakeholder_views.stakeholders', name='stakeholders'),
+
+    # url to add comment to a hazard type
+    url(r'^add_stakeholder_comment/$', 'crpt201511.views.stakeholder_views.add_stakeholder_comment', name='add_stakeholder_comment'),
 
     # results
     url(r'^results_overall/(?P<assessment_id>\d+)/$', 'crpt201511.views.results_views.results_overall', name='results_overall'),

@@ -215,7 +215,7 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
 
 @ensure_csrf_cookie
 @login_required
-def add_section_comment(request):
+def add_component_comment(request):
     """
     View to add comment to a section
 
@@ -225,30 +225,74 @@ def add_section_comment(request):
     try:
         person = get_person(request)
 
+        print("Add components comment. Start.")
+        print("Add components comment. Request: " + str(request))
+
         if request.method == "POST":
             # get values from form
             assessment_id = request.POST['assessment_id']
-            section_id = request.POST['section_id']
+            element_id = None
+            try:
+                component_id = request.POST['component_id']
+            except:
+                component_id = None
+            try:
+                subcomponent_id = request.POST['subcomponent_id']
+            except:
+                subcomponent_id = None
+            try:
+                third_component_id = request.POST['third_component_id']
+            except:
+                third_component_id = None
+            try:
+                fourth_component_id = request.POST['fourth_component_id']
+            except:
+                fourth_component_id = None
+            try:
+                fifth_component_id = request.POST['fifth_component_id']
+            except:
+                fifth_component_id = None
             comment = request.POST['textComments']
 
+            if fifth_component_id:
+                element_id = fifth_component_id
+            else:
+                if fourth_component_id:
+                    element_id = fourth_component_id
+                else:
+                    if fifth_component_id:
+                        element_id = fifth_component_id
+                    else:
+                        if third_component_id:
+                            element_id = third_component_id
+                        else:
+                            if subcomponent_id:
+                                element_id = subcomponent_id
+                            else:
+                                if component_id:
+                                    element_id = component_id
+
             # get section and assessment
-            section = CityIDSection.objects.get(id=section_id)
-            assessment = Assessment.objects.get(id=assessment_id)
+            component = Component.objects.get(id=element_id)
+
+            print("Add components comment. Component: " + component.name)
+            print("Add components comment. comment: " + comment)
+
             # create comment
-            my_comment = AssessmentCityIDSectionComment()
-            my_comment.assessment = assessment
-            my_comment.element = section
+            my_comment = AssessmentComponentComment()
+            my_comment.assessment = Assessment.objects.get(id=assessment_id)
+            my_comment.element = component
             my_comment.comment = comment
             my_comment.person = person
             my_comment.save()
 
             # trace action
-            trace_action(TRACE_COMMENT, person, "User added comment in section: " + section.name)
+            trace_action(TRACE_COMMENT, person, "User added comment in component: " + component.name)
 
             # send mail
             try:
                 send_mail = request.POST['send_mail']
-                t = Thread(target=send_comments_email, args=(my_comment.comment, section, person))
+                t = Thread(target=send_comments_email, args=(my_comment.comment, "Element: " + component.name, person))
                 t.start()
                 # send_comments_email(my_comment.comment, section, person)
             except:
@@ -256,10 +300,18 @@ def add_section_comment(request):
                 pass
 
             # redirect to section page
-            url_to_redirect = "/city_id/" + assessment_id + SLASH
-            if section.parent:
-                url_to_redirect += str(section.parent.id) + SLASH
-            url_to_redirect += str(section.id) + SLASH
+            url_to_redirect = "/component_2/" + assessment_id + SLASH
+
+            if component_id:
+                url_to_redirect += component_id + SLASH
+            if subcomponent_id:
+                url_to_redirect += subcomponent_id + SLASH
+            if third_component_id:
+                url_to_redirect += third_component_id + SLASH
+            if fourth_component_id:
+                url_to_redirect += fourth_component_id + SLASH
+            if fifth_component_id:
+                url_to_redirect += fifth_component_id + SLASH
 
             return redirect(url_to_redirect, context_instance=RequestContext(request))
         else:
@@ -473,25 +525,22 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
                 considerations = considerations | ComponentConsideration.objects.filter(element=fifth_component)
 
         # comments
-        # TODO: create assessment components and change coding
-        if fifth_component:
-            comments = AssessmentComponentComment.objects.filter(element=fifth_component, assessment=assessment).\
-                order_by('date_created')
-        else:
+        comments = AssessmentComponentComment.objects.filter(element=component,
+                                                                         assessment=assessment).order_by('date_created')
+        if subcomponent:
+            # concatenate querysets same type
+            comments = comments | AssessmentComponentComment.objects.filter(element=subcomponent,
+                                                                            assessment=assessment).order_by('id')
+            if third_component:
+                comments = comments | AssessmentComponentComment.objects.filter(element=third_component,
+                                                                            assessment=assessment).order_by('id')
             if fourth_component:
-                    comments = AssessmentComponentComment.objects.filter(element=fourth_component,
-                                                                         assessment=assessment).order_by('date_created')
-            else:
-                if third_component:
-                    comments = AssessmentComponentComment.objects.filter(element=third_component,
-                                                                         assessment=assessment).order_by('date_created')
-                else:
-                    if subcomponent:
-                        comments = AssessmentComponentComment.objects.filter(element=subcomponent,
-                                                                         assessment=assessment).order_by('date_created')
-                    else:
-                        comments = AssessmentComponentComment.objects.filter(element=component,
-                                                                         assessment=assessment).order_by('date_created')
+                comments = comments | AssessmentComponentComment.objects.filter(element=fourth_component,
+                                                                            assessment=assessment).order_by('id')
+            if fifth_component:
+                comments = comments | AssessmentComponentComment.objects.filter(element=fifth_component,
+                                                                            assessment=assessment).order_by('id')
+
 
         # formset definition
         fs = modelformset_factory(AssessmentComponentQuestion, max_num=0, exclude=[],
@@ -518,7 +567,7 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
                 f_set.save()
 
                 # send signal to recalculate score of element
-                recalculate_element_score.send(sender=a_element, element=a_element)
+                #recalculate_element_score.send(sender=a_element, element=a_element)
 
                 # navigate to next component
                 url_base = "/component_2/" + assessment_id + SLASH

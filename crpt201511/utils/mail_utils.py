@@ -20,7 +20,7 @@ def send_comments_email(text, section, person):
 
         my_mail.send_mail(subject, html_content, text_content, recipients)
 
-        trace_action(TRACE_MAIL_COMMENT, person, "Section: " + section.name + " - Comment: " + text)
+        trace_action(TRACE_MAIL_COMMENT, person, section + " - Comment: " + text)
     except:
         print("Error sending comment email. Person:" + person.name)
         print("Error: " + str(sys.exc_info()))

@@ -61,13 +61,13 @@ def units_treatment(question):
         new_question.dimension = question.dimension
         new_question.order = int(question.order) + 1
         new_question.not_applicable = False
-        new_question.help_text = ""  # TODO: decide which help text to assign
+        new_question.help_text = ""
         new_question.question_short = "Please specify units"
         new_question.question_long = "Please specify units"
         new_question.placeholder = "%"
         new_question.multi = False
         new_question.version = question.version
-        new_question.units =  2 # to indicate this is textbox for units
+        new_question.units = 2  # to indicate this is textbox for units
         new_question.has_mov = True  # to add line separator
         new_question.mov_position = -1  # questions that are not MoV
         new_question.mov_type = ""
@@ -103,7 +103,7 @@ def mov_treatment(question):
         new_question.component = question.component
         new_question.order = int(question.order) + 2  # to avoid conflict with units questions if exists
         new_question.not_applicable = False
-        new_question.help_text = ""  # TODO: decide which help text to assign
+        new_question.help_text = ""
         new_question.question_short = "MoV Source"
         new_question.question_long = "MoV Source"
         new_question.multi = False
@@ -122,7 +122,7 @@ def mov_treatment(question):
             new_question.component = question.component
             new_question.order = int(question.order) + 3
             new_question.not_applicable = False
-            new_question.help_text = ""  # TODO: decide which help text to assign
+            new_question.help_text = ""
             new_question.question_short = "MoV Source Type"
             new_question.question_long = "MoV Source Type"
             new_question.multi = False
@@ -144,7 +144,7 @@ def mov_treatment(question):
             new_question.component = question.component
             new_question.order = int(question.order) + 4
             new_question.not_applicable = False
-            new_question.help_text = ""  # TODO: decide which help text to assign
+            new_question.help_text = ""
             new_question.question_short = "MoV Scale"
             new_question.question_long = "MoV Scale"
             new_question.multi = False
@@ -165,7 +165,7 @@ def mov_treatment(question):
             new_question.component = question.component
             new_question.order = int(question.order) + 5
             new_question.not_applicable = False
-            new_question.help_text = ""  # TODO: decide which help text to assign
+            new_question.help_text = ""
             new_question.question_short = "MoV Year"
             new_question.question_long = "MoV Year"
             new_question.version = question.version
