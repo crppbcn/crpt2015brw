@@ -79,7 +79,7 @@ def welcome(request, assessment_id=None):
         if assessment_id:
             assessment = Assessment.objects.get(id=assessment_id)
         else:
-            assessment = Assessment.objects.order_by('-date_started')[0]
+            assessment = Assessment.objects.get(city=person.city)
         # except:
             # raise Exception('The City does not have any open assessment')
         template = loader.get_template(TEMPLATE_WELCOME)

@@ -117,7 +117,7 @@ def hazard_type_detail(request, assessment_id, ht_id):
         ht = HazardType.objects.get(id=ht_id)
 
         # get assessment hazard type
-        a_h_t_list = AssessmentHazardType.objects.filter(hazard_type=ht).order_by('id')
+        a_h_t_list = AssessmentHazardType.objects.filter(hazard_type=ht, assessment=assessment).order_by('id')
 
         # considerations as list of subtypes. listed in template for each subtype
         considerations = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
@@ -132,7 +132,28 @@ def hazard_type_detail(request, assessment_id, ht_id):
 
             f_set = fs(request.POST, request.FILES)
             if f_set and f_set.is_valid():
+                # save
                 f_set.save()
+
+
+                # process subtypes
+                for f in f_set:
+                    # all subtypes enabled = false
+                    a_h_subtypes = AssessmentHazardSubtype.objects.filter(a_h_type_id=f.instance.id)
+                    for elem in a_h_subtypes:
+                        a_h_subtype = AssessmentHazardSubtype.objects.get(id=int(elem.id))
+                        a_h_subtype.enabled = False
+                        a_h_subtype.save()
+                    # only selected enabled = true
+                    a_h_subtypes_list = get_list_of_ids(f.instance.subtypes)
+                    if len(a_h_subtypes_list) > 0:
+                        for elem in a_h_subtypes_list:
+                            a_h_subtype = AssessmentHazardSubtype.objects.get(id=int(elem))
+                            a_h_subtype.enabled = True
+                            a_h_subtype.save()
+
+
+
 
                 # redirect to next page
                 url_to_redirect = '/hazard_type_interrelations/' + assessment_id + SLASH + ht_id

@@ -506,10 +506,17 @@ class AssessmentHazardTypeForm(forms.ModelForm):
                                     choices=tuple([a.id, a.name] for a in ChoicesSC1.objects.all().order_by('id')))
 
             self.fields['subtypes'].label = 'Please select relevant hazard subtypes if applicable:'
+            self.fields['subtypes'].attrs = {'class':'active'}
             self.fields['subtypes'].widget = \
                 forms.widgets.CheckboxSelectMultiple(
                     choices=tuple([a.id, a.h_subtype.name] for a in
                                   AssessmentHazardSubtype.objects.filter(a_h_type=self.instance).order_by('id')))
+
+            selected_ahsts = AssessmentHazardSubtype.objects.filter(a_h_type=self.instance, enabled=True).order_by('id')
+            self.initial['subtypes'] = [ahst.id for ahst in selected_ahsts]
+
+
+
 
     class Meta:
         model = AssessmentHazardType

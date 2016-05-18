@@ -16,7 +16,7 @@ PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # import private settings
-from settings_private import *
+from crpt201511.settings_private import *
 
 # Application definition
 

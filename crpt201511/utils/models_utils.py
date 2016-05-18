@@ -1,4 +1,5 @@
 import sys
+import re
 
 
 def get_max_selected_value(response):
@@ -34,7 +35,7 @@ def get_int_value(response):
         return value
 
 
-def get_list_of_ids(response):
+def get_list_of_ids_old(response):
     """
     Gets a list of the selected ids for a response of multiple choice
     :param response:
@@ -57,3 +58,12 @@ def get_list_of_ids(response):
             right += - 1
 
     return return_list
+
+
+def get_list_of_ids(response):
+    """
+    Gets a list of the selected ids for a response of multiple choice
+    :param response:
+    :return:
+    """
+    return re.findall('\d+', response)

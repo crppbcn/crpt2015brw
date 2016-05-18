@@ -184,7 +184,9 @@ def component(request, assessment_id, component_id=None, subcomponent_id=None, t
                 sys.stdout.flush()
         else:
             # formsets
-            query_set = AssessmentComponentQuestion.objects.filter(component=third_component).order_by('order')
+            #
+            query_set = AssessmentComponentQuestion.objects.filter(assessment=assessment, component=third_component).\
+                order_by('order')
             f_set = fs(queryset=query_set)
 
         # return page
@@ -518,11 +520,14 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
             considerations = considerations | ComponentConsideration.objects.filter(element=subcomponent).\
                 order_by('id')
             if third_component:
-                considerations = considerations | ComponentConsideration.objects.filter(element=third_component)
+                considerations = considerations | ComponentConsideration.objects.filter(element=third_component)\
+                    .order_by('id')
             if fourth_component:
-                considerations = considerations | ComponentConsideration.objects.filter(element=fourth_component)
+                considerations = considerations | ComponentConsideration.objects.filter(element=fourth_component)\
+                    .order_by('id')
             if fifth_component:
-                considerations = considerations | ComponentConsideration.objects.filter(element=fifth_component)
+                considerations = considerations | ComponentConsideration.objects.filter(element=fifth_component).\
+                    order_by('id')
 
         # comments
         comments = AssessmentComponentComment.objects.filter(element=component,
@@ -662,16 +667,19 @@ def component_2(request, assessment_id, component_id=None, subcomponent_id=None,
         else:
             # formsets
             if fifth_component:
-                query_set = AssessmentComponentQuestion.objects.filter(component=fifth_component).order_by('order')
+                query_set = AssessmentComponentQuestion.objects.filter(component=fifth_component,
+                                                                       assessment=assessment).order_by('order')
             else:
                 if fourth_component:
-                    query_set = AssessmentComponentQuestion.objects.filter(component=fourth_component).order_by('order')
+                    query_set = AssessmentComponentQuestion.objects.filter(component=fourth_component,
+                                                                           assessment=assessment).order_by('order')
                 else:
                     if third_component:
-                        query_set = AssessmentComponentQuestion.objects.filter(component=third_component).\
-                            order_by('order')
+                        query_set = AssessmentComponentQuestion.objects.filter(component=third_component,
+                                                                               assessment=assessment).order_by('order')
                     else:
-                        query_set = AssessmentComponentQuestion.objects.filter(component=subcomponent).order_by('order')
+                        query_set = AssessmentComponentQuestion.objects.filter(component=subcomponent,
+                                                                               assessment=assessment).order_by('order')
             f_set = fs(queryset=query_set)
 
         # return page

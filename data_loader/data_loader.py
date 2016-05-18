@@ -9,7 +9,7 @@ import datetime
 
 from django.conf import settings
 
-project_path = "/Users/miquel/UN/0003-CRPTDEV/CRPT201511/"
+project_path = "/Users/miquel/UN/0003-CRPTDEV/CRPT201511_BRW/"
 sys.path.append(project_path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'crpt201511.settings'
 
@@ -793,11 +793,12 @@ def load_master_data():
 if __name__ == "__main__":
 
     # load master data
-    load_master_data()
+    #load_master_data()
 
     # Indicators
-    load_indicator_components("Indicators - Components.tsv", Component)
-    set_next_element("Indicators - Components.tsv", Component, 5)
+    #load_indicator_components("Indicators - Components.tsv", Component)
+    #set_next_element("Indicators - Components.tsv", Component, 5)
+
 
     load_component_file("Indicators - Basic Infrastructure.tsv")
     load_component_file("Indicators - Built Environment.tsv")
@@ -807,7 +808,9 @@ if __name__ == "__main__":
     load_component_file("Indicators - Public Services.tsv")
     load_component_file("Indicators - Social.tsv")
     load_component_file("Indicators - Transport.tsv")
+    """
     load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration)
+
 
     # load hazards
     load_hazards()
@@ -819,6 +822,7 @@ if __name__ == "__main__":
     load_city_id_sections("CityID - Sections.tsv", CityIDSection)
     set_next_element("CityID - Sections.tsv", CityIDSection, 4)
     load_considerations_file("CityID - SectionComments.tsv", CityIDSection, CityIDSectionConsideration)
+
     load_city_id_file("CityID - Location.tsv")
     load_city_id_file("CityID - Population.tsv")
     load_city_id_file("CityID - Gov. & Policies.tsv")
@@ -835,7 +839,7 @@ if __name__ == "__main__":
     load_stakeholder_types()
     set_stakeholder_next()
 
-
+"""
 
 
 

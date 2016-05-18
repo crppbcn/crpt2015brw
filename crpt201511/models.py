@@ -115,12 +115,6 @@ class AssessmentVersion(Common):
     date_released = django.db.models.DateField(null=False, blank=False)
 
 
-class Dimension(BasicName):
-    """
-    Represents a dimension of the urban model
-    """
-
-
 class Element(Common):
     """
     Represents an element of the urban model

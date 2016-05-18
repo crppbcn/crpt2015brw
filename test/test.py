@@ -5,7 +5,7 @@ from threading import Thread
 
 from django.conf import settings
 
-project_path = "/Users/miquel/UN/0003-CRPTDEV/CRPT201511/"
+project_path = "/Users/miquel/UN/0003-CRPTDEV/CRPT201511_BRW/"
 sys.path.append(project_path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'crpt201511.settings'
 
@@ -36,19 +36,8 @@ def test_version_selected():
     print("test_version_selected. End.")
 
 
-def test_create_new_assessment_city_id():
+def test_create_new_assessment_city_id(assessment):
     print("create_new_asessment_city_id. Start.")
-    # new assessment - TODO: set generic procedure
-    try:
-        assessment = Assessment.objects.all()[:1].get()
-    except:
-        assessment = Assessment()
-        assessment.name = "Test Assessment"
-        assessment.city = City.objects.get(name="Test")
-        assessment.considerations = "Test Assessment"
-        assessment.focal_point_started = Person.objects.get(name="City, Test")
-        assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
-        assessment.save()
 
     # create assessment elements - first parents
     for elem in Element.objects.filter(version=assessment.version, parent=None).order_by('id'):
@@ -76,7 +65,7 @@ def test_create_new_assessment_city_id():
     for section in cid_sections:
         print("CtyID Section Start: " + str(section.name))
         # CharField
-        cid_questions = CityIDQuestion.objects.filter(section=section)
+        cid_questions = CityIDQuestion.objects.filter(section=section).exclude(id__in=AssessmentCityIDQuestion.objects.all())
         for cid_question in cid_questions:
             a_cid_question = AssessmentCityIDQuestion()
             a_cid_question.question_short = cid_question.question_short
@@ -93,9 +82,10 @@ def test_create_new_assessment_city_id():
             a_cid_question.question_type = cid_question.question_type
             if cid_question.element:
                 print("Get Assessment Element for element: " + cid_question.element.name)
-                a_cid_question.assessment_element = AssessmentElement.objects.get(element=cid_question.element)
+                a_cid_question.assessment_element = AssessmentElement.objects.filter(element=cid_question.element)[0]
             a_cid_question.save()
             # creation of other tx choices for this assessment
+            """
             if cid_question.choices.strip() == OTHER_TX:
                 for other_tx in ChoicesOtherTx.objects.all():
                     a_cid_other_tx = AssessmentCityIDChoicesOtherTx()
@@ -103,31 +93,21 @@ def test_create_new_assessment_city_id():
                     a_cid_other_tx.assessment = assessment
                     a_cid_other_tx.save()
             a_cid_question.save()
-
+            """
         print("CityID Section End: " + str(section.name))
     print("create_new_asessment_city_id. End.")
 
 
-def test_create_new_assessment_components():
+def test_create_new_assessment_components(assessment):
     print("test_create_new_assessment_components. Start.")
-    # new assessment - TODO: set generic procedure
-    try:
-        assessment = Assessment.objects.all()[:1].get()
-    except:
-        assessment = Assessment()
-        assessment.name = "Test Assessment"
-        assessment.city = City.objects.get(name="Test")
-        assessment.considerations = "Test Assessment"
-        assessment.focal_point_started = Person.objects.get(name="City, Test")
-        assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
-        assessment.save()
 
     # Components (indicators). For each component create AssessmentQuestions and correspondent responses
     components = Component.objects.all()
     for component in components:
         print("Component Start: " + component.name)
         # CharField
-        component_questions = ComponentQuestion.objects.filter(component=component)
+        component_questions = ComponentQuestion.objects.filter(component=component).\
+            exclude(id__in=AssessmentComponentQuestion.objects.all())
         for question in component_questions:
             a_question = AssessmentComponentQuestion()
             a_question.question_short = question.question_short
@@ -209,19 +189,8 @@ def test_get_remote_folder_name():
     print("test_get_remote_folder_name.End")
 
 
-def test_create_new_assessment_hazards():
+def test_create_new_assessment_hazards(assessment):
     print("test_create_new_assessment_hazards.Start")
-    # get assessment
-    try:
-        assessment = Assessment.objects.all()[:1].get()
-    except:
-        assessment = Assessment()
-        assessment.name = "Test Assessment"
-        assessment.city = City.objects.get(name="Test")
-        assessment.considerations = "Test Assessment"
-        assessment.focal_point_started = Person.objects.get(name="City, Test")
-        assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
-        assessment.save()
 
     # create hazard types
     for ht in HazardType.objects.all().order_by('id'):
@@ -260,19 +229,8 @@ def test_create_new_assessment_hazards():
     print("test_create_new_assessment_hazards.End")
 
 
-def test_create_new_assessment_stakeholders():
+def test_create_new_assessment_stakeholders(assessment):
     print("test_create_new_assessment_stakeholders.Start")
-    # get assessment
-    try:
-        assessment = Assessment.objects.all()[:1].get()
-    except:
-        assessment = Assessment()
-        assessment.name = "Test Assessment"
-        assessment.city = City.objects.get(name="Test")
-        assessment.considerations = "Test Assessment"
-        assessment.focal_point_started = Person.objects.get(name="City, Test")
-        assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
-        assessment.save()
 
     # create assessment stakeholders
     for s in Stakeholder.objects.all().order_by('id'):
@@ -297,6 +255,19 @@ def test_obtain_max_selected_value():
     print("test_obtain_max_selected_value.End")
 
 
+def test_create_new_assessment_for_city(city_name):
+    print("test_create_new_assessment_for_city. Start. city_name: " + str(city_name))
+    assessment = Assessment()
+    city = City.objects.get(name=city_name)
+    assessment.name = city_name + " - assessment"
+    assessment.city = city
+    assessment.considerations = "Test Assessment"
+    assessment.focal_point_started = Person.objects.filter(city=city)[0]
+    assessment.version = AssessmentVersion.objects.order_by('-date_released')[0]
+    assessment.save()
+    print("test_create_new_assessment_for_city. End. city_id: " + str(city_name))
+    return assessment
+
 def test_get_list_of_ids():
     print("test_get_list_of_ids.Start")
     response = "[u'0',u'1',u'2']"
@@ -315,6 +286,23 @@ def test_hazards_selected():
     return get_hazards_selected(assessment)
 
 
+def test_create_assessment_city(city_name):
+    print("test_create_assessment_city. Start. City:" + city_name)
+    assessment = test_create_new_assessment_for_city(city_name)
+    test_create_new_assessment_city_id(assessment)
+    test_create_new_assessment_components(assessment)
+    test_create_new_assessment_hazards(assessment)
+    test_create_new_assessment_stakeholders(assessment)
+
+    print("test_create_assessment_city. End. City:" + city_name)
+
+
+def test_findall():
+    list = get_list_of_ids_2("[u'457', u'458']")
+    print(str(list[0]))
+
+
+
 
 
 if __name__ == "__main__":
@@ -328,10 +316,11 @@ if __name__ == "__main__":
     #test_hazards_selected()
 
 
-    test_create_new_assessment_city_id()
-    test_create_new_assessment_components()
-    test_create_new_assessment_hazards()
-    test_create_new_assessment_stakeholders()
+    #test_create_assessment_city("Test")
+    #test_create_assessment_city("Barcelona")
+    #test_create_assessment_city("Ensenada")
+
+    test_findall()
 
 
 

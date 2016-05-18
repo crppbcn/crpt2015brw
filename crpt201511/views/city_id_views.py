@@ -189,7 +189,8 @@ def city_id(request, assessment_id, section_id=None, subsection_id=None):
                 sys.stdout.flush()
         else:
             # formsets
-            query_set = AssessmentCityIDQuestion.objects.filter(section=subsection).order_by('order')
+            query_set = AssessmentCityIDQuestion.objects.filter(section=subsection, assessment=assessment).\
+                order_by('order')
             f_set = fs(queryset=query_set)
 
         # return page
