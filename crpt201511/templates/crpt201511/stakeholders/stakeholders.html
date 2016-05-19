@@ -50,6 +50,7 @@
                                     </div>
                                     {{ form.assessment.as_hidden }}
                                     {{ form.stakeholder.as_hidden }}
+                                    {{ form.name.as_hidden }}
 
                                     {% comment %}Print hidden fields{% endcomment %}
                                     {% for hidden in form.hidden_fields %}

@@ -100,7 +100,6 @@ def stakeholders(request, assessment_id, sg_id, st_id=None, s_id=None):
         fs = modelformset_factory(AssessmentStakeholder, max_num=0, exclude=[], form=AssessmentStakeholderForm)
 
         if request.method == 'POST':
-
             f_set = fs(request.POST, request.FILES)
             if f_set and f_set.is_valid():
                 f_set.save()

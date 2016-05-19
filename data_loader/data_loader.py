@@ -793,11 +793,11 @@ def load_master_data():
 if __name__ == "__main__":
 
     # load master data
-    #load_master_data()
+    load_master_data()
 
     # Indicators
-    #load_indicator_components("Indicators - Components.tsv", Component)
-    #set_next_element("Indicators - Components.tsv", Component, 5)
+    load_indicator_components("Indicators - Components.tsv", Component)
+    set_next_element("Indicators - Components.tsv", Component, 5)
 
 
     load_component_file("Indicators - Basic Infrastructure.tsv")
@@ -808,7 +808,7 @@ if __name__ == "__main__":
     load_component_file("Indicators - Public Services.tsv")
     load_component_file("Indicators - Social.tsv")
     load_component_file("Indicators - Transport.tsv")
-    """
+
     load_considerations_examples_file("Indicators - Considerations&Examples.tsv", Component, ComponentConsideration)
 
 
@@ -839,7 +839,7 @@ if __name__ == "__main__":
     load_stakeholder_types()
     set_stakeholder_next()
 
-"""
+
 
 
 

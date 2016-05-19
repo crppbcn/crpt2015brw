@@ -66,4 +66,7 @@ def get_list_of_ids(response):
     :param response:
     :return:
     """
-    return re.findall('\d+', response)
+    if response and str(response).strip() != "":
+        return re.findall('\d+', response)
+    else:
+        return []

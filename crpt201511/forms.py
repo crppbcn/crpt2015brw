@@ -538,6 +538,8 @@ class AssessmentStakeholderForm(forms.ModelForm):
         self.fields['engagement_to_local_gov'].widget = \
             forms.widgets.Select(
                 choices=tuple([a.id, a.name] for a in ChoicesStakeholders.objects.all().order_by('id')))
+        # just because field is required (new version requirement)
+        self.initial['name'] = "TEST"
 
 
     class Meta:

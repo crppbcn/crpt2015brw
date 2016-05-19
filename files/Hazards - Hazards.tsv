@@ -59,55 +59,57 @@ HG30	Environmental	HT180	Biodiversity Loss and Ecosystem Degradation	HS570	Biodi
 HG40	Social	HT190	Economic Hazard	HS580	Economic Crisis		
 HG40	Social	HT190	Economic Hazard	HS590	Escalation of Economic and Resource Nationalisation or Privatisation		
 HG40	Social	HT190	Economic Hazard	HS600	Economic Activity and Business Discontinuities		
-HG40	Social	HT190	Economic Hazard	HS610	Excessive Unemployment and Informal Employment		
-HG40	Social	HT200	Cultural Hazard	HS620	Destruction of Cultural Heritage		
-HG40	Social	HT200	Cultural Hazard	HS630	Tension Between Ethnic Groups		
-HG40	Social	HT210	Mass Population Migration	HS640	Mass Immigration/Rapid Population Growth		
-HG40	Social	HT210	Mass Population Migration	HS650	Mass Emigration/Rapid Population Decline		
-HG40	Social	HT220	Political Hazard	HS660	Political/Social Tension		
-HG40	Social	HT220	Political Hazard	HS670	Political Crisis		
-HG40	Social	HT220	Political Hazard	HS680	Corruption		
-HG40	Social	HT230	Health Hazard	HS690	Non-Communicable/Non-Transmissible Chronic Diseases		
-HG40	Social	HT230	Health Hazard	HS700	Chemical and Physical Health Hazards		
-HG40	Social	HT240	Crime	HS710	Violent Crime		
-HG40	Social	HT240	Crime	HS720	Crime Against Property		
-HG40	Social	HT240	Crime	HS730	Organised Crime and Illicit Trade		
-HG40	Social	HT240	Crime	HS740	Crimes Against Humanity		
-HG40	Social	HT250	Cyber-Attack	HS750	Cyber-Attack		
-HG40	Social	HT260	Armed/Violent Conflict	HS760	Armed Conflict		
-HG40	Social	HT260	Armed/Violent Conflict	HS770	Revolution		
-HG40	Social	HT260	Armed/Violent Conflict	HS780	Ethnic Conflict		
-HG40	Social	HT260	Armed/Violent Conflict	HS790	War		
-HG40	Social	HT270	Terrorism	HS800	Terrorism		
-HG50	Technological	HT280	Industrial and Mining Incident	HS810	Chemical Spill		
-HG50	Technological	HT280	Industrial and Mining Incident	HS820	Collapse		
-HG50	Technological	HT280	Industrial and Mining Incident	HS830	Explosion		
-HG50	Technological	HT280	Industrial and Mining Incident	HS840	Fire		
-HG50	Technological	HT280	Industrial and Mining Incident	HS850	Gas Leak		
-HG50	Technological	HT280	Industrial and Mining Incident	HS860	Oil Spill		
-HG50	Technological	HT280	Industrial and Mining Incident	HS870	Poisoning		
-HG50	Technological	HT280	Industrial and Mining Incident	HS880	Radiation		
-HG50	Technological	HT290	Non-Industrial Incident	HS890	Explosion		
-HG50	Technological	HT290	Non-Industrial Incident	HS900	Urban Fire		
-HG50	Technological	HT290	Non-Industrial Incident	HS910	Impact of Near-Earth Objects and Space Debris		
-HG50	Technological	HT290	Non-Industrial Incident	HS920	Transport Incident (including Hazardous Material Transportation)		
-HG50	Technological	HT310	Failure of Infrastructure	HS930	Basic Infrastructure Breakdown	HSD10	Water Infrastructure Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS940	Basic Infrastructure Breakdown	HSD20	Energy Infrastructure Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS950	Basic Infrastructure Breakdown	HSD30	Solid Waste Management System Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS960	Basic Infrastructure Breakdown	HSD40	Wastewater Management System Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS970	Basic Infrastructure Breakdown	HSD50	Communication Infrastructure Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS980	Governance Infrastructure Breakdown		
-HG50	Technological	HT310	Failure of Infrastructure	HS990	Built Infrastructure Breakdown	HSD60	Built Infrastructure Collapse
-HG50	Technological	HT310	Failure of Infrastructure	HS1000	Built Infrastructure Breakdown	HSD70	Housing Crisis
-HG50	Technological	HT310	Failure of Infrastructure	HS1010	Built Infrastructure Breakdown	HSD80	Rapid Urbanisation
-HG50	Technological	HT310	Failure of Infrastructure	HS1020	Socio-economic Infrastructure Breakdown	HSD90	Health Care Service Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS1030	Socio-economic Infrastructure Breakdown	HSD100	Education Service Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS1040	Socio-economic Infrastructure Breakdown	HSD110	Emergency and Rescue Service Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS1050	Socio-economic Infrastructure Breakdown	HSD120	Safety and Justice Services Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS1060	Socio-economic Infrastructure Breakdown	HSD130	Social Care System Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS1070	Socio-economic Infrastructure Breakdown	HSD140	Financial System Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS1080	Socio-economic Infrastructure Breakdown	HSD150	Business Logistics System Breakdown
-HG50	Technological	HT310	Failure of Infrastructure	HS1090	Transport System Breakdown		
-HG60	Complex	HT320	Failure of Supplies	HS1100	Food Crisis		
-HG60	Complex	HT320	Failure of Supplies	HS1110	Water Crisis		
-HG60	Complex	HT320	Failure of Supplies	HS1120	Energy Crisis		
+HG40	Social	HT190	Economic Hazard	HS610	Economic Inequalities		
+HG40	Social	HT190	Economic Hazard	HS620	Excessive Unemployment and Informal Employment		
+HG40	Social	HT200	Cultural Hazard	HS630	Destruction of Cultural Heritage		
+HG40	Social	HT200	Cultural Hazard	HS640	Tension Between Ethnic Groups		
+HG40	Social	HT200	Cultural Hazard	HS650	Social Inequalities		
+HG40	Social	HT210	Mass Population Migration	HS660	Mass Immigration/Rapid Population Growth		
+HG40	Social	HT210	Mass Population Migration	HS670	Mass Emigration/Rapid Population Decline		
+HG40	Social	HT220	Political Hazard	HS680	Political/Social Tension		
+HG40	Social	HT220	Political Hazard	HS690	Political Crisis		
+HG40	Social	HT220	Political Hazard	HS700	Corruption		
+HG40	Social	HT230	Health Hazard	HS710	Non-Communicable/Non-Transmissible Chronic Diseases		
+HG40	Social	HT230	Health Hazard	HS720	Chemical and Physical Health Hazards		
+HG40	Social	HT240	Crime	HS730	Violent Crime		
+HG40	Social	HT240	Crime	HS740	Crime Against Property		
+HG40	Social	HT240	Crime	HS750	Organised Crime and Illicit Trade		
+HG40	Social	HT240	Crime	HS760	Crimes Against Humanity		
+HG40	Social	HT250	Cyber-Attack	HS770	Cyber-Attack		
+HG40	Social	HT260	Armed/Violent Conflict	HS780	Armed Conflict		
+HG40	Social	HT260	Armed/Violent Conflict	HS790	Revolution		
+HG40	Social	HT260	Armed/Violent Conflict	HS800	Ethnic Conflict		
+HG40	Social	HT260	Armed/Violent Conflict	HS810	War		
+HG40	Social	HT270	Terrorism	HS820	Terrorism		
+HG50	Technological	HT280	Industrial and Mining Incident	HS830	Chemical Spill		
+HG50	Technological	HT280	Industrial and Mining Incident	HS840	Collapse		
+HG50	Technological	HT280	Industrial and Mining Incident	HS850	Explosion		
+HG50	Technological	HT280	Industrial and Mining Incident	HS860	Fire		
+HG50	Technological	HT280	Industrial and Mining Incident	HS870	Gas Leak		
+HG50	Technological	HT280	Industrial and Mining Incident	HS880	Oil Spill		
+HG50	Technological	HT280	Industrial and Mining Incident	HS890	Poisoning		
+HG50	Technological	HT280	Industrial and Mining Incident	HS900	Radiation		
+HG50	Technological	HT290	Non-Industrial Incident	HS910	Explosion		
+HG50	Technological	HT290	Non-Industrial Incident	HS920	Urban Fire		
+HG50	Technological	HT290	Non-Industrial Incident	HS930	Impact of Near-Earth Objects and Space Debris		
+HG50	Technological	HT290	Non-Industrial Incident	HS940	Transport Incident (including Hazardous Material Transportation)		
+HG50	Technological	HT310	Failure of Infrastructure	HS950	Basic Infrastructure Breakdown	HSD10	Water Infrastructure Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS960	Basic Infrastructure Breakdown	HSD20	Energy Infrastructure Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS970	Basic Infrastructure Breakdown	HSD30	Solid Waste Management System Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS980	Basic Infrastructure Breakdown	HSD40	Wastewater Management System Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS990	Basic Infrastructure Breakdown	HSD50	Communication Infrastructure Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS1000	Governance Infrastructure Breakdown		
+HG50	Technological	HT310	Failure of Infrastructure	HS1010	Built Infrastructure Breakdown	HSD60	Built Infrastructure Collapse
+HG50	Technological	HT310	Failure of Infrastructure	HS1020	Built Infrastructure Breakdown	HSD70	Housing Crisis
+HG50	Technological	HT310	Failure of Infrastructure	HS1030	Built Infrastructure Breakdown	HSD80	Rapid Urbanisation
+HG50	Technological	HT310	Failure of Infrastructure	HS1040	Socio-economic Infrastructure Breakdown	HSD90	Health Care Service Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS1050	Socio-economic Infrastructure Breakdown	HSD100	Education Service Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS1060	Socio-economic Infrastructure Breakdown	HSD110	Emergency and Rescue Service Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS1070	Socio-economic Infrastructure Breakdown	HSD120	Safety and Justice Services Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS1080	Socio-economic Infrastructure Breakdown	HSD130	Social Care System Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS1090	Socio-economic Infrastructure Breakdown	HSD140	Financial System Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS1100	Socio-economic Infrastructure Breakdown	HSD150	Business Logistics System Breakdown
+HG50	Technological	HT310	Failure of Infrastructure	HS1110	Transport System Breakdown		
+HG60	Complex	HT320	Failure of Supplies	HS1120	Food Crisis		
+HG60	Complex	HT320	Failure of Supplies	HS1130	Water Crisis		
+HG60	Complex	HT320	Failure of Supplies	HS1140	Energy Crisis		

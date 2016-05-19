@@ -86,29 +86,23 @@
 
         <div id="crpt-right-column" class="col-md-4">
 
-            {% comment %} Not showing links because there are no consideration on this step
+
             <div id="crpt-right-menu" class="right-menu">
                 <a id="a-considerations" class="selected" href="#" onclick="showConsiderations();">Considerations</a>
                 <br>
                 <a id="a-comments" href="#" onclick="showComments();">{%if comments|length > 0 %} ({{comments|length}}) {%endif%}Comments</a>
             </div>
-            {% endcomment %}
 
-            {% comment%} hide considerations as they are not defined for hazard types
+
             <div id="crpt-right-considerations" style="width:100%;">
                 <div class="panel panel-default" >
                     <div class="panel-heading">Considerations</div>
                     <div class="panel-body">
                         {% if considerations and considerations|length > 0 %}
                             {% for item in considerations %}
-                                {% if item.hazardsubtypefurtherexplanation_set.all|length > 0 %}
-                                    <p style="font-style:italic;">{{ item.name }}</p>
-                                    {% for item2 in item.hazardsubtypefurtherexplanation_set.all %}
-                                        <p>{{ item2.description }}</p>
-                                    {% endfor %}
-                                    {% if not forloop.last %}
-                                        <legend></legend>
-                                    {% endif %}
+                                <p>{{item.description}}</p>
+                                {% if not forloop.last %}
+                                    <legend></legend>
                                 {% endif %}
                             {% endfor %}
                         {% else %}
@@ -117,7 +111,6 @@
                     </div>
                 </div>
             </div>
-            {% endcomment %}
 
 
             <div id="crpt-right-comments" style="width:100%;">

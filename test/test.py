@@ -298,7 +298,7 @@ def test_create_assessment_city(city_name):
 
 
 def test_findall():
-    list = get_list_of_ids_2("[u'457', u'458']")
+    list = get_list_of_ids("[u'457', u'458']")
     print(str(list[0]))
 
 
@@ -314,16 +314,26 @@ if __name__ == "__main__":
     #test_obtain_max_selected_value()
     #test_get_list_of_ids()
     #test_hazards_selected()
-
-
-    #test_create_assessment_city("Test")
-    #test_create_assessment_city("Barcelona")
-    #test_create_assessment_city("Ensenada")
-
-    test_findall()
-
-
-
-
-
-
+    #test_findall()
+    """
+    test_create_assessment_city("Test")
+    test_create_assessment_city("Barcelona")
+    test_create_assessment_city("Ensenada")
+    test_create_assessment_city("La Paz")
+    test_create_assessment_city("Carmen")
+    test_create_assessment_city("Tapachula de Cordoba")
+    test_create_assessment_city("Ciudad Juarez")
+    test_create_assessment_city("Saltillo")
+    test_create_assessment_city("Manzanillo")
+    test_create_assessment_city("Victoria de Durango")
+    test_create_assessment_city("Leon de los Aldama")
+    test_create_assessment_city("Acapulco")
+    test_create_assessment_city("Puerto Vallarta")
+    test_create_assessment_city("Tepic")
+    test_create_assessment_city("Monterrey")
+    test_create_assessment_city("Oaxaca")
+    test_create_assessment_city("Atlixco")
+    """
+    test_create_assessment_city("Playa del Carmen")
+    test_create_assessment_city("Mazatlan")
+    test_create_assessment_city("Tampico")

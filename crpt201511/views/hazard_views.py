@@ -120,7 +120,8 @@ def hazard_type_detail(request, assessment_id, ht_id):
         a_h_t_list = AssessmentHazardType.objects.filter(hazard_type=ht, assessment=assessment).order_by('id')
 
         # considerations as list of subtypes. listed in template for each subtype
-        considerations = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
+        h_sts = HazardSubtype.objects.filter(hazard_type=ht).order_by('id')
+        considerations = HazardSubtypeFurtherExplanation.objects.filter(hazard_subtype__in=h_sts)
 
         # comments
         comments = AssessmentHazardComment.objects.filter(assessment_hazard_type__in=a_h_t_list).order_by('id')
@@ -129,7 +130,6 @@ def hazard_type_detail(request, assessment_id, ht_id):
         fs = modelformset_factory(AssessmentHazardType, max_num=0, exclude=[], form=AssessmentHazardTypeForm)
 
         if request.method == 'POST':
-
             f_set = fs(request.POST, request.FILES)
             if f_set and f_set.is_valid():
                 # save
