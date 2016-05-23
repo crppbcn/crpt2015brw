@@ -385,7 +385,7 @@ class AssessmentHazardType(Common):
 
     # Overriding save method to calculate score. TODO: use signals to recalculate overall score?
     def save(self, *args, **kwargs):
-        if str(self.subtypes).strip() != "" and str(self.subtypes).strip() != "''":
+        if self.subtypes.encode("utf-8").strip() != "" and self.subtypes.encode("utf-8").strip() != "''":
             # get list of selected subtypes ids
             st_ids = get_list_of_ids(self.subtypes)
             for elem in st_ids:
@@ -597,7 +597,8 @@ class AssessmentComponentQuestion(ComponentQuestion):
 
     # Overriding save method to calculate score. TODO: use signals to recalculate overall score?
     def save(self, *args, **kwargs):
-        if str(self.response).strip() != "" and str(self.response).strip() != "''":
+        if self.response.encode("utf-8").strip() != "" and \
+                        self.response.encode("utf-8").strip() != "''":
             # Scoring for questions with percentage. TODO: for now we assume all them will be with %
             if self.units == 1:
                 try:
