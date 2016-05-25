@@ -494,7 +494,7 @@ class AssessmentElement(Common):
 class AssessmentCityIDQuestion(CityIDQuestion):
 
     assessment = django.db.models.ForeignKey(Assessment)
-    response = django.db.models.CharField(max_length=250, null=True, blank=True)
+    response = django.db.models.CharField(max_length=500, null=True, blank=True)
     assessment_element = django.db.models.ForeignKey(AssessmentElement, null=True, blank=True)
 
 
@@ -590,7 +590,7 @@ class AssessmentComponentQuestion(ComponentQuestion):
     assessment = django.db.models.ForeignKey(Assessment)
     score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
     weight = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    response = django.db.models.CharField(max_length=250, null=True, blank=True)
+    response = django.db.models.CharField(max_length=500, null=True, blank=True)
     choices_length = django.db.models.IntegerField(default=0)
     assessment_element = django.db.models.ForeignKey(AssessmentElement, null=True, blank=True)
     scorable = django.db.models.BooleanField(default=False)
