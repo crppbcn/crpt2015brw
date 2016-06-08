@@ -39,4 +39,9 @@ db.sqlite3
 # ignore jpg files
 *.jpg
 
+# exclude files directory
+/files
+
+# ignore orig files
+*.orig
 

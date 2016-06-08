@@ -208,6 +208,9 @@ def load_hazards():
             hazard_subtype = HazardSubtype()
             hazard_subtype.code = row[4].strip()
             hazard_subtype.name = row[5].strip()
+            if len(row)>6:
+                if row[7].strip() != "":
+                    hazard_subtype.name = hazard_subtype.name + " - " + str(row[7].strip())
             hazard_subtype.hazard_type = hazard_type
             hazard_subtype.save()
         # check for hazard subtype detail. if not found create it
@@ -792,6 +795,7 @@ def load_master_data():
 
 if __name__ == "__main__":
 
+    """
     # load master data
     load_master_data()
 
@@ -838,7 +842,12 @@ if __name__ == "__main__":
     load_stakeholder_considerations()
     load_stakeholder_types()
     set_stakeholder_next()
+    """
 
+    load_hazards()
+    load_hazard_type_descriptions()
+    load_hazard_subtype_explanations()
+    load_elements_impacted()
 
 
 

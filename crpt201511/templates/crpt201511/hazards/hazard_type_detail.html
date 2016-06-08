@@ -98,11 +98,16 @@
                 <div class="panel panel-default" >
                     <div class="panel-heading">Considerations</div>
                     <div class="panel-body">
-                        {% if considerations and considerations|length > 0 %}
+                       {% if considerations and considerations|length > 0 %}
                             {% for item in considerations %}
-                                <p>{{item.description}}</p>
-                                {% if not forloop.last %}
-                                    <legend></legend>
+                                {% if item.hazardsubtypefurtherexplanation_set.all|length > 0 %}
+                                    <p style="font-style:italic;">{{ item.name }}</p>
+                                    {% for item2 in item.hazardsubtypefurtherexplanation_set.all %}
+                                        <p>{{ item2.description }}</p>
+                                    {% endfor %}
+                                    {% if not forloop.last %}
+                                        <legend></legend>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         {% else %}

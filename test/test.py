@@ -85,7 +85,6 @@ def test_create_new_assessment_city_id(assessment):
                 a_cid_question.assessment_element = AssessmentElement.objects.filter(element=cid_question.element)[0]
             a_cid_question.save()
             # creation of other tx choices for this assessment
-            """
             if cid_question.choices.strip() == OTHER_TX:
                 for other_tx in ChoicesOtherTx.objects.all():
                     a_cid_other_tx = AssessmentCityIDChoicesOtherTx()
@@ -93,7 +92,7 @@ def test_create_new_assessment_city_id(assessment):
                     a_cid_other_tx.assessment = assessment
                     a_cid_other_tx.save()
             a_cid_question.save()
-            """
+
         print("CityID Section End: " + str(section.name))
     print("create_new_asessment_city_id. End.")
 
@@ -198,16 +197,29 @@ def test_create_new_assessment_hazards(assessment):
         aht.assessment = assessment
         aht.hazard_type = ht
         aht.save()
+        # create hazard subtypes
+        for hst in HazardSubtype.objects.filter(hazard_type=ht):
+            ahst = AssessmentHazardSubtype()
+            ahst.h_subtype = hst
+            ahst.assessment = assessment
+            ahst.a_h_type = aht
+            ahst.save()
+
+
+
+    """
     # create hazard subtypes
     for hst in HazardSubtype.objects.all().order_by('id'):
         ahst = AssessmentHazardSubtype()
         ahst.h_subtype = hst
         ahst.assessment = assessment
-        ahst.a_h_type = AssessmentHazardType.objects.get(hazard_type=hst.hazard_type, assessment=assessment)
+        ahst.a_h_type = AssessmentHazardType.objects.get(assessment=assessment, hazard_type=hst.hazard_type)
         ahst.save()
+    """
+
     # create hazard causes and consequences
     for ht in HazardType.objects.all().order_by('id'):
-        for a_h_t in AssessmentHazardType.objects.all().order_by('id'):
+        for a_h_t in AssessmentHazardType.objects.filter(assessment=assessment).order_by('id'):
             cause = AssessmentHazardCause()
             cause.assessment = assessment
             cause.a_h_type = AssessmentHazardType.objects.get(hazard_type=ht, assessment=assessment)
@@ -268,6 +280,24 @@ def test_create_new_assessment_for_city(city_name):
     print("test_create_new_assessment_for_city. End. city_id: " + str(city_name))
     return assessment
 
+
+def test_ammend_a_h_t_causes_conseqs():
+    print("test_ammend_a_h_t_causes_conseqs. Start.")
+    for city in City.objects.all():
+        print("Ammend. City: " + str(city.name) + " Start")
+        # get assessment
+        try:
+            assessment = Assessment.objects.get(city_id=city.id)
+            # create new assessment hazards
+            test_create_new_assessment_hazards(assessment)
+        except:
+            assessment = None
+        print("Ammend. City: " + str(city.name) + " End")
+
+
+    print("test_ammend_a_h_t_causes_conseqs. End.")
+
+
 def test_get_list_of_ids():
     print("test_get_list_of_ids.Start")
     response = "[u'0',u'1',u'2']"
@@ -302,6 +332,15 @@ def test_findall():
     print(str(list[0]))
 
 
+def test_ammend_a_city_id_other_tx():
+    print("test_test_ammend_a_city_id_other_tx. Start.")
+    for a_c_id_q in AssessmentCityIDQuestion.objects.filter(choices="OTHER_TX").order_by('id'):
+        for choice_other_tx in ChoicesOtherTx.objects.all():
+            a_choice_other_tx = AssessmentCityIDChoicesOtherTx()
+            a_choice_other_tx.assessment = a_c_id_q.assessment
+            a_choice_other_tx.name = choice_other_tx.name
+            a_choice_other_tx.save()
+    print("test_test_ammend_a_city_id_other_tx. End.")
 
 
 
@@ -333,7 +372,10 @@ if __name__ == "__main__":
     test_create_assessment_city("Monterrey")
     test_create_assessment_city("Oaxaca")
     test_create_assessment_city("Atlixco")
-    """
     test_create_assessment_city("Playa del Carmen")
     test_create_assessment_city("Mazatlan")
     test_create_assessment_city("Tampico")
+    """
+
+    #test_ammend_a_h_t_causes_conseqs()
+    test_ammend_a_city_id_other_tx()

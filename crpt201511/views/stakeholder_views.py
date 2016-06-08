@@ -87,14 +87,23 @@ def stakeholders(request, assessment_id, sg_id, st_id=None, s_id=None):
         else:
             s = Stakeholder.objects.filter(stakeholder_type=st).order_by('id')[:1].get()
 
+
+        print("s.id: " + str(s.id))
+
         # AssessmentStakeHolders
         assessment_stakeholders = AssessmentStakeholder.objects.filter(assessment=assessment, stakeholder=s).order_by('id')
+
+        print("len(assessment_stakeholders): " + str(len(assessment_stakeholders)))
 
         # get considerations
         considerations = StakeholderGroupConsideration.objects.filter(stakeholder_group=sg).order_by('id')
 
         # comments
         comments = AssessmentStakeholderComment.objects.filter(assessment_stakeholder__in=assessment_stakeholders)
+
+
+        print("comments: " + str(len(comments)))
+        sys.stdout.flush()
 
         # formset
         fs = modelformset_factory(AssessmentStakeholder, max_num=0, exclude=[], form=AssessmentStakeholderForm)
@@ -142,6 +151,7 @@ def stakeholders(request, assessment_id, sg_id, st_id=None, s_id=None):
             'stakeholder': s,
             'considerations': considerations,
             'comments': comments,
+            'is_stakeholder': 'yes'
         })
         return HttpResponse(template.render(context))
     except:
@@ -167,6 +177,7 @@ def add_stakeholder_comment(request):
         if request.method == "POST":
             # get values from form
             assessment_id = request.POST['assessment_id']
+            #assessment = Assessment.objects.get(assessment_id)
             try:
                 stakeholder_group_id = request.POST['stakeholder_group_id']
             except:
@@ -177,26 +188,28 @@ def add_stakeholder_comment(request):
                 stakeholder_type_id = None
             try:
                 stakeholder_id = request.POST['stakeholder_id']
+                #stakeholder = Stakeholder.objects.get(stakeholder_id)
             except:
                 stakeholder_id = None
             comment = request.POST['textComments']
 
             # get section and assessment
-            stakeholder = AssessmentStakeholder.objects.get(id=stakeholder_id)
+            assessment_stakeholder = AssessmentStakeholder.objects.get(assessment_id=assessment_id,
+                                                                       stakeholder_id=stakeholder_id)
             # create comment
             my_comment = AssessmentStakeholderComment()
-            my_comment.assessment_stakeholder = stakeholder
+            my_comment.assessment_stakeholder = assessment_stakeholder
             my_comment.comment = comment
             my_comment.person = person
             my_comment.save()
 
             # trace action
-            trace_action(TRACE_COMMENT, person, "User added comment in assessment_stakeholder: " + stakeholder.name)
+            trace_action(TRACE_COMMENT, person, "User added comment in assessment_stakeholder: " + assessment_stakeholder.stakeholder.name)
 
             # send mail
             try:
                 send_mail = request.POST['send_mail']
-                t = Thread(target=send_comments_email, args=(my_comment.comment, "Stakeholder: " + stakeholder.name, person))
+                t = Thread(target=send_comments_email, args=(my_comment.comment, "Stakeholder: " + assessment_stakeholder.stakeholder.name, person))
                 t.start()
                 # send_comments_email(my_comment.comment, section, person)
             except:
@@ -205,7 +218,7 @@ def add_stakeholder_comment(request):
 
             # redirect to hazard_type page
             url_to_redirect = "/stakeholders/" + str(assessment_id) + SLASH + str(stakeholder_group_id) + SLASH + \
-                              str(stakeholder_type_id) + SLASH + str(stakeholder.id) + SLASH
+                              str(stakeholder_type_id) + SLASH + str(assessment_stakeholder.stakeholder.id) + SLASH
 
             return redirect(url_to_redirect, context_instance=RequestContext(request))
         else:

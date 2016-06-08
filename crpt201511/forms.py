@@ -103,6 +103,7 @@ class AssessmentCityIDQuestionForm(forms.ModelForm):
                 (self.instance.question_type == SELECT_SINGLE or self.instance.question_type == SELECT_MULTI):
 
             if self.instance.choices and self.instance.choices.strip() != "":
+
                 if self.instance.choices == GAS_SUPPLY:
                     if self.instance.multi:
                         self.fields['response'].widget = \

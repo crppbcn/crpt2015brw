@@ -322,16 +322,16 @@ class Assessment(BasicName):
     city = django.db.models.ForeignKey(City)
     date_started = django.db.models.DateField(auto_now=True)
     focal_point_started = django.db.models.ForeignKey(Person)
-    organizational_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    physical_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    functional_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    organizational_score = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    physical_score = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    functional_score = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
     mov_public_knowledge_noq = django.db.models.IntegerField(default=0)
     mov_media_noq = django.db.models.IntegerField(default=0)
     mov_official_document_noq = django.db.models.IntegerField(default=0)
-    degree_of_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    city_id_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    stakeholders_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    hazards_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    degree_of_completion = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    city_id_completion = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    stakeholders_completion = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    hazards_completion = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
     last_url = django.db.models.CharField(max_length=250, null=True, blank=True)
 
 
@@ -385,7 +385,8 @@ class AssessmentHazardType(Common):
 
     # Overriding save method to calculate score. TODO: use signals to recalculate overall score?
     def save(self, *args, **kwargs):
-        if self.subtypes.encode("utf-8").strip() != "" and self.subtypes.encode("utf-8").strip() != "''":
+        if self.subtypes and self.subtypes.encode("utf-8").strip() != "" and \
+                        self.subtypes.encode("utf-8").strip() != "''":
             # get list of selected subtypes ids
             st_ids = get_list_of_ids(self.subtypes)
             for elem in st_ids:
@@ -474,14 +475,14 @@ class AssessmentElement(Common):
     parent = django.db.models.ForeignKey('self', null=True, blank=True, related_name="parent_a_element")
     element = django.db.models.ForeignKey(Element)
     enabled = django.db.models.BooleanField(default=True)
-    spatial_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    organizational_score = django.db.models.DecimalField(max_digits=6, decimal_places=2,  default=0)
-    physical_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    functional_score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    spatial_score = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    organizational_score = django.db.models.DecimalField(max_digits=15, decimal_places=2,  default=0)
+    physical_score = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    functional_score = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
     mov_public_knowledge_noq = django.db.models.IntegerField(default=0)
     mov_media_noq = django.db.models.IntegerField(default=0)
     mov_official_document_noq = django.db.models.IntegerField(default=0)
-    degree_of_completion = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    degree_of_completion = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
 
 #######################################
@@ -588,8 +589,8 @@ class AssessmentComponentComment(Common):
 class AssessmentComponentQuestion(ComponentQuestion):
 
     assessment = django.db.models.ForeignKey(Assessment)
-    score = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    weight = django.db.models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    score = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    weight = django.db.models.DecimalField(max_digits=15, decimal_places=2, default=0)
     response = django.db.models.CharField(max_length=500, null=True, blank=True)
     choices_length = django.db.models.IntegerField(default=0)
     assessment_element = django.db.models.ForeignKey(AssessmentElement, null=True, blank=True)
@@ -658,11 +659,12 @@ class AssessmentComponentQuestion(ComponentQuestion):
 #######################################
 
 
-class AssessmentCityIDChoicesOtherTx(BasicName):
+class AssessmentCityIDChoicesOtherTx(Common):
     """
     Represents Other Means of Tx added by city in an assessment
     """
     assessment = django.db.models.ForeignKey(Assessment)
+    name = django.db.models.CharField(max_length=250, null=False, blank=False)
 
 
 class AssessmentChoicesMC1(BasicName):
