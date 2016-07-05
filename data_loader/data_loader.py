@@ -795,7 +795,7 @@ def load_master_data():
 
 if __name__ == "__main__":
 
-    """
+
     # load master data
     load_master_data()
 
@@ -842,12 +842,8 @@ if __name__ == "__main__":
     load_stakeholder_considerations()
     load_stakeholder_types()
     set_stakeholder_next()
-    """
 
-    load_hazards()
-    load_hazard_type_descriptions()
-    load_hazard_subtype_explanations()
-    load_elements_impacted()
+
 
 
 

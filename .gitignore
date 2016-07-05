@@ -42,6 +42,9 @@ db.sqlite3
 # exclude files directory
 /files
 
+# exclude extract directory
+/extract
+
 # exclude files directory
 /temp
 

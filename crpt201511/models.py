@@ -598,7 +598,7 @@ class AssessmentComponentQuestion(ComponentQuestion):
 
     # Overriding save method to calculate score. TODO: use signals to recalculate overall score?
     def save(self, *args, **kwargs):
-        if self.response.encode("utf-8").strip() != "" and \
+        if self.response and self.response.encode("utf-8").strip() != "" and \
                         self.response.encode("utf-8").strip() != "''":
             # Scoring for questions with percentage. TODO: for now we assume all them will be with %
             if self.units == 1:

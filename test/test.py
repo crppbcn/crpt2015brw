@@ -354,6 +354,7 @@ if __name__ == "__main__":
     #test_get_list_of_ids()
     #test_hazards_selected()
     #test_findall()
+
     """
     test_create_assessment_city("Test")
     test_create_assessment_city("Barcelona")
@@ -368,6 +369,7 @@ if __name__ == "__main__":
     test_create_assessment_city("Leon de los Aldama")
     test_create_assessment_city("Acapulco")
     test_create_assessment_city("Puerto Vallarta")
+    """
     test_create_assessment_city("Tepic")
     test_create_assessment_city("Monterrey")
     test_create_assessment_city("Oaxaca")
@@ -375,7 +377,7 @@ if __name__ == "__main__":
     test_create_assessment_city("Playa del Carmen")
     test_create_assessment_city("Mazatlan")
     test_create_assessment_city("Tampico")
-    """
+
 
     #test_ammend_a_h_t_causes_conseqs()
-    test_ammend_a_city_id_other_tx()
+    #test_ammend_a_city_id_other_tx()
